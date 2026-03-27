@@ -1,4 +1,4 @@
-export default function Contact() {
+const Contact = () => {
 	return (
 		<section id="contact" className="px-6 py-20">
 			<div className="mx-auto max-w-6xl">
@@ -6,4 +6,6 @@ export default function Contact() {
 			</div>
 		</section>
 	);
-}
+};
+
+export default Contact;
