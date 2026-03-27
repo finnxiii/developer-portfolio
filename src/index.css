@@ -3,3 +3,88 @@
 html {
 	scroll-behavior: smooth;
 }
+
+body {
+	font-family:
+		"Inter",
+		system-ui,
+		-apple-system,
+		sans-serif;
+}
+
+@keyframes driftLeft {
+	0% {
+		transform: translateX(0);
+	}
+	50% {
+		transform: translateX(-12px);
+	}
+	100% {
+		transform: translateX(0);
+	}
+}
+
+@keyframes driftRight {
+	0% {
+		transform: translateX(0);
+	}
+	50% {
+		transform: translateX(12px);
+	}
+	100% {
+		transform: translateX(0);
+	}
+}
+
+@keyframes twinkle {
+	0%,
+	100% {
+		opacity: 0.35;
+	}
+	50% {
+		opacity: 1;
+	}
+}
+
+@keyframes moonPulse {
+	0%,
+	100% {
+		opacity: 0.22;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 0.3;
+		transform: scale(1.06);
+	}
+}
+
+@keyframes fadeUp {
+	0% {
+		opacity: 0;
+		transform: translateY(18px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.animate-drift-left {
+	animation: driftLeft 9s ease-in-out infinite;
+}
+
+.animate-drift-right {
+	animation: driftRight 11s ease-in-out infinite;
+}
+
+.animate-twinkle {
+	animation: twinkle 2.8s ease-in-out infinite;
+}
+
+.animate-moon-pulse {
+	animation: moonPulse 6s ease-in-out infinite;
+}
+
+.animate-fade-up {
+	animation: fadeUp 0.9s ease-out both;
+}
