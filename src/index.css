@@ -69,6 +69,16 @@ body {
 	}
 }
 
+@keyframes floatMoon {
+	0%,
+	100% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-6px);
+	}
+}
+
 .animate-drift-left {
 	animation: driftLeft 9s ease-in-out infinite;
 }
