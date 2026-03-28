@@ -72,135 +72,208 @@ const Hero = () => {
 
 				{/* Clouds */}
 				<div className="absolute inset-0">
-					{/* upper left */}
-					<div className="absolute left-[3%] top-[24%] animate-drift-right">
-						<div className="relative h-16 w-40">
-							<span className="absolute left-[24px] top-0 h-6 w-10 bg-[#2a3138]/34" />
-							<span className="absolute left-[56px] top-0 h-6 w-10 bg-[#2a3138]/34" />
-							<span className="absolute left-[88px] top-[4px] h-6 w-10 bg-[#2a3138]/34" />
-							<span className="absolute left-0 top-[24px] h-6 w-12 bg-[#232a31]/30" />
-							<span className="absolute left-[40px] top-[24px] h-6 w-12 bg-[#232a31]/30" />
-							<span className="absolute left-[80px] top-[24px] h-6 w-12 bg-[#232a31]/30" />
-							<span className="absolute left-[112px] top-[24px] h-6 w-12 bg-[#232a31]/30" />
-							<span className="absolute left-[40px] top-[40px] h-5 w-20 bg-[#1c2229]/24" />
+					{/* Mobile clouds */}
+					<div className="absolute inset-0 md:hidden">
+						{/* upper left */}
+						<div className="absolute left-[4%] top-[22%] animate-drift-right">
+							<div className="relative h-10 w-24">
+								<span className="absolute left-[12px] top-0 h-4 w-6 bg-[#2a3138]/30" />
+								<span className="absolute left-[32px] top-0 h-4 w-6 bg-[#2a3138]/30" />
+								<span className="absolute left-0 top-[14px] h-4 w-7 bg-[#232a31]/26" />
+								<span className="absolute left-[20px] top-[14px] h-4 w-7 bg-[#232a31]/26" />
+								<span className="absolute left-[40px] top-[14px] h-4 w-7 bg-[#232a31]/26" />
+								<span className="absolute left-[60px] top-[14px] h-4 w-7 bg-[#232a31]/26" />
+							</div>
+						</div>
+
+						{/* upper right near moon */}
+						<div className="absolute right-[2%] top-[28%] animate-drift-left">
+							<div className="relative h-10 w-24">
+								<span className="absolute left-[12px] top-0 h-4 w-6 bg-[#2a3138]/24" />
+								<span className="absolute left-[32px] top-0 h-4 w-6 bg-[#2a3138]/24" />
+								<span className="absolute left-0 top-[14px] h-4 w-7 bg-[#232a31]/22" />
+								<span className="absolute left-[20px] top-[14px] h-4 w-7 bg-[#232a31]/22" />
+								<span className="absolute left-[40px] top-[14px] h-4 w-7 bg-[#232a31]/22" />
+								<span className="absolute left-[60px] top-[14px] h-4 w-7 bg-[#232a31]/22" />
+							</div>
+						</div>
+
+						{/* under text left */}
+						<div className="absolute left-[6%] top-[62%] animate-drift-left">
+							<div className="relative h-10 w-28">
+								<span className="absolute left-[12px] top-0 h-4 w-6 bg-[#323b45]/24" />
+								<span className="absolute left-[32px] top-0 h-4 w-6 bg-[#323b45]/24" />
+								<span className="absolute left-[52px] top-0 h-4 w-6 bg-[#323b45]/24" />
+								<span className="absolute left-0 top-[14px] h-4 w-7 bg-[#2b333c]/22" />
+								<span className="absolute left-[20px] top-[14px] h-4 w-7 bg-[#2b333c]/22" />
+								<span className="absolute left-[40px] top-[14px] h-4 w-7 bg-[#2b333c]/22" />
+								<span className="absolute left-[60px] top-[14px] h-4 w-7 bg-[#2b333c]/22" />
+							</div>
+						</div>
+
+						{/* under text right */}
+						<div className="absolute right-[6%] top-[66%] animate-drift-right">
+							<div className="relative h-10 w-28">
+								<span className="absolute left-[12px] top-0 h-4 w-6 bg-[#323b45]/24" />
+								<span className="absolute left-[32px] top-0 h-4 w-6 bg-[#323b45]/24" />
+								<span className="absolute left-[52px] top-0 h-4 w-6 bg-[#323b45]/24" />
+								<span className="absolute left-0 top-[14px] h-4 w-7 bg-[#2b333c]/22" />
+								<span className="absolute left-[20px] top-[14px] h-4 w-7 bg-[#2b333c]/22" />
+								<span className="absolute left-[40px] top-[14px] h-4 w-7 bg-[#2b333c]/22" />
+								<span className="absolute left-[60px] top-[14px] h-4 w-7 bg-[#2b333c]/22" />
+							</div>
+						</div>
+
+						{/* bottom soft groups */}
+						<div className="absolute bottom-[12%] left-[4%] animate-drift-right">
+							<div className="relative h-12 w-32">
+								<span className="absolute left-[16px] top-0 h-5 w-8 bg-[#3a444f]/24" />
+								<span className="absolute left-[40px] top-0 h-5 w-8 bg-[#3a444f]/24" />
+								<span className="absolute left-[64px] top-0 h-5 w-8 bg-[#3a444f]/24" />
+								<span className="absolute left-0 top-[18px] h-5 w-10 bg-[#323b45]/22" />
+								<span className="absolute left-[28px] top-[18px] h-5 w-10 bg-[#323b45]/22" />
+								<span className="absolute left-[56px] top-[18px] h-5 w-10 bg-[#323b45]/22" />
+								<span className="absolute left-[84px] top-[18px] h-5 w-10 bg-[#323b45]/22" />
+							</div>
+						</div>
+
+						<div className="absolute bottom-[8%] right-[4%] animate-drift-left">
+							<div className="relative h-12 w-32">
+								<span className="absolute left-[16px] top-0 h-5 w-8 bg-[#3a444f]/24" />
+								<span className="absolute left-[40px] top-0 h-5 w-8 bg-[#3a444f]/24" />
+								<span className="absolute left-[64px] top-0 h-5 w-8 bg-[#3a444f]/24" />
+								<span className="absolute left-0 top-[18px] h-5 w-10 bg-[#323b45]/22" />
+								<span className="absolute left-[28px] top-[18px] h-5 w-10 bg-[#323b45]/22" />
+								<span className="absolute left-[56px] top-[18px] h-5 w-10 bg-[#323b45]/22" />
+								<span className="absolute left-[84px] top-[18px] h-5 w-10 bg-[#323b45]/22" />
+							</div>
 						</div>
 					</div>
 
-					{/* upper mid-left */}
-					<div className="absolute left-[18%] top-[34%] animate-drift-left">
-						<div className="relative h-14 w-32">
-							<span className="absolute left-[16px] top-0 h-5 w-10 bg-[#2a3138]/26" />
-							<span className="absolute left-[48px] top-0 h-5 w-10 bg-[#2a3138]/26" />
-							<span className="absolute left-0 top-[20px] h-5 w-12 bg-[#232a31]/22" />
-							<span className="absolute left-[40px] top-[20px] h-5 w-12 bg-[#232a31]/22" />
-							<span className="absolute left-[80px] top-[20px] h-5 w-12 bg-[#232a31]/22" />
+					{/* Desktop / tablet clouds */}
+					<div className="absolute inset-0 hidden md:block">
+						{/* upper left */}
+						<div className="absolute left-[3%] top-[24%] animate-drift-right">
+							<div className="relative h-16 w-40">
+								<span className="absolute left-[24px] top-0 h-6 w-10 bg-[#2a3138]/34" />
+								<span className="absolute left-[56px] top-0 h-6 w-10 bg-[#2a3138]/34" />
+								<span className="absolute left-[88px] top-[4px] h-6 w-10 bg-[#2a3138]/34" />
+								<span className="absolute left-0 top-[24px] h-6 w-12 bg-[#232a31]/30" />
+								<span className="absolute left-[40px] top-[24px] h-6 w-12 bg-[#232a31]/30" />
+								<span className="absolute left-[80px] top-[24px] h-6 w-12 bg-[#232a31]/30" />
+								<span className="absolute left-[112px] top-[24px] h-6 w-12 bg-[#232a31]/30" />
+								<span className="absolute left-[40px] top-[40px] h-5 w-20 bg-[#1c2229]/24" />
+							</div>
+						</div>
+
+						{/* upper mid-left */}
+						<div className="absolute left-[18%] top-[34%] animate-drift-left">
+							<div className="relative h-14 w-32">
+								<span className="absolute left-[16px] top-0 h-5 w-10 bg-[#2a3138]/26" />
+								<span className="absolute left-[48px] top-0 h-5 w-10 bg-[#2a3138]/26" />
+								<span className="absolute left-0 top-[20px] h-5 w-12 bg-[#232a31]/22" />
+								<span className="absolute left-[40px] top-[20px] h-5 w-12 bg-[#232a31]/22" />
+								<span className="absolute left-[80px] top-[20px] h-5 w-12 bg-[#232a31]/22" />
+							</div>
+						</div>
+
+						{/* upper right near moon */}
+						<div className="absolute right-[2%] top-[24%] animate-drift-left">
+							<div className="relative h-20 w-44">
+								<span className="absolute left-[32px] top-0 h-7 w-12 bg-[#313840]/28" />
+								<span className="absolute left-[64px] top-0 h-7 w-12 bg-[#313840]/28" />
+								<span className="absolute left-0 top-[24px] h-7 w-14 bg-[#2a3138]/24" />
+								<span className="absolute left-[40px] top-[24px] h-7 w-14 bg-[#2a3138]/24" />
+								<span className="absolute left-[80px] top-[24px] h-7 w-14 bg-[#2a3138]/24" />
+								<span className="absolute left-[120px] top-[24px] h-7 w-14 bg-[#2a3138]/24" />
+								<span className="absolute left-[48px] top-[48px] h-6 w-24 bg-[#1c2229]/18" />
+							</div>
+						</div>
+
+						{/* under text left */}
+						<div className="absolute left-[10%] top-[58%] animate-drift-left">
+							<div className="relative h-12 w-36">
+								<span className="absolute left-[16px] top-0 h-5 w-9 bg-[#232a31]/18" />
+								<span className="absolute left-[48px] top-0 h-5 w-9 bg-[#232a31]/18" />
+								<span className="absolute left-[80px] top-0 h-5 w-9 bg-[#232a31]/18" />
+								<span className="absolute left-0 top-[18px] h-5 w-11 bg-[#1c2229]/15" />
+								<span className="absolute left-[40px] top-[18px] h-5 w-11 bg-[#1c2229]/15" />
+								<span className="absolute left-[80px] top-[18px] h-5 w-11 bg-[#1c2229]/15" />
+								<span className="absolute left-[120px] top-[18px] h-5 w-11 bg-[#1c2229]/15" />
+							</div>
+						</div>
+
+						{/* under text center */}
+						<div className="absolute left-1/2 top-[63%] -translate-x-1/2 animate-drift-right">
+							<div className="relative h-12 w-44">
+								<span className="absolute left-[24px] top-0 h-5 w-10 bg-[#232a31]/14" />
+								<span className="absolute left-[56px] top-0 h-5 w-10 bg-[#232a31]/14" />
+								<span className="absolute left-[88px] top-0 h-5 w-10 bg-[#232a31]/14" />
+								<span className="absolute left-[120px] top-0 h-5 w-10 bg-[#232a31]/14" />
+								<span className="absolute left-0 top-[18px] h-5 w-12 bg-[#1c2229]/12" />
+								<span className="absolute left-[40px] top-[18px] h-5 w-12 bg-[#1c2229]/12" />
+								<span className="absolute left-[80px] top-[18px] h-5 w-12 bg-[#1c2229]/12" />
+								<span className="absolute left-[120px] top-[18px] h-5 w-12 bg-[#1c2229]/12" />
+							</div>
+						</div>
+
+						{/* under text right */}
+						<div className="absolute right-[12%] top-[58%] animate-drift-right">
+							<div className="relative h-12 w-36">
+								<span className="absolute left-[16px] top-0 h-5 w-9 bg-[#232a31]/18" />
+								<span className="absolute left-[48px] top-0 h-5 w-9 bg-[#232a31]/18" />
+								<span className="absolute left-[80px] top-0 h-5 w-9 bg-[#232a31]/18" />
+								<span className="absolute left-0 top-[18px] h-5 w-11 bg-[#1c2229]/15" />
+								<span className="absolute left-[40px] top-[18px] h-5 w-11 bg-[#1c2229]/15" />
+								<span className="absolute left-[80px] top-[18px] h-5 w-11 bg-[#1c2229]/15" />
+								<span className="absolute left-[120px] top-[18px] h-5 w-11 bg-[#1c2229]/15" />
+							</div>
+						</div>
+
+						{/* bottom left big */}
+						<div className="absolute bottom-[10%] left-[2%] animate-drift-right">
+							<div className="relative h-16 w-52">
+								<span className="absolute left-[24px] top-0 h-6 w-12 bg-[#3a444f]/32" />
+								<span className="absolute left-[64px] top-0 h-6 w-12 bg-[#3a444f]/32" />
+								<span className="absolute left-[104px] top-0 h-6 w-12 bg-[#3a444f]/32" />
+								<span className="absolute left-0 top-[22px] h-6 w-14 bg-[#323b45]/28" />
+								<span className="absolute left-[44px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
+								<span className="absolute left-[88px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
+								<span className="absolute left-[132px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
+								<span className="absolute left-[176px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
+							</div>
+						</div>
+
+						{/* bottom center big */}
+						<div className="absolute bottom-[6%] left-1/2 -translate-x-1/2 animate-drift-left">
+							<div className="relative h-16 w-64">
+								<span className="absolute left-[32px] top-0 h-6 w-12 bg-[#3a444f]/30" />
+								<span className="absolute left-[72px] top-0 h-6 w-12 bg-[#3a444f]/30" />
+								<span className="absolute left-[112px] top-0 h-6 w-12 bg-[#3a444f]/30" />
+								<span className="absolute left-[152px] top-0 h-6 w-12 bg-[#3a444f]/30" />
+								<span className="absolute left-[192px] top-0 h-6 w-12 bg-[#3a444f]/30" />
+								<span className="absolute left-0 top-[22px] h-6 w-14 bg-[#323b45]/26" />
+								<span className="absolute left-[48px] top-[22px] h-6 w-14 bg-[#323b45]/26" />
+								<span className="absolute left-[96px] top-[22px] h-6 w-14 bg-[#323b45]/26" />
+								<span className="absolute left-[144px] top-[22px] h-6 w-14 bg-[#323b45]/26" />
+								<span className="absolute left-[192px] top-[22px] h-6 w-14 bg-[#323b45]/26" />
+							</div>
+						</div>
+
+						{/* bottom right big */}
+						<div className="absolute bottom-[11%] right-[2%] animate-drift-right">
+							<div className="relative h-16 w-52">
+								<span className="absolute left-[24px] top-0 h-6 w-12 bg-[#3a444f]/32" />
+								<span className="absolute left-[64px] top-0 h-6 w-12 bg-[#3a444f]/32" />
+								<span className="absolute left-[104px] top-0 h-6 w-12 bg-[#3a444f]/32" />
+								<span className="absolute left-0 top-[22px] h-6 w-14 bg-[#323b45]/28" />
+								<span className="absolute left-[44px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
+								<span className="absolute left-[88px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
+								<span className="absolute left-[132px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
+								<span className="absolute left-[176px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
+							</div>
 						</div>
 					</div>
-
-					{/* upper right near moon */}
-					<div className="absolute right-[2%] top-[24%] animate-drift-left">
-						<div className="relative h-20 w-44">
-							<span className="absolute left-[32px] top-0 h-7 w-12 bg-[#313840]/28" />
-							<span className="absolute left-[64px] top-0 h-7 w-12 bg-[#313840]/28" />
-							<span className="absolute left-0 top-[24px] h-7 w-14 bg-[#2a3138]/24" />
-							<span className="absolute left-[40px] top-[24px] h-7 w-14 bg-[#2a3138]/24" />
-							<span className="absolute left-[80px] top-[24px] h-7 w-14 bg-[#2a3138]/24" />
-							<span className="absolute left-[120px] top-[24px] h-7 w-14 bg-[#2a3138]/24" />
-							<span className="absolute left-[48px] top-[48px] h-6 w-24 bg-[#1c2229]/18" />
-						</div>
-					</div>
-
-					{/* under text left */}
-					<div className="absolute left-[10%] top-[58%] animate-drift-left">
-						<div className="relative h-12 w-36">
-							<span className="absolute left-[16px] top-0 h-5 w-9 bg-[#232a31]/18" />
-							<span className="absolute left-[48px] top-0 h-5 w-9 bg-[#232a31]/18" />
-							<span className="absolute left-[80px] top-0 h-5 w-9 bg-[#232a31]/18" />
-							<span className="absolute left-0 top-[18px] h-5 w-11 bg-[#1c2229]/15" />
-							<span className="absolute left-[40px] top-[18px] h-5 w-11 bg-[#1c2229]/15" />
-							<span className="absolute left-[80px] top-[18px] h-5 w-11 bg-[#1c2229]/15" />
-							<span className="absolute left-[120px] top-[18px] h-5 w-11 bg-[#1c2229]/15" />
-						</div>
-					</div>
-
-					{/* under text center */}
-					<div className="absolute left-1/2 top-[63%] -translate-x-1/2 animate-drift-right">
-						<div className="relative h-12 w-44">
-							<span className="absolute left-[24px] top-0 h-5 w-10 bg-[#232a31]/14" />
-							<span className="absolute left-[56px] top-0 h-5 w-10 bg-[#232a31]/14" />
-							<span className="absolute left-[88px] top-0 h-5 w-10 bg-[#232a31]/14" />
-							<span className="absolute left-[120px] top-0 h-5 w-10 bg-[#232a31]/14" />
-							<span className="absolute left-0 top-[18px] h-5 w-12 bg-[#1c2229]/12" />
-							<span className="absolute left-[40px] top-[18px] h-5 w-12 bg-[#1c2229]/12" />
-							<span className="absolute left-[80px] top-[18px] h-5 w-12 bg-[#1c2229]/12" />
-							<span className="absolute left-[120px] top-[18px] h-5 w-12 bg-[#1c2229]/12" />
-						</div>
-					</div>
-
-					{/* under text right */}
-					<div className="absolute right-[12%] top-[58%] animate-drift-right">
-						<div className="relative h-12 w-36">
-							<span className="absolute left-[16px] top-0 h-5 w-9 bg-[#232a31]/18" />
-							<span className="absolute left-[48px] top-0 h-5 w-9 bg-[#232a31]/18" />
-							<span className="absolute left-[80px] top-0 h-5 w-9 bg-[#232a31]/18" />
-							<span className="absolute left-0 top-[18px] h-5 w-11 bg-[#1c2229]/15" />
-							<span className="absolute left-[40px] top-[18px] h-5 w-11 bg-[#1c2229]/15" />
-							<span className="absolute left-[80px] top-[18px] h-5 w-11 bg-[#1c2229]/15" />
-							<span className="absolute left-[120px] top-[18px] h-5 w-11 bg-[#1c2229]/15" />
-						</div>
-					</div>
-
-					{/* bottom left big */}
-					<div className="absolute bottom-[10%] left-[2%] animate-drift-right">
-						<div className="relative h-16 w-52">
-							<span className="absolute left-[24px] top-0 h-6 w-12 bg-[#3a444f]/32" />
-							<span className="absolute left-[64px] top-0 h-6 w-12 bg-[#3a444f]/32" />
-							<span className="absolute left-[104px] top-0 h-6 w-12 bg-[#3a444f]/32" />
-
-							<span className="absolute left-0 top-[22px] h-6 w-14 bg-[#323b45]/28" />
-							<span className="absolute left-[44px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
-							<span className="absolute left-[88px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
-							<span className="absolute left-[132px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
-							<span className="absolute left-[176px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
-						</div>
-					</div>
-
-					{/* bottom center big */}
-					<div className="absolute bottom-[6%] left-1/2 -translate-x-1/2 animate-drift-left">
-						<div className="relative h-16 w-64">
-							<span className="absolute left-[32px] top-0 h-6 w-12 bg-[#3a444f]/30" />
-							<span className="absolute left-[72px] top-0 h-6 w-12 bg-[#3a444f]/30" />
-							<span className="absolute left-[112px] top-0 h-6 w-12 bg-[#3a444f]/30" />
-							<span className="absolute left-[152px] top-0 h-6 w-12 bg-[#3a444f]/30" />
-							<span className="absolute left-[192px] top-0 h-6 w-12 bg-[#3a444f]/30" />
-
-							<span className="absolute left-0 top-[22px] h-6 w-14 bg-[#323b45]/26" />
-							<span className="absolute left-[48px] top-[22px] h-6 w-14 bg-[#323b45]/26" />
-							<span className="absolute left-[96px] top-[22px] h-6 w-14 bg-[#323b45]/26" />
-							<span className="absolute left-[144px] top-[22px] h-6 w-14 bg-[#323b45]/26" />
-							<span className="absolute left-[192px] top-[22px] h-6 w-14 bg-[#323b45]/26" />
-						</div>
-					</div>
-
-					{/* bottom right big */}
-					<div className="absolute bottom-[11%] right-[2%] animate-drift-right">
-						<div className="relative h-16 w-52">
-							<span className="absolute left-[24px] top-0 h-6 w-12 bg-[#3a444f]/32" />
-							<span className="absolute left-[64px] top-0 h-6 w-12 bg-[#3a444f]/32" />
-							<span className="absolute left-[104px] top-0 h-6 w-12 bg-[#3a444f]/32" />
-
-							<span className="absolute left-0 top-[22px] h-6 w-14 bg-[#323b45]/28" />
-							<span className="absolute left-[44px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
-							<span className="absolute left-[88px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
-							<span className="absolute left-[132px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
-							<span className="absolute left-[176px] top-[22px] h-6 w-14 bg-[#323b45]/28" />
-						</div>
-					</div>
-
-					{/* extra bottom haze clouds */}
-					<div className="absolute bottom-[2%] left-[6%] h-24 w-[28%] bg-[#1a2027]/18 blur-3xl" />
-					<div className="absolute bottom-[0%] left-1/2 h-28 w-[34%] -translate-x-1/2 bg-[#1a2027]/20 blur-3xl" />
-					<div className="absolute bottom-[3%] right-[6%] h-24 w-[26%] bg-[#1a2027]/18 blur-3xl" />
 				</div>
 
 				{/* Foreground content */}
