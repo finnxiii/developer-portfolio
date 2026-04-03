@@ -1,0 +1,104 @@
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+	position: relative;
+	min-height: 100vh;
+	background: var(--white);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	padding: 60px 5%;
+	overflow: hidden;
+}
+
+/* SVG wrapper */
+.hero__svg-wrap {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.hero__svg {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+
+/* text block */
+.hero__text {
+	width: 100%;
+	max-width: min(88vw, 620px);
+	text-align: center;
+}
+
+.hero__role {
+	font-size: clamp(18px, 2vw, 24px);
+	font-weight: 600;
+	color: var(--text);
+	letter-spacing: -0.01em;
+	opacity: 0;
+	margin-top: 10px;
+}
+
+/* scroll hint */
+.hero__scroll-hint {
+	position: absolute;
+	bottom: 32px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
+	opacity: 0;
+	animation: fadeUp 0.6s 2.4s forwards;
+}
+
+.hero__scroll-label {
+	font-size: 8px;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+
+.hero__scroll-line {
+	display: block;
+	width: 1px;
+	height: 22px;
+	background: var(--muted);
+	animation: pulse 2s ease-in-out infinite;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+
+/* mobile — full width, generous padding */
+@media (max-width: 639px) {
+	.hero {
+		gap: 16px;
+		padding: 80px 6%;
+	}
+	.hero__svg-wrap {
+		max-width: 94vw;
+	}
+}
+
+/* tablet */
+@media (min-width: 640px) and (max-width: 1023px) {
+	.hero__svg-wrap {
+		max-width: 68vw;
+	}
+}
+
+/* laptop */
+@media (min-width: 1024px) and (max-width: 1279px) {
+	.hero__svg-wrap {
+		max-width: 52vw;
+	}
+}
+
+/* desktop */
+@media (min-width: 1280px) {
+	.hero__svg-wrap {
+		max-width: 480px;
+	}
+}

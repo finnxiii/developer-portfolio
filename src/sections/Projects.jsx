@@ -1,44 +1,64 @@
-import RevealTextBlock from "../components/layout/RevealTextBlock";
+import SectionBlock from "../components/ui/SectionBlock";
+import LiquidButton from "../components/ui/LiquidButton";
+import { projects } from "../data/siteData";
+import { useReveal } from "../hooks/useReveal";
+import "../components/ui/SectionBlock.css";
+import "./Projects.css";
 
-function Projects() {
+const CARD_COLOURS = ["var(--c-pink)", "var(--c-blue)", "var(--c-green)"];
+
+export default function Projects() {
+	useReveal();
 	return (
-		<section
-			id="projects"
-			className="border-t border-[var(--surface-border)] bg-[var(--surface-1)] px-6 py-24 text-[var(--about-text)]"
-		>
-			<div className="mx-auto max-w-6xl">
-				<RevealTextBlock>
-					<p className="mb-4 text-xs font-medium uppercase tracking-[0.24em] text-[var(--about-text-muted)]">
-						Projects
-					</p>
-
-					<h2 className="max-w-3xl text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-						Selected work that reflects how I think, build, and learn.
-					</h2>
-				</RevealTextBlock>
-
-				<div className="mt-12 grid gap-6 lg:grid-cols-2">
-					{[
-						{
-							title: "Portfolio Website",
-							desc: "A cinematic single-page portfolio exploring scroll-based transitions, premium visual design, and responsive frontend engineering.",
-						},
-						{
-							title: "Discord Job Finder",
-							desc: "A real-world bot and web companion concept focused on helping students and early-career job seekers discover relevant opportunities.",
-						},
-					].map((project, index) => (
-						<RevealTextBlock key={project.title} delay={index * 0.08}>
-							<div className="rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-6 backdrop-blur-sm">
-								<h3 className="text-xl font-semibold">{project.title}</h3>
-								<p className="mt-4 max-w-xl leading-8 text-[var(--about-text-soft)]">{project.desc}</p>
-							</div>
-						</RevealTextBlock>
-					))}
-				</div>
+		<SectionBlock id="projects" label="Projects" title="A few things I have shipped.">
+			<div className="proj__grid rv" style={{ transitionDelay: ".12s" }}>
+				{projects.map((p, i) => (
+					<ProjectCard key={p.id} project={p} index={i} />
+				))}
 			</div>
-		</section>
+			<div className="rv" style={{ textAlign: "center", transitionDelay: ".18s" }}>
+				<LiquidButton onClick={() => {}}>All Projects &nbsp;→</LiquidButton>
+			</div>
+		</SectionBlock>
 	);
 }
 
-export default Projects;
+function ProjectCard({ project, index }) {
+	const colour = CARD_COLOURS[index % CARD_COLOURS.length];
+	return (
+		<div className="proj-card">
+			<div className="proj-card__img">
+				<div className="proj-card__img-bg" style={{ background: `linear-gradient(135deg, ${colour}28, ${colour}0a)` }}>
+					<span className="proj-card__icon" style={{ color: colour }}>
+						{project.icon}
+					</span>
+				</div>
+				<div className="proj-card__bar" style={{ background: colour }} />
+			</div>
+
+			<div className="proj-card__body">
+				<p className="proj-card__name">{project.name}</p>
+				<p className="proj-card__desc">{project.desc}</p>
+				<div className="proj-card__tags">
+					{project.tags.map((t) => (
+						<span className="proj-card__tag" key={t}>
+							{t}
+						</span>
+					))}
+				</div>
+			</div>
+
+			<div className="proj-card__footer">
+				<div className="proj-card__links">
+					<a href={project.github} className="proj-card__link" target="_blank" rel="noreferrer">
+						⌥
+					</a>
+					<a href={project.live} className="proj-card__link" target="_blank" rel="noreferrer">
+						↗
+					</a>
+				</div>
+				<span className="proj-card__arr">↗</span>
+			</div>
+		</div>
+	);
+}
