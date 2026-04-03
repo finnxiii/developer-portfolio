@@ -1,0 +1,296 @@
+.about__body {
+	font-size: clamp(14px, 1.6vw, 16px);
+	font-weight: 300;
+	color: var(--muted);
+	line-height: 1.85;
+	max-width: 600px;
+	margin: 0 auto 28px;
+	text-align: center;
+}
+
+/* sub-label for Experience */
+.about__sub-label {
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--dim);
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+/* stats row */
+.about__stats {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 10px;
+	max-width: 540px;
+	margin: 0 auto 36px;
+}
+
+.stat-card {
+	padding: 16px 18px;
+	border: 0.5px solid var(--border);
+	border-radius: 12px;
+	position: relative;
+	overflow: hidden;
+	transition:
+		transform 0.25s,
+		box-shadow 0.25s;
+	text-align: center;
+}
+.stat-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.stat-card__bar {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 2px;
+	border-radius: 12px 0 0 12px;
+	background: var(--grad-brand-v);
+}
+
+.stat-card__value {
+	font-size: clamp(22px, 3vw, 28px);
+	font-weight: 700;
+	color: var(--text);
+	letter-spacing: -0.03em;
+	margin-bottom: 3px;
+}
+
+.stat-card__key {
+	font-size: 9px;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--dim);
+}
+
+/* ── timeline ── */
+.timeline {
+	position: relative;
+	max-width: 640px;
+	margin: 0 auto;
+}
+
+.timeline__line {
+	position: absolute;
+	left: 50%;
+	top: 0;
+	bottom: 0;
+	width: 1px;
+	/* blue only */
+	background: var(--c-blue);
+	opacity: 0.2;
+	transform: translateX(-50%);
+}
+
+.timeline__item {
+	display: grid;
+	grid-template-columns: 1fr 24px 1fr;
+	align-items: start;
+	margin-bottom: 32px;
+}
+.timeline__item:last-child {
+	margin-bottom: 0;
+}
+
+.timeline__content {
+	padding-top: 2px;
+	min-height: 10px;
+}
+.timeline__content--left {
+	text-align: right;
+	padding-right: 18px;
+}
+.timeline__content--right {
+	text-align: left;
+	padding-left: 18px;
+}
+
+.timeline__node {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	padding-top: 4px;
+	position: relative;
+	z-index: 2;
+}
+
+.timeline__dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	border: 2px solid var(--c-blue);
+	background: var(--white);
+	transition: all 0.3s;
+	flex-shrink: 0;
+}
+.timeline__item:hover .timeline__dot {
+	background: var(--c-blue);
+	transform: scale(1.3);
+}
+
+/* timeline text — no colour, just text hierarchy */
+.tl__year {
+	font-size: 9px;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--dim);
+	margin-bottom: 3px;
+}
+.tl__title {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--text);
+	letter-spacing: -0.01em;
+	margin-bottom: 2px;
+}
+.tl__place {
+	font-size: 11px;
+	font-weight: 400;
+	color: var(--muted);
+	margin-bottom: 3px;
+}
+.tl__desc {
+	font-size: 11px;
+	font-weight: 300;
+	color: var(--muted);
+	line-height: 1.7;
+}
+
+/* mobile — single column */
+@media (max-width: 639px) {
+	.about__body {
+		text-align: left;
+	}
+
+	.about__stats {
+		grid-template-columns: repeat(3, 1fr);
+		max-width: 100%;
+	}
+
+	/* ── Mobile timeline — single column, left-aligned ── */
+	.timeline {
+		max-width: 100%;
+		padding-left: 24px; /* space for the line + dot on the left */
+	}
+
+	/* vertical line sits on the far left */
+	.timeline__line {
+		left: 0;
+		transform: none;
+	}
+
+	/* kill the 3-column grid — single column only */
+	.timeline__item {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		gap: 0;
+		margin-bottom: 28px;
+		position: relative;
+	}
+
+	/* dot anchors to the left line */
+	.timeline__node {
+		position: absolute;
+		left: -24px;
+		top: 3px;
+		padding: 0;
+	}
+
+	/* hide the empty left content cell entirely */
+	.timeline__content--left {
+		display: none;
+	}
+
+	/* right content takes all available width */
+	.timeline__content--right {
+		padding-left: 0;
+		text-align: left;
+		width: 100%;
+	}
+
+	/* make sure left-side entries also render correctly on mobile
+     (they swap to the right side) */
+	.timeline__content--left-text {
+		display: block;
+		text-align: left;
+		width: 100%;
+	}
+}
+
+/* Mobile-only content block — hidden on desktop */
+.timeline__mobile-content {
+	display: none;
+}
+
+/* Desktop-only right content block — visible on desktop */
+.timeline__desktop-right {
+	display: block;
+}
+
+@media (max-width: 639px) {
+	.about__body {
+		text-align: left;
+	}
+
+	.about__stats {
+		grid-template-columns: repeat(3, 1fr);
+		max-width: 100%;
+	}
+
+	/* show mobile content, hide desktop-only block */
+	.timeline__mobile-content {
+		display: block;
+	}
+	.timeline__desktop-right {
+		display: none;
+	}
+
+	/* switch to flex row layout */
+	.timeline {
+		max-width: 100%;
+		padding-left: 28px;
+	}
+
+	.timeline__line {
+		left: 0;
+		transform: none;
+	}
+
+	.timeline__item {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		margin-bottom: 28px;
+		position: relative;
+	}
+
+	/* dot on far left edge */
+	.timeline__node {
+		position: absolute;
+		left: -28px;
+		top: 3px;
+		padding: 0;
+	}
+
+	/* hide empty left column */
+	.timeline__content--left {
+		display: none;
+	}
+
+	/* right column fills full width */
+	.timeline__content--right {
+		padding-left: 0;
+		text-align: left;
+		width: 100%;
+		min-width: 0;
+	}
+}

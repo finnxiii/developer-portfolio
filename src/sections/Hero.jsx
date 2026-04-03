@@ -1,38 +1,55 @@
-import { motion as Motion } from "framer-motion";
-import HeroBackground from "../components/hero/HeroBackground";
+import { useRef } from "react";
+import { usePathDraw } from "../hooks/usePathDraw";
+import { hero, heroPathSequence, heroTextSequence } from "../data/siteData";
+import "./Hero.css";
 
-function HeroContent() {
+export default function Hero() {
+	const svgRef = useRef(null);
+	usePathDraw(svgRef, heroPathSequence, heroTextSequence);
+
 	return (
-		<div className="relative z-10 mx-auto flex h-full max-w-6xl items-center justify-center px-5 py-20 sm:px-6 sm:py-24">
-			<div className="max-w-3xl text-center">
-				<p className="mb-4 text-[0.58rem] uppercase tracking-[0.18em] text-[var(--text-muted)] sm:mb-5 sm:text-[0.68rem] sm:tracking-[0.24em] md:text-[0.72rem] md:tracking-[0.28em]">
-					Software Engineer in the making
-				</p>
+		<section id="hero" className="hero">
+			{/* centred SVG drawing — FINN only, no decorative shapes */}
+			<div className="hero__svg-wrap">
+				<svg
+					ref={svgRef}
+					className="hero__svg"
+					viewBox="0 0 520 160"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					aria-label="Finn"
+				>
+					{/* F — pink */}
+					<path id="p-F1" d="M 16 12 L 16 148" stroke="var(--c-pink)" strokeWidth="16" strokeLinecap="round" />
+					<path id="p-F2" d="M 16 12 L 116 12" stroke="var(--c-pink)" strokeWidth="16" strokeLinecap="round" />
+					<path id="p-F3" d="M 16 80 L 90 80" stroke="var(--c-pink)" strokeWidth="16" strokeLinecap="round" />
 
-				<h1 className="text-[3rem] font-semibold leading-[1.06] tracking-[0.01em] sm:text-[3.6rem] md:text-[4.1rem] lg:text-[4.6rem]">
-					<span className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">Hello, World.</span>
-					<span className="mt-3 block text-white/85 sm:mt-4">I&apos;m Finn.</span>
-				</h1>
+					{/* I — blue */}
+					<path id="p-I1" d="M 176 12 L 176 148" stroke="var(--c-green)" strokeWidth="16" strokeLinecap="round" />
 
-				<p className="mx-auto mt-5 max-w-[19rem] text-[0.98rem] leading-8 text-[var(--text-soft)] sm:mt-6 sm:max-w-[30rem] sm:text-[1.04rem] md:max-w-[34rem] md:text-[1.08rem]">
-					I build modern web apps, developer tools, and purposeful software experiences.
+					{/* N — green */}
+					<path id="p-N1a" d="M 216 148 L 216 12" stroke="var(--c-blue)" strokeWidth="16" strokeLinecap="round" />
+					<path id="p-N1b" d="M 216 12  L 336 148" stroke="var(--c-blue)" strokeWidth="16" strokeLinecap="round" />
+					<path id="p-N1c" d="M 336 12  L 336 148" stroke="var(--c-blue)" strokeWidth="16" strokeLinecap="round" />
+
+					{/* N — blue */}
+					<path id="p-N2a" d="M 376 148 L 376 12" stroke="var(--c-blue)" strokeWidth="16" strokeLinecap="round" />
+					<path id="p-N2b" d="M 376 12  L 496 148" stroke="var(--c-blue)" strokeWidth="16" strokeLinecap="round" />
+					<path id="p-N2c" d="M 496 12  L 496 148" stroke="var(--c-blue)" strokeWidth="16" strokeLinecap="round" />
+				</svg>
+			</div>
+
+			{/* text below the drawing */}
+			<div className="hero__text">
+				<p id="ht-role" className="hero__role">
+					{hero.role}
 				</p>
 			</div>
-		</div>
+
+			<div className="hero__scroll-hint" aria-hidden="true">
+				<span className="hero__scroll-label">Scroll</span>
+				<span className="hero__scroll-line" />
+			</div>
+		</section>
 	);
 }
-
-const Hero = ({ heroOpacity }) => {
-	return (
-		<Motion.section
-			id="home"
-			style={{ opacity: heroOpacity }}
-			className="fixed inset-0 z-0 overflow-hidden bg-[var(--bg-2)] text-white"
-		>
-			<HeroBackground />
-			<HeroContent />
-		</Motion.section>
-	);
-};
-
-export default Hero;

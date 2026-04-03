@@ -1,0 +1,84 @@
+.section {
+	padding: 72px 5%;
+	background: var(--white);
+	position: relative;
+}
+
+.section__divider {
+	width: 100%;
+	height: 0.5px;
+	background: var(--border);
+	margin-bottom: 36px;
+}
+
+/* centred label + title block */
+.section__header {
+	text-align: center;
+	margin-bottom: 48px;
+}
+
+.section__label {
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--dim);
+	margin-bottom: 10px;
+}
+
+.section__title {
+	font-size: clamp(26px, 3.5vw, 40px);
+	font-weight: 700;
+	letter-spacing: -0.03em;
+	line-height: 1.12;
+	color: var(--text);
+	max-width: 640px;
+	margin: 0 auto;
+}
+
+/* body content — constrained max-width, centred */
+.section__body {
+	max-width: 900px;
+	margin: 0 auto;
+	width: 100%;
+}
+
+/* ── Reveal animations ─────────────────────────────────────── */
+.rv {
+	opacity: 0;
+	transform: translateY(12px);
+	transition:
+		opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+		transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rv.in {
+	opacity: 1;
+	transform: none;
+}
+.rv.out-up {
+	opacity: 0;
+	transform: translateY(-8px);
+	transition:
+		opacity 0.38s,
+		transform 0.38s;
+}
+.rv.out-down {
+	opacity: 0;
+	transform: translateY(12px);
+	transition:
+		opacity 0.38s,
+		transform 0.38s;
+}
+
+/* ── Mobile ────────────────────────────────────────────────── */
+@media (max-width: 639px) {
+	.section {
+		padding: 56px 6%;
+	}
+	.section__header {
+		margin-bottom: 32px;
+	}
+	.section__title {
+		font-size: clamp(22px, 6vw, 30px);
+	}
+}
