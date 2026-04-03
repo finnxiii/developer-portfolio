@@ -157,21 +157,16 @@ function SkillBox({ cat }) {
 					const cols = 3;
 					const row = Math.floor(i / cols);
 					const col = i % cols;
-					const lx = 10 + col * 68 + (Math.random() * 8 - 4);
-					const ly = 8 + row * 48 + (Math.random() * 6 - 3);
+					const lx = 10 + col * 72 + (Math.random() * 10 - 5);
+					const ly = 8 + row * 50 + (Math.random() * 8 - 4);
 					return (
 						<div
 							key={item.label}
-							className={`dtag ${item.featured ? "dtag--featured" : ""}`}
+							className="dtag"
 							style={{
 								left: `${lx}px`,
 								top: `${ly}px`,
 								zIndex: 1,
-								...(item.featured && {
-									background: colour,
-									boxShadow: `0 2px 10px ${colour}44`,
-									borderColor: "transparent",
-								}),
 							}}
 						>
 							{item.label}

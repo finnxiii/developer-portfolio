@@ -1,37 +1,36 @@
 .about__body {
-	font-size: clamp(14px, 1.6vw, 16px);
+	font-size: clamp(15px, 1.8vw, 18px);
 	font-weight: 300;
 	color: var(--muted);
 	line-height: 1.85;
-	max-width: 600px;
-	margin: 0 auto 28px;
+	max-width: 640px;
+	margin: 0 auto 32px;
 	text-align: center;
 }
 
-/* sub-label for Experience */
 .about__sub-label {
-	font-size: 10px;
+	font-size: 11px;
 	font-weight: 600;
 	letter-spacing: 0.18em;
 	text-transform: uppercase;
 	color: var(--dim);
-	margin-bottom: 20px;
+	margin-bottom: 24px;
 	text-align: center;
 }
 
-/* stats row */
+/* stats */
 .about__stats {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 10px;
-	max-width: 540px;
-	margin: 0 auto 36px;
+	max-width: 560px;
+	margin: 0 auto 40px;
 }
 
 .stat-card {
-	padding: 16px 18px;
+	padding: 18px 20px;
 	border: 0.5px solid var(--border);
-	border-radius: 12px;
+	border-radius: 14px;
 	position: relative;
 	overflow: hidden;
 	transition:
@@ -43,38 +42,36 @@
 	transform: translateY(-2px);
 	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
 }
-
 .stat-card__bar {
 	position: absolute;
 	left: 0;
 	top: 0;
 	bottom: 0;
 	width: 2px;
-	border-radius: 12px 0 0 12px;
+	border-radius: 14px 0 0 14px;
 	background: var(--grad-brand-v);
 }
-
 .stat-card__value {
-	font-size: clamp(22px, 3vw, 28px);
+	font-size: clamp(24px, 3vw, 32px);
 	font-weight: 700;
 	color: var(--text);
 	letter-spacing: -0.03em;
-	margin-bottom: 3px;
+	margin-bottom: 4px;
 }
-
 .stat-card__key {
-	font-size: 9px;
+	font-size: 10px;
 	font-weight: 600;
 	letter-spacing: 0.12em;
 	text-transform: uppercase;
 	color: var(--dim);
 }
 
-/* ── timeline ── */
+/* ── timeline — alternating on ALL screen sizes ── */
 .timeline {
 	position: relative;
-	max-width: 640px;
+	max-width: 700px;
 	margin: 0 auto;
+	padding: 0 5%;
 }
 
 .timeline__line {
@@ -82,18 +79,18 @@
 	left: 50%;
 	top: 0;
 	bottom: 0;
-	width: 1px;
-	/* blue only */
-	background: var(--c-blue);
-	opacity: 0.2;
+	width: 3px;
+	background: linear-gradient(to bottom, var(--c-blue), var(--c-pink));
+	opacity: 0.6;
 	transform: translateX(-50%);
+	border-radius: 3px;
 }
 
 .timeline__item {
 	display: grid;
-	grid-template-columns: 1fr 24px 1fr;
+	grid-template-columns: 1fr 28px 1fr;
 	align-items: start;
-	margin-bottom: 32px;
+	margin-bottom: 40px;
 }
 .timeline__item:last-child {
 	margin-bottom: 0;
@@ -105,11 +102,11 @@
 }
 .timeline__content--left {
 	text-align: right;
-	padding-right: 18px;
+	padding-right: 22px;
 }
 .timeline__content--right {
 	text-align: left;
-	padding-left: 18px;
+	padding-left: 22px;
 }
 
 .timeline__node {
@@ -122,175 +119,116 @@
 }
 
 .timeline__dot {
-	width: 10px;
-	height: 10px;
+	width: 12px;
+	height: 12px;
 	border-radius: 50%;
-	border: 2px solid var(--c-blue);
-	background: var(--white);
-	transition: all 0.3s;
-	flex-shrink: 0;
-}
-.timeline__item:hover .timeline__dot {
 	background: var(--c-blue);
+	border: none;
+	transition: transform 0.3s;
+	flex-shrink: 0;
+	box-shadow: 0 0 0 3px var(--white);
+}
+
+.timeline__item:nth-child(odd) .timeline__dot {
+	background: var(--c-blue);
+}
+.timeline__item:nth-child(even) .timeline__dot {
+	background: var(--c-pink);
+}
+
+.timeline__item:hover .timeline__dot {
 	transform: scale(1.3);
 }
 
-/* timeline text — no colour, just text hierarchy */
+/* timeline text */
 .tl__year {
-	font-size: 9px;
+	font-size: clamp(9px, 1.1vw, 11px);
 	font-weight: 600;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
 	color: var(--dim);
-	margin-bottom: 3px;
+	margin-bottom: 4px;
 }
 .tl__title {
-	font-size: 13px;
-	font-weight: 600;
+	font-size: clamp(14px, 1.8vw, 18px);
+	font-weight: 700;
 	color: var(--text);
-	letter-spacing: -0.01em;
-	margin-bottom: 2px;
-}
-.tl__place {
-	font-size: 11px;
-	font-weight: 400;
-	color: var(--muted);
+	letter-spacing: -0.02em;
 	margin-bottom: 3px;
 }
+.tl__place {
+	font-size: clamp(12px, 1.4vw, 14px);
+	font-weight: 400;
+	color: var(--muted);
+	margin-bottom: 4px;
+}
 .tl__desc {
-	font-size: 11px;
+	font-size: clamp(11px, 1.3vw, 13px);
 	font-weight: 300;
 	color: var(--muted);
 	line-height: 1.7;
 }
 
-/* mobile — single column */
+/* ── Mobile ── */
 @media (max-width: 639px) {
 	.about__body {
 		text-align: left;
 	}
-
 	.about__stats {
-		grid-template-columns: repeat(3, 1fr);
 		max-width: 100%;
 	}
 
-	/* ── Mobile timeline — single column, left-aligned ── */
 	.timeline {
 		max-width: 100%;
-		padding-left: 24px; /* space for the line + dot on the left */
+		padding: 0;
 	}
 
-	/* vertical line sits on the far left */
-	.timeline__line {
-		left: 0;
-		transform: none;
-	}
-
-	/* kill the 3-column grid — single column only */
 	.timeline__item {
-		display: flex;
-		flex-direction: row;
-		align-items: flex-start;
+		grid-template-columns: 1fr 20px 1fr;
+		margin-bottom: 28px;
 		gap: 0;
-		margin-bottom: 28px;
-		position: relative;
 	}
 
-	/* dot anchors to the left line */
-	.timeline__node {
-		position: absolute;
-		left: -24px;
-		top: 3px;
-		padding: 0;
-	}
-
-	/* hide the empty left content cell entirely */
 	.timeline__content--left {
-		display: none;
+		padding-right: 10px;
 	}
-
-	/* right content takes all available width */
 	.timeline__content--right {
-		padding-left: 0;
-		text-align: left;
-		width: 100%;
+		padding-left: 10px;
 	}
 
-	/* make sure left-side entries also render correctly on mobile
-     (they swap to the right side) */
-	.timeline__content--left-text {
-		display: block;
-		text-align: left;
-		width: 100%;
+	.timeline__dot {
+		width: 10px;
+		height: 10px;
+		box-shadow: 0 0 0 2px var(--white);
+	}
+
+	.tl__title {
+		font-size: 12px;
+	}
+	.tl__place {
+		font-size: 11px;
+	}
+	.tl__desc {
+		font-size: 10px;
+	}
+	.tl__year {
+		font-size: 8px;
 	}
 }
 
-/* Mobile-only content block — hidden on desktop */
-.timeline__mobile-content {
-	display: none;
-}
-
-/* Desktop-only right content block — visible on desktop */
-.timeline__desktop-right {
-	display: block;
-}
-
-@media (max-width: 639px) {
-	.about__body {
-		text-align: left;
-	}
-
-	.about__stats {
-		grid-template-columns: repeat(3, 1fr);
-		max-width: 100%;
-	}
-
-	/* show mobile content, hide desktop-only block */
-	.timeline__mobile-content {
-		display: block;
-	}
-	.timeline__desktop-right {
-		display: none;
-	}
-
-	/* switch to flex row layout */
+/* ── Tablet ── */
+@media (min-width: 640px) and (max-width: 1023px) {
 	.timeline {
-		max-width: 100%;
-		padding-left: 28px;
+		max-width: 640px;
 	}
-
-	.timeline__line {
-		left: 0;
-		transform: none;
+	.tl__title {
+		font-size: 16px;
 	}
+}
 
-	.timeline__item {
-		display: flex;
-		flex-direction: row;
-		align-items: flex-start;
-		margin-bottom: 28px;
-		position: relative;
-	}
-
-	/* dot on far left edge */
-	.timeline__node {
-		position: absolute;
-		left: -28px;
-		top: 3px;
-		padding: 0;
-	}
-
-	/* hide empty left column */
-	.timeline__content--left {
-		display: none;
-	}
-
-	/* right column fills full width */
-	.timeline__content--right {
-		padding-left: 0;
-		text-align: left;
-		width: 100%;
-		min-width: 0;
+/* ── Laptop+ ── */
+@media (min-width: 1024px) {
+	.timeline {
+		max-width: 800px;
 	}
 }
