@@ -47,8 +47,9 @@ export default function Hero() {
 			</div>
 
 			<div className="hero__scroll-hint" aria-hidden="true">
-				<span className="hero__scroll-label">Scroll</span>
-				<span className="hero__scroll-line" />
+				<div className="hero__mouse">
+					<div className="hero__mouse-wheel" />
+				</div>
 			</div>
 		</section>
 	);

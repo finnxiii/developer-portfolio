@@ -1,38 +1,31 @@
 .skills__grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 12px;
-	max-width: 720px;
+	gap: 14px;
+	max-width: 900px;
 	margin: 0 auto;
 }
 
+/* card — taller, more square proportions */
 .skill-box {
 	border: 0.5px solid var(--border);
-	border-radius: 14px;
-	background: rgba(255, 255, 255, 0.7);
-	backdrop-filter: blur(20px);
-	-webkit-backdrop-filter: blur(20px);
+	border-radius: 16px;
+	background: var(--white);
 	position: relative;
-	height: 210px;
+	/* min-height so cards don't collapse — tags float inside */
+	min-height: 240px;
 	overflow: hidden;
+	transition: box-shadow 0.25s;
 }
-
-[data-theme="dark"] .skill-box {
-	background: rgba(255, 255, 255, 0.04);
-	border-color: var(--border);
-}
-
-[data-theme="dark"] .dtag {
-	background: rgba(255, 255, 255, 0.07);
-	color: var(--text);
-	border-color: var(--border);
+.skill-box:hover {
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.07);
 }
 
 .skill-box__header {
 	display: flex;
 	align-items: center;
-	gap: 7px;
-	padding: 14px 16px 0;
+	gap: 8px;
+	padding: 18px 18px 0;
 	position: relative;
 	z-index: 2;
 	pointer-events: none;
@@ -40,64 +33,91 @@
 }
 
 .skill-box__bar {
-	width: 3px;
-	height: 14px;
+	width: 5px;
+	height: 16px;
 	border-radius: 3px;
-	/* one colour per box — set via inline style in JSX */
 	flex-shrink: 0;
 }
 
 .skill-box__title {
-	font-size: 12px;
-	font-weight: 600;
+	font-size: clamp(13px, 1.5vw, 15px);
+	font-weight: 700;
 	color: var(--text);
-	letter-spacing: 0.01em;
+	letter-spacing: -0.01em;
 }
 
 .skill-box__area {
 	position: absolute;
 	inset: 0;
-	top: 38px;
+	top: 52px;
 }
 
-/* draggable tags */
+/* ── glass tags — all same style, no featured distinction ── */
 .dtag {
 	position: absolute;
-	padding: 5px 13px;
+	padding: 6px 14px;
 	border-radius: 980px;
-	font-size: 11px;
+	font-size: clamp(10px, 1.2vw, 12px);
 	font-weight: 500;
-	border: 0.5px solid var(--border);
 	color: var(--text);
-	background: rgba(255, 255, 255, 0.9);
 	cursor: grab;
 	user-select: none;
 	white-space: nowrap;
 	touch-action: none;
-	transition: box-shadow 0.15s;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+	/* frosted glass */
+	background: rgba(255, 255, 255, 0.55);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border: 0.5px solid rgba(255, 255, 255, 0.7);
+	box-shadow:
+		0 2px 8px rgba(0, 0, 0, 0.06),
+		inset 0 1px 0 rgba(255, 255, 255, 0.8);
+	transition:
+		box-shadow 0.15s,
+		transform 0.15s;
 }
 .dtag:active {
 	cursor: grabbing;
+	transform: scale(1.06);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.dtag--featured {
-	color: #fff;
-	border-color: transparent;
+/* dark mode glass */
+[data-theme="dark"] .dtag {
+	background: rgba(255, 255, 255, 0.07);
+	border-color: rgba(255, 255, 255, 0.12);
+	color: var(--text);
+	box-shadow:
+		0 2px 8px rgba(0, 0, 0, 0.2),
+		inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+[data-theme="dark"] .skill-box {
+	background: rgba(255, 255, 255, 0.03);
 }
 
-/* ── Responsive ─────────────────────────────────────────────── */
-/* mobile — one column */
+/* ── Responsive ── */
 @media (max-width: 639px) {
 	.skills__grid {
 		grid-template-columns: 1fr;
 		max-width: 100%;
+		gap: 12px;
+	}
+	.skill-box {
+		min-height: 200px;
 	}
 }
 
-/* tablet — two columns */
-@media (min-width: 640px) {
-	.skills__grid {
-		grid-template-columns: 1fr 1fr;
+@media (min-width: 640px) and (max-width: 1023px) {
+	.skill-box {
+		min-height: 260px;
+	}
+	.dtag {
+		font-size: 12px;
+	}
+}
+
+@media (min-width: 1024px) {
+	.skill-box {
+		min-height: 280px;
 	}
 }

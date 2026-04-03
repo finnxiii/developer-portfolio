@@ -2,7 +2,7 @@
 
 /* ── Palette ─────────────────────────────────────────────────── */
 :root {
-	--white: #fafaf8;
+	--white: #faf9f6;
 	--soft: #f3f3f1;
 	--text: #0a0a0a;
 	--muted: rgba(10, 10, 10, 0.38);
@@ -25,7 +25,7 @@
 }
 
 [data-theme="dark"] {
-	--white: #0f0f0e;
+	--white: #101114;
 	--soft: #1a1a18;
 	--text: #f0efe9;
 	--muted: rgba(240, 239, 233, 0.45);
@@ -53,6 +53,14 @@ body {
 	background: var(--white);
 	color: var(--text);
 	overflow-x: hidden;
+}
+
+/* push all content away from sidebar */
+
+@media (max-width: 639px) {
+	main {
+		padding: 0 30px;
+	}
 }
 
 /* ── Global typography ───────────────────────────────────────── */

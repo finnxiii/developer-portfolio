@@ -1,6 +1,5 @@
+import Navbar from "./components/nav/Navbar";
 import Sidebar from "./components/nav/Sidebar";
-import Signature from "./components/ui/Signature";
-import ThemeToggle from "./components/ui/ThemeToggle";
 import Hero from "./sections/Hero";
 import About from "./sections/About";
 import Skills from "./sections/Skills";
@@ -11,9 +10,8 @@ import "./App.css";
 export default function App() {
 	return (
 		<>
-			<Signature />
+			<Navbar />
 			<Sidebar />
-			<ThemeToggle />
 			<main>
 				<Hero />
 				<About />

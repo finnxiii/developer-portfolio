@@ -42,21 +42,13 @@ function TimelineItem({ item }) {
 
 	return (
 		<div className="timeline__item">
-			{/* Desktop left side */}
-			<div className="timeline__content timeline__content--left">{item.side === "left" ? content : null}</div>
+			<div className="timeline__content timeline__content--left">{item.side === "left" && content}</div>
 
-			{/* Centre dot */}
 			<div className="timeline__node">
 				<div className="timeline__dot" />
 			</div>
 
-			{/* Desktop right side — also used for ALL content on mobile */}
-			<div className="timeline__content timeline__content--right">
-				{/* On mobile we always show content here regardless of side */}
-				<div className="timeline__mobile-content">{content}</div>
-				{/* On desktop, only show here if side === right */}
-				<div className="timeline__desktop-right">{item.side === "right" ? content : null}</div>
-			</div>
+			<div className="timeline__content timeline__content--right">{item.side === "right" && content}</div>
 		</div>
 	);
 }
