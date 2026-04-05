@@ -2,11 +2,11 @@
 
 /* ── Palette ─────────────────────────────────────────────────── */
 :root {
-	--white: #faf9f6;
-	--soft: #f3f3f1;
+	--white: #fafcff;
+	--soft: #f0f4ff;
 	--text: #0a0a0a;
-	--muted: rgba(10, 10, 10, 0.38);
-	--dim: rgba(10, 10, 10, 0.16);
+	--muted: rgba(10, 10, 10, 0.5);
+	--dim: rgba(10, 10, 10, 0.3);
 	--border: rgba(10, 10, 10, 0.07);
 
 	/* brand colours */
@@ -25,7 +25,7 @@
 }
 
 [data-theme="dark"] {
-	--white: #101114;
+	--white: #1e1e1e;
 	--soft: #1a1a18;
 	--text: #f0efe9;
 	--muted: rgba(240, 239, 233, 0.45);
@@ -53,6 +53,12 @@ body {
 	background: var(--white);
 	color: var(--text);
 	overflow-x: hidden;
+}
+
+[data-theme="light"] body {
+	/* background: linear-gradient(160deg, #fdfeff 0%, #fafcff 50%, #f5f8ff 100%); */
+	background: linear-gradient(160deg, #fafcff 0%, #f5f8ff 50%, #f0f4ff 100%);
+	min-height: 100vh;
 }
 
 /* push all content away from sidebar */

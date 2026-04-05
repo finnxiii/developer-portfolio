@@ -6,19 +6,23 @@
 	margin: 0 auto;
 }
 
-/* card — taller, more square proportions */
 .skill-box {
-	border: 0.5px solid var(--border);
+	border: none;
 	border-radius: 16px;
-	background: var(--white);
+	background: rgba(255, 255, 255, 0.45);
+	backdrop-filter: blur(24px);
+	-webkit-backdrop-filter: blur(24px);
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
 	position: relative;
-	/* min-height so cards don't collapse — tags float inside */
 	min-height: 240px;
 	overflow: hidden;
-	transition: box-shadow 0.25s;
+	transition:
+		box-shadow 0.25s,
+		transform 0.25s;
 }
 .skill-box:hover {
 	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.07);
+	transform: translateY(-2px);
 }
 
 .skill-box__header {
@@ -40,7 +44,7 @@
 }
 
 .skill-box__title {
-	font-size: clamp(13px, 1.5vw, 15px);
+	font-size: clamp(16px, 1.8vw, 21px);
 	font-weight: 700;
 	color: var(--text);
 	letter-spacing: -0.01em;
@@ -64,14 +68,9 @@
 	user-select: none;
 	white-space: nowrap;
 	touch-action: none;
-	/* frosted glass */
-	background: rgba(255, 255, 255, 0.55);
-	backdrop-filter: blur(12px);
-	-webkit-backdrop-filter: blur(12px);
-	border: 0.5px solid rgba(255, 255, 255, 0.7);
-	box-shadow:
-		0 2px 8px rgba(0, 0, 0, 0.06),
-		inset 0 1px 0 rgba(255, 255, 255, 0.8);
+	background: #ffffff;
+	border: 0.5px solid rgba(0, 0, 0, 0.5);
+	box-shadow: none;
 	transition:
 		box-shadow 0.15s,
 		transform 0.15s;

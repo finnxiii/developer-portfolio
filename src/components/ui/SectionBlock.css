@@ -1,6 +1,6 @@
 .section {
-	padding: 72px 5%;
-	background: var(--white);
+	padding: 72px 8%;
+	background: transparent;
 	position: relative;
 }
 
@@ -27,7 +27,7 @@
 }
 
 .section__title {
-	font-size: clamp(26px, 3.5vw, 40px);
+	font-size: clamp(20px, 3vw, 35px);
 	font-weight: 700;
 	letter-spacing: -0.03em;
 	line-height: 1.12;
@@ -68,6 +68,10 @@
 	transition:
 		opacity 0.38s,
 		transform 0.38s;
+}
+
+#projects .section__body {
+	max-width: 1320px;
 }
 
 /* ── Mobile ────────────────────────────────────────────────── */
