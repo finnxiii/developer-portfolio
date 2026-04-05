@@ -160,15 +160,7 @@ function SkillBox({ cat }) {
 					const lx = 10 + col * 72 + (Math.random() * 10 - 5);
 					const ly = 8 + row * 50 + (Math.random() * 8 - 4);
 					return (
-						<div
-							key={item.label}
-							className="dtag"
-							style={{
-								left: `${lx}px`,
-								top: `${ly}px`,
-								zIndex: 1,
-							}}
-						>
+						<div key={item.label} className="dtag" style={{ left: `${lx}px`, top: `${ly}px`, zIndex: 1 }}>
 							{item.label}
 						</div>
 					);
