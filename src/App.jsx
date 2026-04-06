@@ -1,3 +1,4 @@
+import Cursor from "./components/ui/Cursor";
 import Navbar from "./components/nav/Navbar";
 import Sidebar from "./components/nav/Sidebar";
 import Hero from "./sections/Hero";
@@ -10,6 +11,7 @@ import "./App.css";
 export default function App() {
 	return (
 		<>
+			<Cursor />
 			<Navbar />
 			<Sidebar />
 			<main>
@@ -19,7 +21,7 @@ export default function App() {
 				<Projects />
 				<Contact />
 				<footer className="footer">
-					<span className="ft">© {new Date().getFullYear()} finnxiii. All rights reserved.</span>
+					<span className="ft">© 2025 finnxiii</span>
 					<span className="ft">Built with React + Vite</span>
 				</footer>
 			</main>

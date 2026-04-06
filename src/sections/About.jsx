@@ -9,25 +9,17 @@ export default function About() {
 
 	return (
 		<SectionBlock id="about" label="About" title={about.heading}>
-			<p className="about__body rv" style={{ transitionDelay: ".11s" }}>
-				{about.body}
-			</p>
-
-			<div className="about__stats rv" style={{ transitionDelay: ".17s" }}>
-				{about.stats.map(({ value, label }) => (
-					<div className="stat-card" key={label}>
-						<div className="stat-card__bar" />
-						<div className="stat-card__value">{value}</div>
-						<div className="stat-card__key">{label}</div>
-					</div>
+			<div className="about__body rv" style={{ transitionDelay: ".11s" }}>
+				{about.body.split("\n\n").map((para, i) => (
+					<p key={i}>{para}</p>
 				))}
 			</div>
 
-			<p className="about__sub-label rv" style={{ transitionDelay: ".22s" }}>
+			<p className="about__sub-label rv" style={{ transitionDelay: ".18s" }}>
 				Experience
 			</p>
 
-			<div className="timeline rv" style={{ transitionDelay: ".27s" }}>
+			<div className="timeline rv" style={{ transitionDelay: ".24s" }}>
 				<div className="timeline__line" />
 				{experience.map((item, i) => (
 					<TimelineItem key={i} item={item} />
@@ -39,15 +31,12 @@ export default function About() {
 
 function TimelineItem({ item }) {
 	const content = <TimelineEntry item={item} />;
-
 	return (
 		<div className="timeline__item">
 			<div className="timeline__content timeline__content--left">{item.side === "left" && content}</div>
-
 			<div className="timeline__node">
 				<div className="timeline__dot" />
 			</div>
-
 			<div className="timeline__content timeline__content--right">{item.side === "right" && content}</div>
 		</div>
 	);

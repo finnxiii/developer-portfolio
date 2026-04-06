@@ -10,12 +10,7 @@ export const hero = {
 
 export const about = {
 	heading: "About Me",
-	body: "Software engineering student. Building modern web apps and developer tools with a focus on motion, interaction, and craft. Currently open to opportunities.",
-	stats: [
-		{ value: "3+", label: "Years" },
-		{ value: "12", label: "Projects" },
-		{ value: "∞", label: "Curiosity" },
-	],
+	body: "Hi, I am Naing Htoo Lwin, a Software Engineering student at the University of Sheffield. I build modern web apps, developer tools, and purposeful software.",
 };
 
 export const experience = [
@@ -67,12 +62,7 @@ export const skills = [
 	},
 	{
 		category: "Database",
-		items: [
-			{ label: "PostgreSQL", featured: true },
-			{ label: "SQLite3", featured: false },
-			{ label: "MongoDB", featured: false },
-			{ label: "CRUD", featured: false },
-		],
+		items: [{ label: "PostgreSQL" }, { label: "SQLite3" }, { label: "MongoDB" }, { label: "CRUD" }],
 	},
 	{
 		category: "Tools",
