@@ -1,0 +1,15 @@
+[data-theme="dark"] {
+	--white: #1e1e1e;
+	--soft: #1a1a18;
+	--text: #f0efe9;
+	--muted: rgba(240, 239, 233, 0.45);
+	--dim: rgba(240, 239, 233, 0.22);
+	--border: rgba(240, 239, 233, 0.08);
+}
+
+// ── Light mode page gradient ──────────────────────────────────
+[data-theme="light"] body,
+:root:not([data-theme="dark"]) body {
+	background: linear-gradient(160deg, #fafcff 0%, #f5f8ff 50%, #f0f4ff 100%);
+	min-height: 100vh;
+}

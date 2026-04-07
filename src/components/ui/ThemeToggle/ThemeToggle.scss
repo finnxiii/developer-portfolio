@@ -1,0 +1,48 @@
+@use "../../../styles/variables" as *;
+
+.theme-toggle {
+	&-wrap {
+		position: relative;
+		display: flex;
+		align-items: center;
+		width: 72px;
+		height: 36px;
+		border-radius: $radius-pill;
+		border: 1px solid var(--border);
+		background: var(--soft);
+		padding: 4px;
+		cursor: pointer;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		flex-shrink: 0;
+	}
+
+	&-pill {
+		position: absolute;
+		top: 4px;
+		left: 4px;
+		width: calc(50% - 4px);
+		height: calc(100% - 8px);
+		border-radius: $radius-pill;
+		background: var(--c-blue);
+		box-shadow: 0 2px 8px rgba(45, 127, 255, 0.35);
+		will-change: transform;
+	}
+
+	&-icon {
+		position: relative;
+		z-index: 10;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 50%;
+		height: 100%;
+		font-size: 15px;
+		color: var(--muted);
+		transition: color 0.2s;
+		pointer-events: none;
+
+		&--active {
+			color: #ffffff;
+		}
+	}
+}
