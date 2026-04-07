@@ -1,0 +1,80 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.sidebar {
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: $sidebar-w;
+	z-index: 200;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+
+	&__track {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	&__segment {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	&__line {
+		width: 1px;
+		height: 30px;
+		background: var(--border);
+		transition: background-color 0.6s ease;
+
+		&.done {
+			background: var(--c-sidebar);
+			opacity: 0.7;
+		}
+	}
+
+	&__dot {
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		border: 1px solid var(--dim);
+		background: transparent;
+		flex-shrink: 0;
+		position: relative;
+		transition:
+			background-color 0.4s ease,
+			border-color 0.4s ease,
+			width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+			height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+			transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+			opacity 0.25s ease,
+			box-shadow 0.4s ease;
+
+		&.done {
+			background: var(--c-blue);
+			border-color: var(--c-blue);
+		}
+
+		&.active {
+			width: 11px;
+			height: 11px;
+			background: var(--c-sidebar);
+			border-color: var(--c-sidebar);
+			border-width: 0;
+			box-shadow: 0 0 0 3px rgba(45, 127, 255, 0.14);
+			animation: sidebar-pulse 2.8s ease infinite;
+		}
+
+		&.leaving {
+			animation: sidebar-shrink 0.25s ease forwards;
+		}
+		&.entering {
+			animation: sidebar-enter 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+		}
+	}
+}

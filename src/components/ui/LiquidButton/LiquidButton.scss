@@ -1,0 +1,56 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.liquid-btn {
+	position: relative;
+	padding: 14px 32px;
+	border: 0.5px solid rgba(255, 255, 255, 0.7);
+	cursor: pointer;
+	font-family: var(--font-sans);
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--text);
+	letter-spacing: 0.02em;
+	border-radius: $radius-pill;
+	text-decoration: none;
+	display: inline-block;
+	outline: none;
+	-webkit-tap-highlight-color: transparent;
+
+	background: rgba(255, 255, 255, 0.45);
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+
+	transition:
+		transform 0.25s $spring,
+		box-shadow 0.25s $spring,
+		background-color 0.25s;
+
+	&:hover {
+		transform: translateY(-3px);
+		background: rgba(255, 255, 255, 0.65);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+	}
+
+	&:active {
+		transform: scale(0.97);
+	}
+
+	&__label {
+		position: relative;
+		z-index: 1;
+	}
+
+	[data-theme="dark"] & {
+		background: rgba(255, 255, 255, 0.06);
+		border-color: rgba(255, 255, 255, 0.1);
+		color: var(--text);
+		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+
+		&:hover {
+			background: rgba(255, 255, 255, 0.1);
+			box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+		}
+	}
+}

@@ -1,0 +1,30 @@
+export const projects = [
+	{
+		id: "project1",
+		name: "Project 1",
+		desc: "Blah Blah Blah.",
+		tags: ["React", "JavaScript", "Tailwind"],
+		image: "/assets/image.png",
+		github: "#",
+		live: "",
+	},
+	{
+		id: "project2",
+		name: "Project 2",
+		desc: "Blah Blah Blah",
+		tags: ["Ruby", "Ruby on Rails", "Postgresql"],
+		image: "/assets/sorts.png",
+		github: "#",
+		live: "",
+	},
+	{
+		id: "project3",
+		name: "Project 3",
+		desc: "Blah Blah Blah",
+		tags: ["Java", "SpringBoot", "SQLite3"],
+		image: "",
+		icon: "◇",
+		github: "#",
+		live: "#",
+	},
+];

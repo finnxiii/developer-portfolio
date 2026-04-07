@@ -1,0 +1,84 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+@include mobile {
+	.cursor-dot,
+	.cursor-ring {
+		display: none;
+	}
+}
+
+@media (hover: none) {
+	.cursor-dot,
+	.cursor-ring {
+		display: none;
+	}
+}
+
+*,
+*::before,
+*::after {
+	cursor: none !important;
+}
+
+.cursor {
+	&-dot {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--c-blue);
+		pointer-events: none;
+		z-index: 9999;
+		opacity: 0;
+		margin-top: -3px;
+		margin-left: -3px;
+		will-change: transform;
+		transition:
+			opacity 0.2s,
+			width 0.2s,
+			height 0.2s,
+			background-color 0.2s;
+
+		&--hover {
+			width: 8px;
+			height: 8px;
+			margin-top: -4px;
+			margin-left: -4px;
+			background: var(--c-pink);
+		}
+	}
+
+	&-ring {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		border: 1.5px solid var(--c-blue);
+		pointer-events: none;
+		z-index: 9998;
+		opacity: 0;
+		margin-top: -18px;
+		margin-left: -18px;
+		will-change: transform;
+		transition:
+			opacity 0.2s,
+			width 0.25s $spring,
+			height 0.25s $spring,
+			border-color 0.2s,
+			background-color 0.2s;
+
+		&--hover {
+			width: 56px;
+			height: 56px;
+			margin-top: -28px;
+			margin-left: -28px;
+			border-color: var(--c-pink);
+			background: rgba(255, 45, 120, 0.06);
+		}
+	}
+}

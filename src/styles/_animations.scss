@@ -1,0 +1,100 @@
+@keyframes fadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(100%);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes pulseDrop {
+	0% {
+		transform: translate(-50%, -50%) scale(0.5);
+		opacity: 0.9;
+	}
+	100% {
+		transform: translate(-50%, -50%) scale(2.4);
+		opacity: 0;
+	}
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 0.2;
+	}
+	50% {
+		opacity: 0.8;
+	}
+}
+
+@keyframes mouseScroll {
+	0% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(3px);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+@keyframes sidebar-pulse {
+	0%,
+	100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.15);
+	}
+}
+
+@keyframes sidebar-shrink {
+	0% {
+		width: 11px;
+		height: 11px;
+		opacity: 1;
+		transform: scale(1);
+	}
+	100% {
+		width: 5px;
+		height: 5px;
+		opacity: 0.4;
+		transform: scale(0.5);
+	}
+}
+
+@keyframes sidebar-enter {
+	0% {
+		width: 5px;
+		height: 5px;
+		transform: scale(0.5);
+		opacity: 0.4;
+	}
+	60% {
+		width: 13px;
+		height: 13px;
+		transform: scale(1.1);
+		opacity: 1;
+	}
+	100% {
+		width: 11px;
+		height: 11px;
+		transform: scale(1);
+		opacity: 1;
+	}
+}

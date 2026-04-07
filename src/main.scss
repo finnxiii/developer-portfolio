@@ -1,0 +1,17 @@
+@use "./styles/variables" as *;
+@use "./styles/theme";
+@use "./styles/reset";
+@use "./styles/animations";
+@use "./styles/typography";
+@use "./styles/mixins" as *;
+
+// ── Global layout ─────────────────────────────────────────────
+section {
+	scroll-margin-top: 70px;
+}
+
+@include mobile {
+	main {
+		padding: 0 30px;
+	}
+}
