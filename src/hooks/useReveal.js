@@ -1,45 +1,59 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
-/**
- * Attaches a bidirectional IntersectionObserver to all `.rv` elements
- * inside the given container (defaults to document).
- *
- * Elements animate in when entering the viewport and animate back out
- * when leaving — up or down — by toggling .in / .out-up / .out-down.
- */
-export function useReveal(containerRef = null) {
-	const observedRef = useRef(new Map());
-
+export function useReveal() {
 	useEffect(() => {
-		const root = containerRef?.current ?? null;
-		const elements = (root ?? document).querySelectorAll(".rv");
+		const elements = document.querySelectorAll(".rv");
+
+		elements.forEach((el) => {
+			el.style.opacity = "0";
+			el.style.transform = "translateY(40px)";
+			el.style.transition = "none";
+			el.style.willChange = "opacity, transform";
+		});
+
+		document.body.getBoundingClientRect();
+
+		elements.forEach((el) => {
+			el.style.transition =
+				"opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)";
+		});
 
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
 					const el = entry.target;
-					const prev = observedRef.current.get(el);
+					const delay = parseFloat(el.dataset.revealDelay || "0");
 
 					if (entry.isIntersecting) {
-						el.classList.remove("out-up", "out-down");
-						el.classList.add("in");
-						observedRef.current.set(el, { top: entry.boundingClientRect.top, visible: true });
-					} else if (prev) {
-						const goingUp = entry.boundingClientRect.top > prev.top;
-						el.classList.remove("in");
-						el.classList.add(goingUp ? "out-down" : "out-up");
-						observedRef.current.set(el, { top: entry.boundingClientRect.top, visible: false });
+						// entering from bottom — animate in
+						setTimeout(() => {
+							el.style.opacity = "1";
+							el.style.transform = "translateY(0)";
+						}, delay * 1000);
+					} else {
+						// only reset if element is BELOW the viewport (scrolled back up)
+						// not when it exits from the top
+						const rect = entry.boundingClientRect;
+						if (rect.top > 0) {
+							// element is below viewport — reset so it can animate in again
+							el.style.transition = "none";
+							el.style.opacity = "0";
+							el.style.transform = "translateY(40px)";
+							requestAnimationFrame(() => {
+								requestAnimationFrame(() => {
+									el.style.transition =
+										"opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)";
+								});
+							});
+						}
+						// if rect.top < 0 — element left from top, keep it visible
 					}
 				});
 			},
-			{ root, threshold: 0.12, rootMargin: "0px 0px -16px 0px" },
+			{ threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
 		);
 
-		elements.forEach((el) => {
-			observer.observe(el);
-			observedRef.current.set(el, { top: 0, visible: false });
-		});
-
+		elements.forEach((el) => observer.observe(el));
 		return () => observer.disconnect();
-	}, [containerRef]);
+	}, []);
 }

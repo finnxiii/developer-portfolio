@@ -1,4 +1,4 @@
-import SectionBlock from "../../components/ui/SectionBlock";
+import SectionBlock, { RvWrap } from "../../components/ui/SectionBlock";
 import LiquidButton from "../../components/ui/LiquidButton";
 import { projects } from "../../data";
 import { useReveal } from "../../hooks/useReveal";
@@ -9,15 +9,20 @@ import "./Projects.scss";
 export default function Projects() {
 	useReveal();
 	return (
-		<SectionBlock id="projects" label="Projects" title="A few things I have shipped.">
-			<div className="proj__grid rv" style={{ transitionDelay: ".12s" }}>
-				{projects.map((p, i) => (
-					<ProjectCard key={p.id} project={p} index={i} />
-				))}
-			</div>
-			<div className="proj__cta rv" style={{ transitionDelay: ".18s" }}>
-				<LiquidButton href="https://github.com/finnxiii">My Other Projects &nbsp;→</LiquidButton>
-			</div>
+		<SectionBlock id="projects" label="Projects">
+			<RvWrap delay=".1s">
+				<div className="proj__grid">
+					{projects.map((p, i) => (
+						<ProjectCard key={p.id} project={p} index={i} />
+					))}
+				</div>
+			</RvWrap>
+
+			<RvWrap delay=".2s">
+				<div className="proj__cta">
+					<LiquidButton href="https://github.com/finnxiii">My Other Projects &nbsp;→</LiquidButton>
+				</div>
+			</RvWrap>
 		</SectionBlock>
 	);
 }
@@ -27,10 +32,14 @@ function ProjectCard({ project, index }) {
 
 	return (
 		<div className="proj-card">
-			{/* image area */}
 			<div className="proj-card__img">
 				{project.image ? (
-					<img src={project.image} alt={project.name} className="proj-card__img-photo" />
+					<img
+						src={project.image}
+						alt={project.name}
+						className="proj-card__img-photo"
+						style={{ objectPosition: project.imageFocus || "center" }}
+					/>
 				) : (
 					<div
 						className="proj-card__img-bg"
@@ -41,16 +50,12 @@ function ProjectCard({ project, index }) {
 						</span>
 					</div>
 				)}
-				{/* colour bar at bottom of image */}
 				<div className="proj-card__bar" style={{ background: colour }} />
 			</div>
 
-			{/* body */}
 			<div className="proj-card__body">
 				<h3 className="proj-card__name">{project.name}</h3>
 				<p className="proj-card__desc">{project.desc}</p>
-
-				{/* tags */}
 				{project.tags?.length > 0 && (
 					<div className="proj-card__tags">
 						{project.tags.map((t) => (
@@ -62,7 +67,6 @@ function ProjectCard({ project, index }) {
 				)}
 			</div>
 
-			{/* footer — only show icons if links are non-empty */}
 			{(project.github || project.live) && (
 				<div className="proj-card__footer">
 					<div className="proj-card__links">

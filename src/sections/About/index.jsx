@@ -1,5 +1,5 @@
 import { useReveal } from "../../hooks/useReveal";
-import SectionBlock from "../../components/ui/SectionBlock";
+import SectionBlock, { RvWrap } from "../../components/ui/SectionBlock";
 import { about, experience } from "../../data";
 import "./About.scss";
 
@@ -7,23 +7,27 @@ export default function About() {
 	useReveal();
 
 	return (
-		<SectionBlock id="about" label="About" title={about.heading}>
-			<div className="about__body rv" style={{ transitionDelay: ".11s" }}>
-				{about.body.split("\n\n").map((para, i) => (
-					<p key={i}>{para}</p>
-				))}
-			</div>
+		<SectionBlock id="about" label="About">
+			<RvWrap delay=".08s">
+				<div className="about__body">
+					{about.body.split("\n\n").map((para, i) => (
+						<p key={i}>{para}</p>
+					))}
+				</div>
+			</RvWrap>
 
-			<p className="about__sub-label rv" style={{ transitionDelay: ".18s" }}>
-				Experience
-			</p>
+			<RvWrap delay=".18s">
+				<p className="about__sub-label">Experience</p>
+			</RvWrap>
 
-			<div className="timeline rv" style={{ transitionDelay: ".24s" }}>
-				<div className="timeline__line" />
-				{experience.map((item, i) => (
-					<TimelineItem key={i} item={item} />
-				))}
-			</div>
+			<RvWrap delay=".26s">
+				<div className="timeline">
+					<div className="timeline__line" />
+					{experience.map((item, i) => (
+						<TimelineItem key={i} item={item} />
+					))}
+				</div>
+			</RvWrap>
 		</SectionBlock>
 	);
 }
