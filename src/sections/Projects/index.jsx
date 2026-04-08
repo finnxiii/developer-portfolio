@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import SectionBlock, { RvWrap } from "../../components/ui/SectionBlock";
 import LiquidButton from "../../components/ui/LiquidButton";
-import { projects } from "../../data";
+import { projectsMeta, projects } from "../../data";
 import { useReveal } from "../../hooks/useReveal";
 import { FiGithub, FiExternalLink, FiX } from "react-icons/fi";
 import { CARD_COLOURS } from "../../constants";
@@ -28,7 +28,7 @@ export default function Projects() {
 	}, [selected]);
 
 	return (
-		<SectionBlock id="projects" label="Projects">
+		<SectionBlock id="projects" label={projectsMeta.heading} tagline={projectsMeta.tagline}>
 			<RvWrap delay=".1s">
 				<div className="proj__grid">
 					{projects.map((p, i) => (

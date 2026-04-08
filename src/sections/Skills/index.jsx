@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 import SectionBlock, { RvWrap } from "../../components/ui/SectionBlock";
-import { skills } from "../../data";
+import { skillsMeta, skills } from "../../data";
 import { useReveal } from "../../hooks/useReveal";
 import "./Skills.scss";
 
 export default function Skills() {
 	useReveal();
 	return (
-		<SectionBlock id="skills" label="Skills">
+		<SectionBlock id="skills" label={skillsMeta.heading} tagline={skillsMeta.tagline}>
 			<RvWrap delay=".1s">
 				<div className="skills__grid">
 					{skills.map((cat) => (

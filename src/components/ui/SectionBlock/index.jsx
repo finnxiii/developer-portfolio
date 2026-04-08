@@ -10,7 +10,7 @@ export function RvWrap({ children, delay }) {
 	);
 }
 
-export default function SectionBlock({ id, label, children, className = "" }) {
+export default function SectionBlock({ id, label, tagline, children, className = "" }) {
 	return (
 		<section id={id} className={`section ${className}`}>
 			<div className="section__divider" />
@@ -18,6 +18,11 @@ export default function SectionBlock({ id, label, children, className = "" }) {
 				{label && (
 					<div className="rv-wrap">
 						<p className="section__label rv">{label}</p>
+					</div>
+				)}
+				{tagline && (
+					<div className="rv-wrap">
+						<p className="section__tagline rv">{tagline}</p>
 					</div>
 				)}
 			</div>
