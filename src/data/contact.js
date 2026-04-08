@@ -6,7 +6,7 @@ export const contact = {
 		{
 			key: "Email",
 			value: "nainghtoolwin1385@gmail.com",
-			href: "mailto:nainghtoolwin1385@gmail.com",
+			href: "https://mail.google.com/mail/?view=cm&to=nainghtoolwin1385@gmail.com",
 		},
 		{
 			key: "GitHub",
