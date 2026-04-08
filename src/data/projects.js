@@ -1,10 +1,19 @@
+import project1Image from "../assets/image.png";
+import project2Image from "../assets/sorts.png";
+// import project3Image from ",,/assets/project3.png";
+
+export const projectsMeta = {
+	heading: "Featured Projects",
+	tagline: "Turning ideas into scalable and functional products.",
+};
+
 export const projects = [
 	{
 		id: "project1",
 		name: "Project 1",
 		desc: "Blah Blah Blah.",
 		tags: ["React", "JavaScript", "Tailwind"],
-		image: "/image.png",
+		image: project1Image,
 		github: "#",
 		live: "",
 	},
@@ -13,7 +22,7 @@ export const projects = [
 		name: "Project 2",
 		desc: "Blah Blah Blah",
 		tags: ["Ruby", "Ruby on Rails", "Postgresql"],
-		image: "/sorts.png",
+		image: project2Image,
 		github: "#",
 		live: "",
 	},
@@ -22,8 +31,8 @@ export const projects = [
 		name: "Project 3",
 		desc: "Blah Blah Blah",
 		tags: ["Java", "SpringBoot", "SQLite3"],
-		image: "",
-		icon: "◇",
+		// image: project3Image,
+		icon: "project 3",
 		github: "#",
 		live: "#",
 	},

@@ -1,18 +1,23 @@
+export const skillsMeta = {
+	heading: "Skills & Expertise",
+	tagline: "Technologies and Tools I use to design, build and ship applications.",
+};
+
 export const skills = [
 	{
 		category: "Frontend",
-		items: ["React", "TypeScript", "Next.js", "Tailwind", "Three.js", "GSAP"],
+		items: ["React", "JavaScript", "HTML", "CSS", "SCSS", "Bootstrap", "Jetpack Compose"],
 	},
 	{
-		category: "Backend",
-		items: ["Java", "Python", "Ruby", "Haskell", "REST"],
+		category: "Backend & Data",
+		items: ["Java", "Spring Boot", "RESTful APIs", "Ruby", "Ruby on Rails", "MVC", "PostgreSQL", "SQLite3"],
 	},
 	{
-		category: "Database",
-		items: ["PostgreSQL", "SQLite3", "MongoDB", "CRUD"],
+		category: "Intelligent Systems",
+		items: ["Python", "NumPy", "ROS2", "Robotics Simulations", "DSA", "Haskell"],
 	},
 	{
-		category: "Tools",
-		items: ["Git", "Github", "Gitlab", "Docker", "Linux", "Figma", "Insomnia"],
+		category: "Tools & Workflow",
+		items: ["Git", "Agile", "Scrum", "Docker", "Linux", "Figma", "Insomnia", "Github", "Gitlab"],
 	},
 ];

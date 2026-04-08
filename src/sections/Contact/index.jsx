@@ -6,7 +6,7 @@ import "./Contact.scss";
 export default function Contact() {
 	useReveal();
 	return (
-		<SectionBlock id="contact" label="Contact">
+		<SectionBlock id="contact" label={contact.heading} tagline={contact.tagline}>
 			<RvWrap delay=".08s">
 				<p className="contact__body">{contact.body}</p>
 			</RvWrap>

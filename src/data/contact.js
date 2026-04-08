@@ -1,6 +1,7 @@
 export const contact = {
-	heading: "Let's Connect.",
-	body: "Open to internships, placements and freelance oppportunities. Reach out through any of the links below.",
+	heading: "Get In Touch",
+	tagline: "",
+	body: "Open to opportunites, collaborations, and new challenges.",
 	links: [
 		{
 			key: "Email",
@@ -17,10 +18,10 @@ export const contact = {
 			value: "linkedin.com/in/nainghtoolwin",
 			href: "https://linkedin.com/in/nainghtoolwin",
 		},
-		{
-			key: "Resume",
-			value: "finnxiii_cv.pdf",
-			href: "/finnxiii_cv.pdf",
-		},
+		// {
+		// 	key: "Resume",
+		// 	value: "finnxiii_cv.pdf",
+		// 	href: "/finnxiii_cv.pdf",
+		// },
 	],
 };

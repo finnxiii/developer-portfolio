@@ -7,7 +7,7 @@ export default function About() {
 	useReveal();
 
 	return (
-		<SectionBlock id="about" label="About">
+		<SectionBlock id="about" label={about.heading} tagline={about.tagline}>
 			<RvWrap delay=".08s">
 				<div className="about__body">
 					{about.body.split("\n\n").map((para, i) => (
