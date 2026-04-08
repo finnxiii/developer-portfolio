@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import SectionBlock from "../../components/ui/SectionBlock";
+import SectionBlock, { RvWrap } from "../../components/ui/SectionBlock";
 import { skills } from "../../data";
 import { useReveal } from "../../hooks/useReveal";
 import { CAT_COLOURS } from "../../constants";
@@ -8,12 +8,14 @@ import "./Skills.scss";
 export default function Skills() {
 	useReveal();
 	return (
-		<SectionBlock id="skills" label="Skills" title="Everything I reach for when I build.">
-			<div className="skills__grid rv" style={{ transitionDelay: ".12s" }}>
-				{skills.map((cat) => (
-					<SkillBox key={cat.category} cat={cat} />
-				))}
-			</div>
+		<SectionBlock id="skills" label="Skills">
+			<RvWrap delay=".1s">
+				<div className="skills__grid">
+					{skills.map((cat) => (
+						<SkillBox key={cat.category} cat={cat} />
+					))}
+				</div>
+			</RvWrap>
 		</SectionBlock>
 	);
 }
@@ -21,7 +23,6 @@ export default function Skills() {
 function SkillBox({ cat }) {
 	const areaRef = useRef(null);
 	const colour = CAT_COLOURS[cat.category] ?? "var(--c-blue)";
-
 	const positions = useRef(
 		cat.items.map((_, i) => {
 			const cols = 3;

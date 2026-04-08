@@ -19,18 +19,12 @@
 	}
 
 	&__label {
-		@include label-text;
-		margin-bottom: 10px;
-	}
-
-	&__title {
-		font-size: clamp(20px, 3vw, 35px);
-		font-weight: 700;
-		letter-spacing: -0.03em;
-		line-height: 1.12;
+		font-size: clamp(28px, 4vw, 44px);
+		font-weight: bold;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
 		color: var(--text);
-		max-width: 640px;
-		margin: 0 auto;
+		margin-bottom: 0;
 	}
 
 	&__body {
@@ -50,13 +44,23 @@
 		&__header {
 			margin-bottom: 32px;
 		}
-		&__title {
-			font-size: clamp(22px, 6vw, 30px);
+		&__label {
+			font-size: clamp(22px, 7vw, 30px);
 		}
 	}
 }
 
 // ── Reveal ────────────────────────────────────────────────────
+.rv-wrap {
+	display: block;
+}
+
 .rv {
-	@include reveal;
+	display: block;
+	will-change: opacity, transform;
+
+	&.in {
+		opacity: 1 !important;
+		transform: translateY(0) !important;
+	}
 }
