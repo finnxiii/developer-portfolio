@@ -74,26 +74,18 @@
 	}
 
 	&__key {
-		font-size: 9px;
+		font-size: 10px;
 		font-weight: 700;
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
-		color: rgba(10, 10, 10, 0.4);
-
-		[data-theme="dark"] & {
-			color: var(--dim);
-		}
+		color: var(--muted);
 	}
 
 	&__value {
-		font-size: 15px;
-		font-weight: 500;
+		font-size: 16px;
+		font-weight: 400;
 		color: var(--muted);
 		letter-spacing: -0.01em;
-
-		[data-theme="dark"] & {
-			color: var(--text);
-		}
 	}
 
 	&__arr {
