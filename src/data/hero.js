@@ -1,6 +1,7 @@
 export const hero = {
 	name: "Finn",
 	role: "Student Software Engineer",
+	tagline: "Focused on scalable software and mobile applications.",
 };
 
 export const heroPathSequence = [
@@ -16,4 +17,8 @@ export const heroPathSequence = [
 	{ id: "p-N2c", delay: 1480, dur: 540 },
 ];
 
-export const heroTextSequence = [{ id: "ht-role", delay: 1750, dur: 520 }];
+export const heroTextSequence = [
+	{ id: "ht-role", delay: 1750, dur: 520 },
+	{ id: "ht-tagline", delay: 1950, dur: 520 },
+	{ id: "ht-cta", delay: 2150, dur: 520 },
+];

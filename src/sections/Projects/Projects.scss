@@ -5,7 +5,7 @@
 	&__grid {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		gap: 16px;
+		gap: 20px;
 		max-width: 1080px;
 		margin: 0 auto 24px;
 
@@ -39,12 +39,17 @@
 	}
 }
 
+// ── Card ──────────────────────────────────────────────────────
 .proj-card {
-	@include glass(0.45, 24px);
 	width: 100%;
 	height: 520px;
 	border-radius: $radius-lg;
 	overflow: hidden;
+	background: rgba(255, 255, 255, 0.45);
+	backdrop-filter: blur(24px);
+	-webkit-backdrop-filter: blur(24px);
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+	border: none;
 	display: flex;
 	flex-direction: column;
 	cursor: pointer;
@@ -58,10 +63,10 @@
 	}
 
 	[data-theme="dark"] & {
-		@include glass-dark;
+		background: rgba(255, 255, 255, 0.03);
+		border: 0.5px solid rgba(255, 255, 255, 0.06);
 	}
 
-	// ── Image ──
 	&__img {
 		height: 234px;
 		flex-shrink: 0;
@@ -102,7 +107,6 @@
 		height: 3px;
 	}
 
-	// ── Body ──
 	&__body {
 		padding: 20px 20px 0;
 		flex: 1;
@@ -128,34 +132,33 @@
 		line-height: 1.65;
 	}
 
-	// ── Tags ──
 	&__tags {
 		display: flex;
-		gap: 6px;
+		gap: 5px;
 		flex-wrap: wrap;
 		margin-top: auto;
 		padding-top: 8px;
 	}
 
+	// blue tags matching new skill tag style
 	&__tag {
-		font-size: 11px;
+		font-size: 10px;
 		font-weight: 500;
-		padding: 4px 12px;
+		padding: 3px 9px;
 		border-radius: $radius-pill;
-		background: #ffffff;
-		border: 0.5px solid rgba(0, 0, 0, 0.5);
-		color: var(--text);
+		background: rgba(45, 127, 255, 0.07);
+		border: 0.5px solid rgba(45, 127, 255, 0.18);
+		color: rgba(45, 127, 255, 0.85);
 
 		[data-theme="dark"] & {
-			background: rgba(255, 255, 255, 0.08);
-			border-color: rgba(255, 255, 255, 0.14);
-			box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+			background: rgba(45, 127, 255, 0.1);
+			border-color: rgba(45, 127, 255, 0.25);
+			color: rgba(126, 184, 255, 0.9);
 		}
 	}
 
-	// ── Footer ──
 	&__footer {
-		padding: 12px 20px 16px;
+		padding: 10px 20px 14px;
 		flex-shrink: 0;
 		border-top: 0.5px solid var(--border);
 		margin-top: 12px;
@@ -163,7 +166,7 @@
 
 	&__links {
 		display: flex;
-		gap: 10px;
+		gap: 8px;
 	}
 
 	&__link {
@@ -180,18 +183,15 @@
 		transition:
 			background-color 0.2s,
 			color 0.2s,
-			border-color 0.2s,
 			transform 0.2s;
 
 		&:hover {
 			background: var(--text);
 			color: var(--white);
-			border-color: var(--text);
 			transform: scale(1.08);
 		}
 	}
 
-	// ── Responsive ──
 	@include mobile {
 		height: 480px;
 		&__img {
@@ -210,6 +210,217 @@
 		height: 540px;
 		&__img {
 			height: 250px;
+		}
+	}
+}
+
+// ── Overlay ───────────────────────────────────────────────────
+.proj-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.55);
+	backdrop-filter: blur(14px);
+	-webkit-backdrop-filter: blur(14px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 500;
+	padding: 24px;
+	animation: overlayIn 0.25s ease;
+}
+
+@keyframes overlayIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+// ── Modal ─────────────────────────────────────────────────────
+.proj-modal {
+	width: min(680px, 100%);
+	max-height: 85vh;
+	border-radius: 18px;
+	background: rgba(250, 252, 255, 0.94);
+	backdrop-filter: blur(28px);
+	-webkit-backdrop-filter: blur(28px);
+	border: 0.5px solid rgba(255, 255, 255, 0.9);
+	box-shadow: 0 32px 80px rgba(0, 0, 0, 0.25);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	animation: modalIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+	[data-theme="dark"] & {
+		background: rgba(30, 30, 30, 0.95);
+		border-color: rgba(255, 255, 255, 0.08);
+	}
+}
+
+@keyframes modalIn {
+	from {
+		opacity: 0;
+		transform: scale(0.94) translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
+// title bar
+.proj-modal__titlebar {
+	height: 44px;
+	padding: 0 16px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	border-bottom: 0.5px solid var(--border);
+	background: rgba(255, 255, 255, 0.6);
+	flex-shrink: 0;
+
+	[data-theme="dark"] & {
+		background: rgba(255, 255, 255, 0.04);
+	}
+}
+
+// red close button
+.proj-modal__close {
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: #ff5f57;
+	border: 0.5px solid rgba(0, 0, 0, 0.12);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: transparent;
+	flex-shrink: 0;
+	transition: filter 0.15s;
+	padding: 0;
+
+	&:hover {
+		filter: brightness(0.85);
+		color: rgba(0, 0, 0, 0.5);
+	}
+}
+
+.proj-modal__window-title {
+	flex: 1;
+	text-align: center;
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--dim);
+	letter-spacing: 0.02em;
+}
+
+// image
+.proj-modal__img {
+	width: 100%;
+	height: 260px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	overflow: hidden;
+}
+
+.proj-modal__img-photo {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.proj-modal__img-icon {
+	font-size: 64px;
+	opacity: 0.25;
+}
+
+.proj-modal__img-bar {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 3px;
+}
+
+// body
+.proj-modal__body {
+	padding: 28px;
+	overflow-y: auto;
+}
+
+.proj-modal__name {
+	font-size: 24px;
+	font-weight: 800;
+	color: var(--text);
+	letter-spacing: -0.03em;
+	margin-bottom: 10px;
+}
+
+.proj-modal__desc {
+	font-size: 14px;
+	font-weight: 300;
+	color: var(--muted);
+	line-height: 1.8;
+	margin-bottom: 20px;
+}
+
+.proj-modal__tags {
+	display: flex;
+	gap: 6px;
+	flex-wrap: wrap;
+	margin-bottom: 20px;
+}
+
+.proj-modal__tag {
+	font-size: 10px;
+	font-weight: 500;
+	padding: 3px 10px;
+	border-radius: $radius-pill;
+	background: rgba(45, 127, 255, 0.07);
+	border: 0.5px solid rgba(45, 127, 255, 0.18);
+	color: rgba(45, 127, 255, 0.85);
+}
+
+.proj-modal__links {
+	display: flex;
+	gap: 10px;
+}
+
+.proj-modal__link {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 9px 18px;
+	border-radius: 10px;
+	font-size: 13px;
+	font-weight: 500;
+	text-decoration: none;
+	color: var(--text);
+	background: rgba(255, 255, 255, 0.7);
+	border: 0.5px solid var(--border);
+	transition:
+		background-color 0.2s,
+		transform 0.2s;
+
+	&:hover {
+		background: rgba(255, 255, 255, 0.95);
+		transform: translateY(-1px);
+	}
+
+	[data-theme="dark"] & {
+		background: rgba(255, 255, 255, 0.06);
+		border-color: rgba(255, 255, 255, 0.1);
+		color: var(--text);
+
+		&:hover {
+			background: rgba(255, 255, 255, 0.1);
 		}
 	}
 }
