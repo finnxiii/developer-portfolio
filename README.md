@@ -1,3 +1,3 @@
 # My Developer Portfolio
 
-Developed using React + TailwindCSS
+Developed using React + SCSS
