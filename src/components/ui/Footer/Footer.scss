@@ -1,0 +1,16 @@
+@use "../../../styles/variables" as *;
+
+.footer {
+	padding: 20px calc(#{$sidebar-w} + 8%);
+	border-top: 0.5px solid var(--border);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	&__copy,
+	&__built {
+		font-size: 10px;
+		color: var(--dim);
+		font-weight: 400;
+	}
+}
