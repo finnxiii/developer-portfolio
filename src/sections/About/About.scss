@@ -20,9 +20,24 @@
 	}
 
 	&__sub-label {
-		@include label-text;
+		font-size: clamp(10px, 1vw, 12px);
+		font-weight: 400;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--muted);
 		margin-bottom: 24px;
 		text-align: center;
+		line-height: 1.6;
+
+		&::before {
+			content: "";
+			display: block;
+			width: 24px;
+			height: 2px;
+			background: var(--c-pink);
+			margin: 0 auto 12px;
+			opacity: 0.5;
+		}
 	}
 }
 
@@ -39,7 +54,7 @@
 		top: 0;
 		bottom: 0;
 		width: 2px;
-		background: var(--c-blue);
+		background: var(--c-green);
 		opacity: 0.35;
 		transform: translateX(-50%);
 		border-radius: 2px;
@@ -87,7 +102,7 @@
 		width: 12px;
 		height: 12px;
 		border-radius: 50%;
-		background: var(--c-blue);
+		background: var(--c-green);
 		border: none;
 		box-shadow: 0 0 0 3px var(--white);
 		transition: transform 0.3s;

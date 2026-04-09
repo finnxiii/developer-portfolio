@@ -40,22 +40,24 @@ export default function Hero() {
 			</div>
 
 			{/* text below the drawing */}
-			<div className="hero__text">
-				<p id="ht-role" className="hero__role">
-					{hero.role}
-				</p>
-				<p id="ht-tagline" className="hero__tagline">
-					{hero.tagline}
-				</p>
-			</div>
+			<div className="hero__bottom">
+				<div className="hero__text">
+					<p id="ht-role" className="hero__role">
+						{hero.role}
+					</p>
+					<p id="ht-tagline" className="hero__tagline">
+						{hero.tagline}
+					</p>
+				</div>
 
-			<div className="hero__cta" id="ht-cta">
-				<a href="#projects" className="hero__cta-primary">
-					View Projects
-				</a>
-				<a href="#contact" className="hero__cta-secondary">
-					Contact Me
-				</a>
+				<div className="hero__cta" id="ht-cta">
+					<a href="#projects" className="hero__cta-primary">
+						View Projects
+					</a>
+					<a href="#contact" className="hero__cta-secondary">
+						Contact Me
+					</a>
+				</div>
 			</div>
 
 			<div className="hero__scroll-hint" aria-hidden="true">
