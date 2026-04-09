@@ -29,6 +29,12 @@ export function useReveal() {
 						setTimeout(() => {
 							el.style.opacity = "1";
 							el.style.transform = "translateY(0)";
+
+							// clear inline transform after transition so CSS hover can take over
+							setTimeout(() => {
+								el.style.transform = "";
+								el.style.transition = "";
+							}, 850); // slightly longer than the 0.8s transition duration
 						}, delay * 1000);
 					} else {
 						// only reset if element is BELOW the viewport (scrolled back up)

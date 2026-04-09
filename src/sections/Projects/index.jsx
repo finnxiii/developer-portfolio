@@ -4,13 +4,11 @@ import LiquidButton from "../../components/ui/LiquidButton";
 import { projectsMeta, projects } from "../../data";
 import { useReveal } from "../../hooks/useReveal";
 import { FiGithub, FiExternalLink, FiX } from "react-icons/fi";
-import { CARD_COLOURS } from "../../constants";
 import "./Projects.scss";
 
 export default function Projects() {
 	useReveal();
 	const [selected, setSelected] = useState(null);
-	const selectedIndex = selected ? projects.findIndex((p) => p.id === selected.id) : -1;
 
 	useEffect(() => {
 		const onKey = (e) => {
@@ -31,8 +29,8 @@ export default function Projects() {
 		<SectionBlock id="projects" label={projectsMeta.heading} tagline={projectsMeta.tagline}>
 			<RvWrap delay=".1s">
 				<div className="proj__grid">
-					{projects.map((p, i) => (
-						<ProjectCard key={p.id} project={p} index={i} onClick={() => setSelected(p)} />
+					{projects.map((p) => (
+						<ProjectCard key={p.id} project={p} onClick={() => setSelected(p)} />
 					))}
 				</div>
 			</RvWrap>
@@ -43,25 +41,17 @@ export default function Projects() {
 				</div>
 			</RvWrap>
 
-			{/* overlay */}
 			{selected && (
 				<div className="proj-overlay" onClick={() => setSelected(null)}>
 					<div className="proj-modal" onClick={(e) => e.stopPropagation()}>
-						{/* title bar */}
 						<div className="proj-modal__titlebar">
 							<button className="proj-modal__close" onClick={() => setSelected(null)} aria-label="Close">
-								<FiX size={8} />
+								<FiX size={10} />
 							</button>
 							<span className="proj-modal__window-title">{selected.name.toLowerCase()}</span>
 						</div>
 
-						{/* image */}
-						<div
-							className="proj-modal__img"
-							style={{
-								background: `linear-gradient(135deg, ${CARD_COLOURS[selectedIndex % CARD_COLOURS.length]}28, ${CARD_COLOURS[selectedIndex % CARD_COLOURS.length]}0a)`,
-							}}
-						>
+						<div className="proj-modal__img">
 							{selected.image ? (
 								<img
 									src={selected.image}
@@ -70,20 +60,11 @@ export default function Projects() {
 									style={{ objectPosition: selected.imageFocus || "center" }}
 								/>
 							) : (
-								<span
-									className="proj-modal__img-icon"
-									style={{ color: CARD_COLOURS[selectedIndex % CARD_COLOURS.length] }}
-								>
-									{selected.icon}
-								</span>
+								<span className="proj-modal__img-icon">{selected.icon}</span>
 							)}
-							<div
-								className="proj-modal__img-bar"
-								style={{ background: CARD_COLOURS[selectedIndex % CARD_COLOURS.length] }}
-							/>
+							<div className="proj-modal__img-bar" />
 						</div>
 
-						{/* body */}
 						<div className="proj-modal__body">
 							<h3 className="proj-modal__name">{selected.name}</h3>
 							<p className="proj-modal__desc">{selected.desc}</p>
@@ -120,9 +101,7 @@ export default function Projects() {
 	);
 }
 
-function ProjectCard({ project, index, onClick }) {
-	const colour = CARD_COLOURS[index % CARD_COLOURS.length];
-
+function ProjectCard({ project, onClick }) {
 	return (
 		<div className="proj-card" onClick={onClick}>
 			<div className="proj-card__img">
@@ -134,16 +113,11 @@ function ProjectCard({ project, index, onClick }) {
 						style={{ objectPosition: project.imageFocus || "center" }}
 					/>
 				) : (
-					<div
-						className="proj-card__img-bg"
-						style={{ background: `linear-gradient(135deg, ${colour}28, ${colour}0a)` }}
-					>
-						<span className="proj-card__icon" style={{ color: colour }}>
-							{project.icon}
-						</span>
+					<div className="proj-card__img-bg">
+						<span className="proj-card__icon">{project.icon}</span>
 					</div>
 				)}
-				<div className="proj-card__bar" style={{ background: colour }} />
+				<div className="proj-card__bar" />
 			</div>
 
 			<div className="proj-card__body">

@@ -23,23 +23,48 @@
 
 .skill-box {
 	border-radius: $radius-lg;
-	background: rgba(255, 255, 255, 0.55);
+	background: rgba(255, 255, 255, 0.75);
+	border: 1px solid rgba(45, 127, 255, 0.08);
+	box-shadow: 0 2px 16px rgba(45, 127, 255, 0.05);
 	backdrop-filter: blur(20px);
 	-webkit-backdrop-filter: blur(20px);
-	border: 0.5px solid rgba(255, 255, 255, 0.8);
 	padding: 20px;
 	overflow: hidden;
 	transition:
-		box-shadow 0.25s,
-		transform 0.25s;
-
-	&:hover {
-		transform: translateY(-2px);
-	}
+		transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+		box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+		background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+		border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 
 	[data-theme="dark"] & {
 		background: rgba(255, 255, 255, 0.03);
-		border: 0.5px solid rgba(255, 255, 255, 0.06);
+		border-color: rgba(255, 255, 255, 0.06);
+	}
+
+	&:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
+
+		.skill-box__bar {
+			background: var(--c-pink);
+		}
+
+		.skill-tag--0 {
+			background: rgba(255, 45, 120, 0.14);
+			border-color: rgba(255, 45, 120, 0.35);
+			color: var(--c-pink);
+		}
+
+		.skill-tag--1 {
+			background: rgba(255, 45, 120, 0.07);
+			border-color: rgba(255, 45, 120, 0.2);
+			color: rgba(255, 45, 120, 0.9);
+		}
+
+		.skill-tag--2 {
+			border-color: rgba(255, 45, 120, 0.12);
+			color: rgba(255, 45, 120, 0.6);
+		}
 	}
 
 	&__header {
@@ -55,6 +80,7 @@
 		border-radius: 3px;
 		background: var(--c-blue);
 		flex-shrink: 0;
+		transition: background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
 	&__title {
@@ -70,67 +96,97 @@
 	}
 }
 
+// ── dark mode hover — same effect, adjusted colours ───────────
+[data-theme="dark"] .skill-box:hover {
+	// transform: translateY(-4px);
+	box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+	background: rgba(255, 255, 255, 0.06);
+	border-color: rgba(255, 255, 255, 0.1);
+
+	.skill-box__bar {
+		background: var(--c-pink);
+	}
+
+	.skill-tag--0 {
+		background: rgba(255, 45, 120, 0.2);
+		border-color: rgba(255, 45, 120, 0.4);
+		color: var(--c-pink);
+	}
+
+	.skill-tag--1 {
+		background: rgba(255, 45, 120, 0.1);
+		border-color: rgba(255, 45, 120, 0.25);
+		color: rgba(255, 45, 120, 0.9);
+	}
+
+	.skill-tag--2 {
+		border-color: rgba(255, 45, 120, 0.18);
+		color: rgba(255, 45, 120, 0.6);
+	}
+}
+
 // ── spiral tags ───────────────────────────────────────────────
 .skill-tag {
 	position: absolute;
 	border-radius: $radius-pill;
 	white-space: nowrap;
 	transform: translate(-50%, -50%);
-	transition:
-		transform 0.2s $spring,
-		box-shadow 0.2s;
 	cursor: default;
 	font-family: var(--font-sans);
+	transition:
+		transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+		background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+		border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+		color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 
 	&:hover {
 		transform: translate(-50%, -50%) scale(1.08);
 	}
 
-	// tier 0 — centre, most important
+	// ── light mode defaults ──
 	&--0 {
 		font-size: 16px;
 		font-weight: 700;
 		padding: 10px 22px;
-		background: rgba(45, 127, 255, 0.14);
-		border: 0.5px solid rgba(45, 127, 255, 0.35);
+		background: rgba(45, 127, 255, 0.12);
+		border: 1px solid rgba(45, 127, 255, 0.4);
 		color: var(--c-blue);
-
-		[data-theme="dark"] & {
-			background: rgba(45, 127, 255, 0.2);
-			border-color: rgba(45, 127, 255, 0.4);
-			color: #7eb8ff;
-		}
 	}
 
-	// tier 1 — inner ring
 	&--1 {
 		font-size: 12px;
 		font-weight: 600;
 		padding: 6px 14px;
-		background: rgba(45, 127, 255, 0.07);
-		border: 0.5px solid rgba(45, 127, 255, 0.2);
-		color: rgba(45, 127, 255, 0.9);
-
-		[data-theme="dark"] & {
-			background: rgba(45, 127, 255, 0.1);
-			border-color: rgba(45, 127, 255, 0.25);
-			color: rgba(126, 184, 255, 0.9);
-		}
+		background: rgba(45, 127, 255, 0.08);
+		border: 1px solid rgba(45, 127, 255, 0.28);
+		color: rgba(45, 127, 255, 0.95);
 	}
 
-	// tier 2 — outer ring, least prominent
 	&--2 {
 		font-size: 10px;
 		font-weight: 500;
 		padding: 4px 11px;
-		background: rgba(255, 255, 255, 0.9);
-		border: 0.5px solid rgba(45, 127, 255, 0.12);
-		color: rgba(45, 127, 255, 0.6);
-
-		[data-theme="dark"] & {
-			background: rgba(255, 255, 255, 0.05);
-			border-color: rgba(45, 127, 255, 0.15);
-			color: rgba(126, 184, 255, 0.55);
-		}
+		background: rgba(255, 255, 255, 0.95);
+		border: 1px solid rgba(45, 127, 255, 0.22);
+		color: rgba(45, 127, 255, 0.7);
 	}
+}
+
+// ── dark mode default tag colours ─────────────────────────────
+[data-theme="dark"] .skill-tag--0 {
+	background: rgba(45, 127, 255, 0.2);
+	border-color: rgba(45, 127, 255, 0.4);
+	color: #7eb8ff;
+}
+
+[data-theme="dark"] .skill-tag--1 {
+	background: rgba(45, 127, 255, 0.1);
+	border-color: rgba(45, 127, 255, 0.25);
+	color: rgba(126, 184, 255, 0.9);
+}
+
+[data-theme="dark"] .skill-tag--2 {
+	background: rgba(255, 255, 255, 0.05);
+	border-color: rgba(45, 127, 255, 0.15);
+	color: rgba(126, 184, 255, 0.55);
 }

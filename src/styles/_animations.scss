@@ -98,3 +98,23 @@
 		opacity: 1;
 	}
 }
+
+@keyframes overlayIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes modalIn {
+	from {
+		opacity: 0;
+		transform: scale(0.94) translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}

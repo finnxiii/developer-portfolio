@@ -9,7 +9,7 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 20px;
+	gap: 0;
 	padding: 80px 5% 60px;
 	overflow: hidden;
 
@@ -18,6 +18,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		max-width: min(72vw, 560px);
+		margin-bottom: 28px;
 	}
 
 	&__svg {
@@ -26,35 +28,40 @@
 		display: block;
 	}
 
+	&__bottom {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 28px;
+	}
+
 	&__text {
 		width: 100%;
 		max-width: min(88vw, 620px);
 		text-align: center;
+		margin-bottom: 32px;
 		margin-top: 20px;
 	}
 
 	&__role {
-		font-size: clamp(18px, 2vw, 24px);
+		font-size: clamp(16px, 2vw, 22px);
 		font-weight: 600;
 		color: var(--text);
-		letter-spacing: -0.01em;
-		opacity: 0;
-		margin-top: 10px;
+		margin-top: 0;
+		margin-bottom: 6px;
 	}
 
 	&__tagline {
-		font-size: clamp(14px, 1.4vw, 16px);
+		font-size: clamp(12px, 1.3vw, 14px);
 		font-weight: 300;
 		color: var(--muted);
-		letter-spacing: 0.01em;
-		margin-top: 6px;
-		opacity: 0;
+		margin-top: 0;
 	}
 
 	&__cta {
 		display: flex;
-		gap: 12px;
-		margin-top: 28px;
+		margin-top: 0;
+		gap: 14px;
 		flex-wrap: wrap;
 		justify-content: center;
 		opacity: 0;
