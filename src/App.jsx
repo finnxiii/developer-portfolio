@@ -1,6 +1,7 @@
 import Cursor from "./components/ui/Cursor";
 import Navbar from "./components/nav/Navbar";
 import Sidebar from "./components/nav/Sidebar";
+import Footer from "./components/ui/Footer";
 import Hero from "./sections/Hero";
 import About from "./sections/About";
 import Skills from "./sections/Skills";
@@ -20,10 +21,7 @@ export default function App() {
 				<Skills />
 				<Projects />
 				<Contact />
-				<footer className="footer">
-					<span className="ft">© 2025 finnxiii</span>
-					<span className="ft">Built with React + Vite</span>
-				</footer>
+				<Footer />
 			</main>
 		</>
 	);
