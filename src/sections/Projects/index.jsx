@@ -2,12 +2,10 @@ import { useState, useEffect } from "react";
 import SectionBlock, { RvWrap } from "../../components/ui/SectionBlock";
 import LiquidButton from "../../components/ui/LiquidButton";
 import { projectsMeta, projects } from "../../data";
-import { useReveal } from "../../hooks/useReveal";
 import { FiGithub, FiExternalLink, FiX } from "react-icons/fi";
 import "./Projects.scss";
 
 export default function Projects() {
-	useReveal();
 	const [selected, setSelected] = useState(null);
 
 	useEffect(() => {

@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { useTheme } from "../../../hooks/useTheme";
 import { FiMoon, FiSun } from "react-icons/fi";
 import "./ThemeToggle.scss";
