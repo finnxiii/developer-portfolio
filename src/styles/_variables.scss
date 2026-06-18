@@ -1,6 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
-
 // ── CSS custom properties (runtime, theme-switchable) ─────────
+// Legacy variables — used by existing SCSS, kept for Phase 0 compatibility
 :root {
 	--white: #fafcff;
 	--soft: #f0f4ff;
@@ -19,6 +18,28 @@
 	--grad-brand-v: linear-gradient(to bottom, var(--c-pink), var(--c-blue));
 
 	--font-sans: "Inter", -apple-system, "SF Pro Display", system-ui, sans-serif;
+
+	// ── Chronicle design tokens (light mode defaults) ──────────
+	--bg-primary:     #fafaf8;
+	--bg-secondary:   #f0f0ee;
+	--bg-tertiary:    #e8e8e5;
+	--border-col:     #dcdcd8;
+	--text-primary:   #1a1a1a;
+	--text-secondary: #666666;
+	--text-tertiary:  #999999;
+	--accent:         #5a7068;
+	--accent-hover:   #4a5f58;
+	--accent-muted:   rgba(90, 112, 104, 0.18);
+
+	// Chronicle typography
+	--font-display: "Plus Jakarta Sans", sans-serif;
+	--font-mono:    "JetBrains Mono", monospace;
+
+	// Chronicle layout
+	--section-gap:   clamp(120px, 15vh, 200px);
+	--content-max:   640px;
+	--content-wide:  1080px;
+	--page-padding:  clamp(20px, 5vw, 80px);
 }
 
 // ── SCSS build-time variables ─────────────────────────────────
@@ -30,3 +51,4 @@ $radius-lg: 16px;
 $radius-pill: 980px;
 $navbar-h: 70px;
 $sidebar-w: 40px;
+

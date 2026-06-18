@@ -1,11 +1,8 @@
-import { useReveal } from "../../hooks/useReveal";
 import SectionBlock, { RvWrap } from "../../components/ui/SectionBlock";
 import { about, experience } from "../../data";
 import "./About.scss";
 
 export default function About() {
-	useReveal();
-
 	return (
 		<SectionBlock id="about" label={about.heading} tagline={about.tagline}>
 			<RvWrap delay=".08s">
