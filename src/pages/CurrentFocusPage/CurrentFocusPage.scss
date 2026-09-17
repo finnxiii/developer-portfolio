@@ -1,0 +1,81 @@
+@use "../../styles/mixins" as *;
+
+.current-focus-page {
+	padding-block: var(--space-3xl);
+
+	&__header {
+		padding-bottom: var(--space-2xl);
+	}
+
+	&__eyebrow {
+		display: block;
+		color: var(--ink-tertiary);
+		letter-spacing: 0.14em;
+		margin-bottom: var(--space-md);
+	}
+
+	&__title {
+		font-family: var(--font-serif);
+		font-size: var(--text-h1);
+		font-weight: 700;
+		line-height: 1.15;
+		letter-spacing: -0.01em;
+		color: var(--ink);
+		margin: 0 0 var(--space-md);
+		max-width: 26ch;
+	}
+
+	&__date {
+		font-family: var(--font-sans);
+		font-size: var(--text-small);
+		color: var(--ink-tertiary);
+		margin: 0;
+	}
+
+	&__body {
+		padding-top: var(--space-2xl);
+		max-width: 680px;
+	}
+
+	&__item {
+		padding: var(--space-xl) 0;
+		border-top: 0.5px solid var(--rule);
+
+		&:first-child {
+			border-top: none;
+			padding-top: 0;
+		}
+	}
+
+	&__item-label {
+		display: block;
+		color: var(--accent);
+		letter-spacing: 0.14em;
+		margin-bottom: var(--space-md);
+	}
+
+	&__item-text {
+		font-family: var(--font-sans);
+		font-size: var(--text-body);
+		line-height: 1.7;
+		color: var(--ink-secondary);
+		margin: 0;
+		max-width: 64ch;
+	}
+
+	&__note {
+		margin-top: var(--space-3xl);
+		padding-top: var(--space-xl);
+		border-top: 0.5px solid var(--rule);
+		max-width: 540px;
+
+		p {
+			font-family: var(--font-sans);
+			font-size: var(--text-small);
+			color: var(--ink-tertiary);
+			line-height: 1.6;
+			font-style: italic;
+			margin: 0;
+		}
+	}
+}

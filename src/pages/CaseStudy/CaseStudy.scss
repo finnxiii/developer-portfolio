@@ -1,0 +1,167 @@
+@use "../../styles/mixins" as *;
+
+.case-study {
+	padding-block: var(--space-3xl);
+
+	&__not-found {
+		padding-block: var(--space-3xl);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+	}
+
+	// ── Header ──────────────────────────────────────────────────
+
+	&__header {
+		margin-bottom: var(--space-2xl);
+
+		.category-tag {
+			display: block;
+			margin-bottom: var(--space-md);
+		}
+	}
+
+	&__title {
+		font-family: var(--font-serif);
+		font-size: var(--text-h1);
+		font-weight: 700;
+		line-height: 1.1;
+		letter-spacing: -0.01em;
+		color: var(--ink);
+		margin: 0 0 var(--space-lg);
+	}
+
+	&__deck {
+		font-family: var(--font-sans);
+		font-size: var(--text-lead);
+		line-height: 1.6;
+		color: var(--ink-secondary);
+		max-width: 60ch;
+		margin: 0;
+	}
+
+	// ── Body grid ────────────────────────────────────────────────
+
+	&__body {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-xl);
+
+		@include desktop {
+			grid-template-columns: 8fr 4fr;
+			grid-template-areas: "article sidebar";
+			gap: var(--space-2xl);
+			align-items: start;
+		}
+	}
+
+	&__sidebar {
+		// Mobile: renders above article (DOM order)
+		@include desktop {
+			grid-area: sidebar;
+			position: sticky;
+			top: var(--space-2xl);
+		}
+	}
+
+	&__article {
+		@include desktop {
+			grid-area: article;
+		}
+	}
+
+	// ── Screenshot ───────────────────────────────────────────────
+
+	&__screenshot {
+		margin-bottom: var(--space-2xl);
+		border: 0.5px solid var(--rule);
+		overflow: hidden;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	// ── Article sections ─────────────────────────────────────────
+
+	&__section {
+		padding: var(--space-xl) 0;
+		border-top: 0.5px solid var(--rule);
+
+		&:first-child {
+			border-top: none;
+			padding-top: 0;
+		}
+	}
+
+	&__section-title {
+		font-family: var(--font-serif);
+		font-size: var(--text-h3);
+		font-weight: 600;
+		color: var(--ink);
+		margin: 0 0 var(--space-lg);
+	}
+
+	&__section-body {
+		p {
+			font-family: var(--font-sans);
+			font-size: var(--text-body);
+			line-height: 1.7;
+			color: var(--ink-secondary);
+			max-width: 68ch;
+			margin: 0 0 var(--space-md);
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	// ── Prev / Next navigation ────────────────────────────────────
+
+	&__nav {
+		margin-top: var(--space-3xl);
+		padding-top: var(--space-xl);
+		border-top: 0.5px solid var(--rule);
+	}
+
+	&__nav-inner {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--space-xl);
+
+		@include mobile {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	&__nav-link {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+		text-decoration: none;
+
+		&--next {
+			text-align: right;
+		}
+	}
+
+	&__nav-label {
+		color: var(--ink-tertiary);
+		letter-spacing: 0.12em;
+	}
+
+	&__nav-title {
+		font-family: var(--font-serif);
+		font-size: var(--text-h3);
+		font-weight: 600;
+		color: var(--ink);
+		transition: color var(--dur-hover);
+
+		.case-study__nav-link:hover & {
+			color: var(--accent);
+		}
+	}
+}

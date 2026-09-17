@@ -1,0 +1,132 @@
+{
+	"meta": {
+		"version": "2.0",
+		"lastUpdated": "2026-09-16T00:00:00Z",
+		"editionLabel": "Edition No. 02"
+	},
+	"profile": {
+		"name": "Naing Htoo Lwin",
+		"role": "Software Engineering Student",
+		"university": "University of Sheffield",
+		"graduation": "2027",
+		"location": "Sheffield, England",
+		"bio": "Software engineering student at the University of Sheffield with a focus on building useful, reliable systems and explaining how they work. Currently working on Android apps, full-stack web applications, and learning to think clearly about engineering trade-offs.",
+		"interests": ["Mobile Development", "Full-Stack Engineering", "Systems Design", "Open Source"],
+		"heroHeadline": "Building useful software with a systems mindset.",
+		"heroStandfirst": "I'm Finn, a software engineer turning ambiguous problems into reliable, well-explained products — from mobile apps to full-stack systems. Explore selected builds, decisions, and notes from the work.",
+		"links": {
+			"email": "nainghtoolwin1385@gmail.com",
+			"github": "https://github.com/finnxiii",
+			"linkedin": "https://linkedin.com/in/nainghtoolwin",
+			"cv": "/cv.pdf"
+		}
+	},
+	"projects": [
+		{
+			"slug": "project-echo",
+			"category": "MOBILE ENGINEERING",
+			"title": "Project Echo",
+			"deck": "An Android companion app designed to improve the experience of hearing aid users.",
+			"featured": true,
+			"leadProject": true,
+			"role": "Mobile Developer",
+			"timeframe": "Oct 2025 — Present",
+			"team": "Project Echo team",
+			"status": "In development",
+			"stack": ["Kotlin", "Jetpack Compose", "Android"],
+			"github": "",
+			"live": null,
+			"screenshot": "/images/projects/echo.png",
+			"sections": {
+				"problem": "Project description goes here. Describe the real problem this project was built to solve — the constraint, the inefficiency, or the gap that made it worth building.",
+				"investigation": "Investigation and research approach goes here. What did you explore before committing to an approach? What alternatives did you consider?",
+				"implementation": "Implementation details go here. Describe the architecture, the meaningful technical choices, and why you made them.",
+				"whatBroke": "Trade-offs and obstacles encountered go here. What didn't work? What would you change? Be honest — this is the part that makes the work credible.",
+				"outcome": "Outcome and results go here. What was actually delivered? What is the current state of the project?",
+				"learned": "What you learned goes here. Specific, honest reflection demonstrating growth from this project."
+			}
+		},
+		{
+			"slug": "placeholder-project",
+			"category": "FULL-STACK ENGINEERING",
+			"title": "Second project title goes here",
+			"deck": "A one-sentence description of the project and why it mattered.",
+			"featured": true,
+			"leadProject": false,
+			"role": "Role goes here",
+			"timeframe": "Timeframe goes here",
+			"team": "Solo / Team name",
+			"status": "Completed",
+			"stack": ["React", "Node.js", "PostgreSQL"],
+			"github": "",
+			"live": null,
+			"screenshot": "/images/projects/placeholder.png",
+			"sections": {
+				"problem": "Project description goes here.",
+				"investigation": "Investigation goes here.",
+				"implementation": "Implementation goes here.",
+				"whatBroke": "Trade-offs go here.",
+				"outcome": "Outcome goes here.",
+				"learned": "Learning goes here."
+			}
+		}
+	],
+	"experience": [
+		{
+			"dateRange": "Oct 2025 — Present",
+			"org": "iForge Makerspace",
+			"role": "IT Representative",
+			"bullets": [
+				"Role responsibility goes here — describe what you actually do.",
+				"Second responsibility or achievement goes here."
+			],
+			"current": true
+		},
+		{
+			"dateRange": "Sep 2024 — Present",
+			"org": "University of Sheffield",
+			"role": "BEng Software Engineering",
+			"bullets": [
+				"Second-year student, expected graduation 2027.",
+				"Relevant modules, societies, or responsibilities go here."
+			],
+			"current": true
+		}
+	],
+	"philosophy": [
+		{
+			"principle": "Start with the constraint, not the framework.",
+			"position": "Understanding the real limitation shapes every decision that follows. Choosing a tool before understanding the constraint is backwards.",
+			"example": "Example of this principle in practice goes here — reference a specific project or decision.",
+			"projectLink": "/work/project-echo"
+		},
+		{
+			"principle": "Make the trade-off visible.",
+			"position": "Every engineering decision is a trade-off. The job is to make those trade-offs explicit so collaborators can challenge them.",
+			"example": "Example of this principle in practice goes here.",
+			"projectLink": ""
+		},
+		{
+			"principle": "Build the smallest reliable version first.",
+			"position": "A working small thing teaches more than a broken ambitious one. Reliability compounds.",
+			"example": "Example of this principle in practice goes here.",
+			"projectLink": ""
+		}
+	],
+	"fieldNotes": [
+		{
+			"slug": "placeholder-note",
+			"title": "Field note title goes here",
+			"date": "2026-09-01",
+			"topic": "Engineering",
+			"readTime": "4 min",
+			"body": "Field note body goes here. Replace this with the full text of the note. Markdown is supported.\n\n## A section heading\n\nContent goes here. Write honest, specific technical notes — build logs, debugging postmortems, design decisions, or learning reflections.\n\nKeep it short and useful rather than comprehensive and empty."
+		}
+	],
+	"currentFocus": {
+		"date": "September 2026",
+		"building": "This portfolio — a personal engineering publication built with React, GSAP, and Cloudflare Pages.",
+		"learning": "What you are currently learning goes here — be specific.",
+		"exploring": "What you are currently exploring or reading goes here."
+	}
+}

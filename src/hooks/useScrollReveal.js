@@ -1,49 +1,44 @@
-import { useEffect } from "react";
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useReducedMotion } from "./useReducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function useScrollReveal(containerRef) {
-	useEffect(() => {
-		const container = containerRef?.current ?? document;
-		const elements = Array.from(container.querySelectorAll(".rv"));
-		if (!elements.length) return;
+	const prefersReduced = useReducedMotion();
 
-		const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	useGSAP(
+		() => {
+			const scope = containerRef?.current;
+			const elements = gsap.utils.toArray(".rv", scope);
+			if (!elements.length) return;
 
-		if (prefersReduced) {
-			elements.forEach((el) => gsap.set(el, { opacity: 1, y: 0 }));
-			return;
-		}
+			if (prefersReduced) {
+				gsap.set(elements, { opacity: 1, y: 0 });
+				return;
+			}
 
-		const triggers = [];
+			elements.forEach((el) => {
+				const delay = parseFloat(el.dataset.revealDelay || "0");
+				gsap.set(el, { opacity: 0, y: 12 });
 
-		elements.forEach((el) => {
-			const delay = parseFloat(el.dataset.revealDelay || "0");
-			gsap.set(el, { opacity: 0, y: 40 });
-
-			const st = ScrollTrigger.create({
-				trigger: el,
-				start: "top 88%",
-				onEnter: () => {
-					gsap.to(el, {
-						opacity: 1,
-						y: 0,
-						duration: 0.8,
-						delay,
-						ease: "power3.out",
-						overwrite: "auto",
-					});
-				},
-				onLeaveBack: () => {
-					gsap.set(el, { opacity: 0, y: 40 });
-				},
+				ScrollTrigger.create({
+					trigger: el,
+					start: "top 88%",
+					once: true,
+					onEnter: () => {
+						gsap.to(el, {
+							opacity: 1,
+							y: 0,
+							duration: 0.5,
+							delay,
+							ease: "power2.out",
+						});
+					},
+				});
 			});
-
-			triggers.push(st);
-		});
-
-		return () => triggers.forEach((t) => t.kill());
-	}, [containerRef]);
+		},
+		{ scope: containerRef, dependencies: [prefersReduced] }
+	);
 }

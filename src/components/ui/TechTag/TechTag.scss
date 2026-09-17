@@ -1,0 +1,10 @@
+.tech-tag {
+	display: inline-block;
+	font-family: var(--font-sans);
+	font-size: var(--text-meta);
+	font-weight: 500;
+	color: var(--ink-secondary);
+	background: var(--surface);
+	padding: 2px 7px;
+	border-radius: 2px;
+}

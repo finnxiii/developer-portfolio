@@ -1,0 +1,137 @@
+@use "../../styles/mixins" as *;
+
+// ── Section spacing ──────────────────────────────────────────────
+
+.front-page {
+
+	// Consistent vertical breathing between sections
+	&__hero,
+	&__work,
+	&__mid,
+	&__bottom {
+		padding-block: var(--space-3xl);
+
+		@include mobile {
+			padding-block: var(--space-2xl);
+		}
+	}
+
+	&__rule {
+		// Rules between major sections get extra margin so the page breathes
+		margin-block: 0;
+	}
+
+	// ── Section label (eyebrow-style H2) ────────────────────────
+
+	&__section-label {
+		color: var(--ink-tertiary);
+		letter-spacing: 0.14em;
+		margin-bottom: var(--space-xl);
+		display: block;
+	}
+
+	// ── "See all" row ────────────────────────────────────────────
+
+	&__see-all {
+		margin-top: var(--space-xl);
+	}
+
+	&__all-link {
+		font-family: var(--font-sans);
+		font-size: var(--text-small);
+		font-weight: 500;
+		color: var(--accent);
+		text-decoration: none;
+		border-bottom: 1px solid transparent;
+		padding-bottom: 1px;
+		transition: border-color var(--dur-hover);
+
+		&:hover {
+			border-color: var(--accent);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: 4px;
+			border-radius: 1px;
+		}
+	}
+
+	// ── D-E: Hero grid ───────────────────────────────────────────
+
+	&__hero-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-2xl);
+
+		@include above-mobile {
+			grid-template-columns: 8fr 4fr;
+			align-items: start;
+			gap: var(--grid-gutter);
+		}
+	}
+
+	// ── F: Work grid ─────────────────────────────────────────────
+
+	&__work-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0;
+
+		@include above-mobile {
+			grid-template-columns: 8fr 4fr;
+			gap: var(--space-2xl);
+			align-items: start;
+		}
+	}
+
+	&__work-secondary {
+		display: flex;
+		flex-direction: column;
+
+		// On mobile the secondary cards flow below the lead
+		@include mobile {
+			border-top: 0.5px solid var(--rule);
+			margin-top: var(--space-lg);
+			padding-top: var(--space-lg);
+		}
+	}
+
+	// ── G-H: Philosophy + Career ─────────────────────────────────
+
+	&__mid-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-2xl);
+
+		@include desktop {
+			grid-template-columns: 5fr 7fr;
+			gap: var(--space-2xl);
+			align-items: start;
+		}
+	}
+
+	// On tablet: two equal columns
+	@include tablet {
+		&__mid-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	// ── I: Field Notes + Current Focus ───────────────────────────
+
+	&__notes-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-2xl);
+
+		@include desktop {
+			grid-template-columns: 7fr 4fr;
+			align-items: start;
+		}
+
+		@include tablet {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+}

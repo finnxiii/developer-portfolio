@@ -1,0 +1,21 @@
+@use "../../../styles/mixins" as *;
+
+.skip-to-content {
+	position: absolute;
+	top: var(--space-sm);
+	left: var(--space-sm);
+	z-index: 9999;
+	padding: var(--space-sm) var(--space-md);
+	background: var(--ink);
+	color: var(--paper);
+	font-family: var(--font-sans);
+	font-size: var(--text-small);
+	font-weight: 500;
+	border-radius: 2px;
+	transform: translateY(-200%);
+	transition: transform var(--dur-ui);
+
+	&:focus {
+		transform: translateY(0);
+	}
+}

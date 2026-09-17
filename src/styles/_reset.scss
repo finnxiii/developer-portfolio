@@ -1,4 +1,4 @@
-@use "./variables" as *;
+// ── Reset ───────────────────────────────────────────────────────
 
 *,
 *::before,
@@ -12,26 +12,73 @@ html {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	scroll-behavior: smooth;
+	// Hardcoded fallback — guarantees cream background even if CSS vars fail
+	background-color: #F5F1E8;
+	color: #161616;
+}
+
+// Honour vestibular motion preferences for smooth scroll
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+}
+
+// Global keyboard focus ring — catches any interactive element not styled individually
+:focus-visible {
+	outline: 2px solid var(--accent, #8B4513);
+	outline-offset: 3px;
+	border-radius: 2px;
 }
 
 body {
-	font-family: var(--font-sans);
-	background: var(--white);
-	color: var(--text);
+	font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
+	// Literal fallback first, then var() so CSS vars override cleanly
+	background-color: #F5F1E8;
+	background-color: var(--paper, #F5F1E8);
+	color: #161616;
+	color: var(--ink, #161616);
 	overflow-x: hidden;
+	line-height: 1.6;
 }
 
-img {
+img,
+picture,
+video,
+canvas,
+svg {
 	display: block;
 	max-width: 100%;
 }
 
 a {
-	text-decoration: none;
 	color: inherit;
+	text-decoration: none;
 }
 
-main {
-	padding-left: $sidebar-w;
-	background: transparent;
+button,
+input,
+select,
+textarea {
+	font: inherit;
+}
+
+ul,
+ol {
+	list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	overflow-wrap: break-word;
+}
+
+p,
+li,
+td {
+	overflow-wrap: break-word;
 }

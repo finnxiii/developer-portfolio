@@ -1,54 +1,53 @@
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
-import Cursor from "./components/ui/Cursor";
-import Navbar from "./components/nav/Navbar";
-import Sidebar from "./components/nav/Sidebar";
-import Footer from "./components/ui/Footer";
-import Hero from "./sections/Hero";
-import About from "./sections/About";
-import Skills from "./sections/Skills";
-import Projects from "./sections/Projects";
-import Contact from "./sections/Contact";
-import { useScrollReveal } from "./hooks/useScrollReveal";
-import "./App.scss";
+import PageLayout from "./components/layout/PageLayout/PageLayout";
+import FrontPage from "./pages/FrontPage/FrontPage";
+import SelectedWork from "./pages/SelectedWork/SelectedWork";
+import CaseStudy from "./pages/CaseStudy/CaseStudy";
+import TheEngineer from "./pages/TheEngineer/TheEngineer";
+import Philosophy from "./pages/Philosophy/Philosophy";
+import CareerDesk from "./pages/CareerDesk/CareerDesk";
+import FieldNotes from "./pages/FieldNotes/FieldNotes";
+import FieldNote from "./pages/FieldNote/FieldNote";
+import CurrentFocusPage from "./pages/CurrentFocusPage/CurrentFocusPage";
+import AdminLogin from "./pages/Admin/Login";
+import AdminDashboard from "./pages/Admin/Dashboard";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function App() {
-	// Lenis smooth scroll synced with GSAP ticker
+// Resets scroll position to top on every route change
+function ScrollToTop() {
+	const { pathname } = useLocation();
 	useEffect(() => {
-		const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1 });
+		window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+	}, [pathname]);
+	return null;
+}
 
-		lenis.on("scroll", ScrollTrigger.update);
-
-		const tick = (time) => lenis.raf(time * 1000);
-		gsap.ticker.add(tick);
-		gsap.ticker.lagSmoothing(0);
-
-		return () => {
-			lenis.destroy();
-			gsap.ticker.remove(tick);
-		};
-	}, []);
-
-	// Central GSAP ScrollTrigger-based reveal for all .rv elements
-	useScrollReveal();
-
+export default function App() {
 	return (
-		<>
-			<Cursor />
-			<Navbar />
-			<Sidebar />
-			<main>
-				<Hero />
-				<About />
-				<Skills />
-				<Projects />
-				<Contact />
-				<Footer />
-			</main>
-		</>
+		<BrowserRouter>
+			<ScrollToTop />
+			<Routes>
+				{/* Admin — standalone, no editorial layout */}
+				<Route path="/admin" element={<AdminLogin />} />
+				<Route path="/admin/dashboard" element={<AdminDashboard />} />
+
+				{/* Public — all wrapped in PageLayout */}
+				<Route element={<PageLayout />}>
+					<Route path="/" element={<FrontPage />} />
+					<Route path="/work" element={<SelectedWork />} />
+					<Route path="/work/:slug" element={<CaseStudy />} />
+					<Route path="/about" element={<TheEngineer />} />
+					<Route path="/philosophy" element={<Philosophy />} />
+					<Route path="/career" element={<CareerDesk />} />
+					<Route path="/notes" element={<FieldNotes />} />
+					<Route path="/notes/:slug" element={<FieldNote />} />
+					<Route path="/now" element={<CurrentFocusPage />} />
+				</Route>
+			</Routes>
+		</BrowserRouter>
 	);
 }

@@ -1,0 +1,40 @@
+@use "../../styles/mixins" as *;
+
+.philosophy-page {
+	padding-block: var(--space-3xl);
+
+	&__header {
+		padding-bottom: var(--space-2xl);
+		max-width: 68ch;
+	}
+
+	&__eyebrow {
+		display: block;
+		color: var(--ink-tertiary);
+		letter-spacing: 0.14em;
+		margin-bottom: var(--space-md);
+	}
+
+	&__title {
+		font-family: var(--font-serif);
+		font-size: var(--text-h1);
+		font-weight: 700;
+		line-height: 1.1;
+		letter-spacing: -0.01em;
+		color: var(--ink);
+		margin: 0 0 var(--space-lg);
+	}
+
+	&__deck {
+		font-family: var(--font-sans);
+		font-size: var(--text-lead);
+		line-height: 1.6;
+		color: var(--ink-secondary);
+		margin: 0;
+	}
+
+	&__body {
+		padding-top: var(--space-2xl);
+		max-width: 720px;
+	}
+}

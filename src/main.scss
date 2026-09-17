@@ -1,17 +1,14 @@
-@use "./styles/variables" as *;
-@use "./styles/theme";
+// 1. CSS custom properties — emitted first so :root lands at the top
+@use "./styles/variables";
+
+// 2. Reset — uses var() defined above + literal fallbacks
 @use "./styles/reset";
-@use "./styles/animations";
+
+// 3. Typography
 @use "./styles/typography";
-@use "./styles/mixins" as *;
 
-// ── Global layout ─────────────────────────────────────────────
-section {
-	scroll-margin-top: 70px;
-}
+// 4. Grid
+@use "./styles/grid";
 
-@include mobile {
-	main {
-		padding: 0 30px;
-	}
-}
+// 5. Utilities
+@use "./styles/utilities";

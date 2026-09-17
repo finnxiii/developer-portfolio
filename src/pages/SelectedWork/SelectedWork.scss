@@ -1,0 +1,49 @@
+@use "../../styles/mixins" as *;
+
+.selected-work {
+	padding-block: var(--space-3xl);
+
+	&__header {
+		padding-bottom: var(--space-2xl);
+	}
+
+	&__eyebrow {
+		display: block;
+		color: var(--ink-tertiary);
+		letter-spacing: 0.14em;
+		margin-bottom: var(--space-md);
+	}
+
+	&__title {
+		font-family: var(--font-serif);
+		font-size: var(--text-h1);
+		font-weight: 700;
+		line-height: 1.1;
+		color: var(--ink);
+		margin: 0 0 var(--space-lg);
+		letter-spacing: -0.01em;
+	}
+
+	&__deck {
+		font-family: var(--font-sans);
+		font-size: var(--text-lead);
+		line-height: 1.6;
+		color: var(--ink-secondary);
+		max-width: 60ch;
+		margin: 0;
+	}
+
+	&__grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		margin-top: 0;
+
+		@include above-mobile {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		@include desktop {
+			grid-template-columns: 1fr 1fr 1fr;
+		}
+	}
+}

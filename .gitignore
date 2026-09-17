@@ -23,7 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 
+# Cloudflare
+.wrangler/
+
 # Planning docs (local only)
 CLAUDE.md
 PORTFOLIO_ROADMAP.md
+DESIGN_BRIEF.md
 .claude/

@@ -1,54 +1,51 @@
-// ── CSS custom properties (runtime, theme-switchable) ─────────
-// Legacy variables — used by existing SCSS, kept for Phase 0 compatibility
+// ── FINNXIII.DEV V2 — CSS Custom Properties ─────────────────────
+// This file outputs only the :root block — no SCSS abstracts.
+// SCSS variables and breakpoint mixins live in _mixins.scss.
+
 :root {
-	--white: #fafcff;
-	--soft: #f0f4ff;
-	--text: #0a0a0a;
-	--muted: rgba(10, 10, 10, 0.5);
-	--dim: rgba(10, 10, 10, 0.3);
-	--border: rgba(10, 10, 10, 0.07);
+	// Palette
+	--paper:          #F5F1E8;
+	--ink:            #161616;
+	--ink-secondary:  #4C4A46;
+	--ink-tertiary:   #6B6866;  /* darkened from #8A8680 — ~4.7:1 on --paper, passes WCAG AA */
+	--rule:           #C9C1B5;
+	--rule-light:     #DDD8D0;
+	--accent:         #8B4513;
+	--accent-hover:   #6B3410;
+	--surface:        #EEEAE2;
+	--code-bg:        #F0ECE4;
 
-	--c-pink: #ff2d78;
-	--c-blue: #2d7fff;
-	--c-green: #2dffc8;
+	// Typography
+	--font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+	--font-sans:  'Inter', -apple-system, system-ui, sans-serif;
 
-	--c-sidebar: var(--c-blue);
+	// Type scale
+	--text-masthead: clamp(32px, 6vw, 64px);
+	--text-h1:       clamp(28px, 4vw, 48px);
+	--text-h2:       clamp(22px, 3vw, 32px);
+	--text-h3:       clamp(18px, 2.5vw, 24px);
+	--text-lead:     18px;
+	--text-body:     16px;
+	--text-small:    14px;
+	--text-meta:     12px;
+	--text-label:    11px;
 
-	--grad-brand: linear-gradient(135deg, var(--c-pink), var(--c-blue));
-	--grad-brand-v: linear-gradient(to bottom, var(--c-pink), var(--c-blue));
+	// Spacing
+	--space-xs:  4px;
+	--space-sm:  8px;
+	--space-md:  16px;
+	--space-lg:  24px;
+	--space-xl:  40px;
+	--space-2xl: 64px;
+	--space-3xl: 96px;
 
-	--font-sans: "Inter", -apple-system, "SF Pro Display", system-ui, sans-serif;
+	// Grid
+	--grid-max:    1240px;
+	--grid-gutter: 20px;
 
-	// ── Chronicle design tokens (light mode defaults) ──────────
-	--bg-primary:     #fafaf8;
-	--bg-secondary:   #f0f0ee;
-	--bg-tertiary:    #e8e8e5;
-	--border-col:     #dcdcd8;
-	--text-primary:   #1a1a1a;
-	--text-secondary: #666666;
-	--text-tertiary:  #999999;
-	--accent:         #5a7068;
-	--accent-hover:   #4a5f58;
-	--accent-muted:   rgba(90, 112, 104, 0.18);
-
-	// Chronicle typography
-	--font-display: "Plus Jakarta Sans", sans-serif;
-	--font-mono:    "JetBrains Mono", monospace;
-
-	// Chronicle layout
-	--section-gap:   clamp(120px, 15vh, 200px);
-	--content-max:   640px;
-	--content-wide:  1080px;
-	--page-padding:  clamp(20px, 5vw, 80px);
+	// Motion
+	--dur-ui:     150ms;
+	--dur-hover:  200ms;
+	--dur-reveal: 400ms;
+	--ease-out:   cubic-bezier(0.0, 0.0, 0.2, 1);
 }
-
-// ── SCSS build-time variables ─────────────────────────────────
-$spring: cubic-bezier(0.22, 1, 0.36, 1);
-$ease: cubic-bezier(0.4, 0, 0.2, 1);
-$radius-sm: 8px;
-$radius-md: 12px;
-$radius-lg: 16px;
-$radius-pill: 980px;
-$navbar-h: 70px;
-$sidebar-w: 40px;
-
