@@ -1,0 +1,102 @@
+@use "../../../styles/mixins" as *;
+
+.footer {
+	border-top: 0.5px solid var(--rule);
+	margin-top: var(--space-3xl);
+	padding-block: var(--space-2xl);
+
+	&__inner {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xl);
+	}
+
+	&__top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-lg);
+
+		@include mobile {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+
+	&__signoff {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+	}
+
+	&__wordmark {
+		font-family: var(--font-serif);
+		font-size: var(--text-h3);
+		font-weight: 700;
+		color: var(--ink);
+		letter-spacing: -0.01em;
+	}
+
+	&__edition {
+		color: var(--ink-tertiary);
+		letter-spacing: 0.15em;
+	}
+
+	&__links {
+		display: flex;
+		gap: var(--space-lg);
+		flex-wrap: wrap;
+	}
+
+	&__link {
+		font-family: var(--font-sans);
+		font-size: var(--text-small);
+		font-weight: 500;
+		color: var(--ink-secondary);
+		transition: color var(--dur-hover);
+
+		&:hover {
+			color: var(--accent);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: 2px;
+			border-radius: 2px;
+		}
+	}
+
+	&__bottom {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-top: var(--space-lg);
+		border-top: 0.5px solid var(--rule-light);
+
+		@include mobile {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: var(--space-sm);
+		}
+	}
+
+	&__copy {
+		color: var(--ink-tertiary);
+	}
+
+	&__back-to-top {
+		color: var(--ink-tertiary);
+		transition: color var(--dur-hover);
+		letter-spacing: 0.08em;
+
+		&:hover {
+			color: var(--accent);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: 2px;
+			border-radius: 2px;
+		}
+	}
+}

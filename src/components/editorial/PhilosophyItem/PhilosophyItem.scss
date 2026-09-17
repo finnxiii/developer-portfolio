@@ -1,0 +1,58 @@
+.philosophy-item {
+	padding: var(--space-lg) 0;
+	border-top: 0.5px solid var(--rule);
+
+	&:first-child {
+		border-top: none;
+		padding-top: 0;
+	}
+
+	&__principle {
+		font-family: var(--font-serif);
+		font-size: var(--text-h3);
+		font-weight: 600;
+		line-height: 1.2;
+		color: var(--ink);
+		margin: 0 0 var(--space-sm);
+	}
+
+	&__position {
+		font-family: var(--font-sans);
+		font-size: var(--text-small);
+		line-height: 1.6;
+		color: var(--ink-secondary);
+		margin: 0 0 var(--space-sm);
+	}
+
+	&__example {
+		font-family: var(--font-sans);
+		font-size: var(--text-small);
+		line-height: 1.6;
+		color: var(--ink-tertiary);
+		font-style: italic;
+		margin: 0 0 var(--space-sm);
+		padding-left: var(--space-md);
+		border-left: 2px solid var(--rule);
+	}
+
+	&__link {
+		font-family: var(--font-sans);
+		font-size: var(--text-meta);
+		font-weight: 500;
+		color: var(--accent);
+		text-decoration: none;
+		border-bottom: 1px solid transparent;
+		padding-bottom: 1px;
+		transition: border-color var(--dur-hover);
+
+		&:hover {
+			border-color: var(--accent);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: 4px;
+			border-radius: 1px;
+		}
+	}
+}

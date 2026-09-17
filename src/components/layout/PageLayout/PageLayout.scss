@@ -1,0 +1,13 @@
+@use "../../../styles/mixins" as *;
+
+.page-layout {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	background: var(--paper);
+
+	&__main {
+		flex: 1;
+		padding-block: var(--space-2xl);
+	}
+}

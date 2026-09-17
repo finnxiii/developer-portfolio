@@ -1,0 +1,86 @@
+@use "../../styles/mixins" as *;
+
+.career-desk {
+	padding-block: var(--space-3xl);
+
+	&__header {
+		padding-bottom: var(--space-2xl);
+	}
+
+	&__eyebrow {
+		display: block;
+		color: var(--ink-tertiary);
+		letter-spacing: 0.14em;
+		margin-bottom: var(--space-md);
+	}
+
+	&__title {
+		font-family: var(--font-serif);
+		font-size: var(--text-h1);
+		font-weight: 700;
+		line-height: 1.1;
+		letter-spacing: -0.01em;
+		color: var(--ink);
+		margin: 0 0 var(--space-lg);
+	}
+
+	&__deck {
+		font-family: var(--font-sans);
+		font-size: var(--text-lead);
+		line-height: 1.6;
+		color: var(--ink-secondary);
+		max-width: 60ch;
+		margin: 0;
+	}
+
+	&__cta {
+		margin-bottom: var(--space-xl);
+	}
+
+	&__cv-link {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-sm);
+		font-family: var(--font-sans);
+		font-size: var(--text-small);
+		font-weight: 600;
+		color: var(--paper);
+		background: var(--accent);
+		padding: 10px 20px;
+		text-decoration: none;
+		border: 1px solid var(--accent);
+		transition: background var(--dur-hover), color var(--dur-hover);
+
+		&:hover {
+			background: var(--accent-hover);
+			border-color: var(--accent-hover);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: 4px;
+			border-radius: 1px;
+		}
+	}
+
+	&__timeline {
+		padding-top: var(--space-xl);
+		max-width: 720px;
+	}
+
+	&__footer-cta {
+		padding-top: var(--space-xl);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+		align-items: flex-start;
+	}
+
+	&__footer-note {
+		font-family: var(--font-sans);
+		font-size: var(--text-small);
+		color: var(--ink-tertiary);
+		margin: 0;
+		max-width: 52ch;
+	}
+}

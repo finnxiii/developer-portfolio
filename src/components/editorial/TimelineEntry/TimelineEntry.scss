@@ -1,0 +1,67 @@
+.timeline-entry {
+	padding: var(--space-lg) 0;
+	border-top: 0.5px solid var(--rule);
+
+	&:first-child {
+		border-top: none;
+		padding-top: 0;
+	}
+
+	&__head {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+		margin-bottom: var(--space-sm);
+	}
+
+	&__date {
+		font-family: var(--font-sans);
+		font-size: var(--text-meta);
+		color: var(--ink-tertiary);
+	}
+
+	&__now {
+		color: var(--accent);
+		letter-spacing: 0.1em;
+	}
+
+	&__org {
+		font-family: var(--font-sans);
+		font-size: var(--text-body);
+		font-weight: 600;
+		color: var(--ink);
+		margin: 0 0 2px;
+	}
+
+	&__role {
+		font-family: var(--font-sans);
+		font-size: var(--text-small);
+		color: var(--ink-secondary);
+		margin: 0 0 var(--space-sm);
+	}
+
+	&__bullets {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+
+		li {
+			font-family: var(--font-sans);
+			font-size: var(--text-small);
+			line-height: 1.55;
+			color: var(--ink-secondary);
+			padding-left: var(--space-md);
+			position: relative;
+
+			&::before {
+				content: "—";
+				position: absolute;
+				left: 0;
+				color: var(--rule);
+			}
+		}
+	}
+}

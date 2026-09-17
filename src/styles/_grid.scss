@@ -1,0 +1,48 @@
+@use "./mixins" as *;
+
+// ── Grid system ─────────────────────────────────────────────────
+
+.container {
+	width: 100%;
+	max-width: var(--grid-max);
+	margin-inline: auto;
+	padding-inline: var(--space-xl);
+
+	@include mobile {
+		padding-inline: var(--space-md);
+	}
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	gap: var(--grid-gutter);
+
+	@include tablet {
+		grid-template-columns: repeat(6, 1fr);
+	}
+
+	@include mobile {
+		grid-template-columns: 1fr;
+	}
+}
+
+// Common column spans
+.col-7  { grid-column: span 7; }
+.col-8  { grid-column: span 8; }
+.col-5  { grid-column: span 5; }
+.col-4  { grid-column: span 4; }
+.col-6  { grid-column: span 6; }
+.col-12 { grid-column: span 12; }
+
+@include tablet {
+	.col-7, .col-8, .col-5, .col-4, .col-6, .col-12 {
+		grid-column: span 6;
+	}
+}
+
+@include mobile {
+	.col-7, .col-8, .col-5, .col-4, .col-6, .col-12 {
+		grid-column: 1 / -1;
+	}
+}
