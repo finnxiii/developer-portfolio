@@ -13,7 +13,7 @@ export default function PhilosophyItem({ principle, position, example, projectLi
 			)}
 			{projectLink && (
 				<Link to={projectLink} className="philosophy-item__link">
-					See in practice →
+					See in practice <span className="arrow">→</span>
 				</Link>
 			)}
 		</div>

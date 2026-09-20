@@ -12,9 +12,10 @@ html {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	scroll-behavior: smooth;
-	// Hardcoded fallback — guarantees cream background even if CSS vars fail
-	background-color: #F5F1E8;
+	background-color: #FAFAF8;
+	background-color: var(--paper, #FAFAF8);
 	color: #161616;
+	color: var(--ink, #161616);
 }
 
 // Honour vestibular motion preferences for smooth scroll
@@ -26,16 +27,15 @@ html {
 
 // Global keyboard focus ring — catches any interactive element not styled individually
 :focus-visible {
-	outline: 2px solid var(--accent, #8B4513);
+	outline: 2px solid var(--accent, #2573B5);
 	outline-offset: 3px;
 	border-radius: 2px;
 }
 
 body {
 	font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
-	// Literal fallback first, then var() so CSS vars override cleanly
-	background-color: #F5F1E8;
-	background-color: var(--paper, #F5F1E8);
+	background-color: #FAFAF8;
+	background-color: var(--paper, #FAFAF8);
 	color: #161616;
 	color: var(--ink, #161616);
 	overflow-x: hidden;

@@ -3,10 +3,39 @@
 .article-card {
 	padding: var(--space-lg) 0;
 	border-top: 0.5px solid var(--rule);
+	transition: background var(--dur-hover);
+
+	&:hover {
+		background: var(--surface-dark);
+	}
 
 	&:first-child {
 		border-top: none;
 		padding-top: 0;
+	}
+
+	// ── Image ──────────────────────────────────────────────────────
+
+	&__image-wrap {
+		margin-bottom: var(--space-md);
+		overflow: hidden;
+		border-radius: 2px;
+	}
+
+	&__image {
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		object-fit: cover;
+		display: block;
+		border-radius: 2px;
+		outline: 0.5px solid var(--rule);
+	}
+
+	// ── Content ────────────────────────────────────────────────────
+
+	&__content {
+		display: flex;
+		flex-direction: column;
 	}
 
 	&__meta {
@@ -66,11 +95,12 @@
 	&__footer {
 		display: flex;
 		align-items: center;
+		margin-top: auto;
 	}
 
 	&__link {
 		font-family: var(--font-sans);
-		font-size: var(--text-small);
+		font-size: 14px;
 		font-weight: 500;
 		color: var(--accent);
 		text-decoration: none;
@@ -89,7 +119,9 @@
 		}
 	}
 
-	// Lead variant — larger treatment
+	// ── Lead variant ───────────────────────────────────────────────
+	// On desktop: image left (7 cols) | vertical rule | text right (5 cols)
+
 	&--lead {
 		.article-card__headline {
 			font-size: clamp(22px, 3vw, 32px);
@@ -97,6 +129,33 @@
 
 		.article-card__deck {
 			font-size: var(--text-lead);
+		}
+
+		// Only apply side-by-side grid when an image is present
+		@include above-mobile {
+			&:has(.article-card__image-wrap) {
+				display: grid;
+				grid-template-columns: 7fr 5fr;
+				gap: 0;
+				align-items: start;
+
+				.article-card__image-wrap {
+					margin-bottom: 0;
+					padding-right: var(--space-xl);
+					border-right: 0.5px solid var(--rule);
+				}
+
+				.article-card__content {
+					padding-left: var(--space-xl);
+					padding-top: 0;
+				}
+			}
+		}
+
+		@include mobile {
+			.article-card__image-wrap {
+				margin-bottom: var(--space-lg);
+			}
 		}
 	}
 }

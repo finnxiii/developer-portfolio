@@ -35,3 +35,14 @@
 .rv {
 	will-change: transform, opacity;
 }
+
+// Arrow animation — wrap the → character in <span class="arrow"> inside any link/button
+.arrow {
+	display: inline-block;
+	transition: transform var(--dur-hover) var(--ease-out);
+}
+
+a:hover .arrow,
+button:hover .arrow {
+	transform: translateX(5px);
+}

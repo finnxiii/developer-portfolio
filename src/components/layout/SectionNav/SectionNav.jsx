@@ -5,8 +5,6 @@ const NAV_ITEMS = [
 	{ to: "/", label: "Front Page", end: true },
 	{ to: "/work", label: "Selected Work" },
 	{ to: "/about", label: "The Engineer" },
-	{ to: "/philosophy", label: "Philosophy" },
-	{ to: "/career", label: "Career Desk" },
 	{ to: "/notes", label: "Field Notes" },
 	{ to: "/now", label: "Now" },
 ];

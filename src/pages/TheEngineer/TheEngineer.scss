@@ -9,8 +9,12 @@
 
 	&__eyebrow {
 		display: block;
+		font-family: var(--font-sans);
+		font-size: var(--text-label);
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
 		color: var(--ink-tertiary);
-		letter-spacing: 0.14em;
 		margin-bottom: var(--space-md);
 	}
 
@@ -38,7 +42,7 @@
 		margin: 0;
 	}
 
-	// ── Body grid ────────────────────────────────────────────────
+	// ── Bio + Sidebar grid ──────────────────────────────────────────
 
 	&__body {
 		display: grid;
@@ -52,7 +56,7 @@
 		}
 	}
 
-	// ── Sections ─────────────────────────────────────────────────
+	// ── Bio sections ────────────────────────────────────────────────
 
 	&__section {
 		padding: var(--space-xl) 0;
@@ -66,8 +70,12 @@
 
 	&__section-title {
 		display: block;
+		font-family: var(--font-sans);
+		font-size: var(--text-label);
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
 		color: var(--ink-tertiary);
-		letter-spacing: 0.14em;
 		margin-bottom: var(--space-md);
 	}
 
@@ -105,7 +113,7 @@
 		}
 	}
 
-	// ── Sidebar ───────────────────────────────────────────────────
+	// ── Sidebar ─────────────────────────────────────────────────────
 
 	&__contact {
 		border: 0.5px solid var(--rule);
@@ -115,8 +123,12 @@
 
 	&__contact-label {
 		display: block;
+		font-family: var(--font-sans);
+		font-size: var(--text-label);
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
 		color: var(--ink-tertiary);
-		letter-spacing: 0.14em;
 		margin-bottom: var(--space-lg);
 	}
 
@@ -153,5 +165,117 @@
 			font-weight: 600;
 			color: var(--accent);
 		}
+	}
+
+	// ── Chapter sections (Philosophy, Career) ────────────────────────
+
+	&__chapter-label {
+		font-family: var(--font-sans);
+		font-size: var(--text-label);
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--ink-tertiary);
+		margin-bottom: var(--space-md);
+		display: block;
+	}
+
+	&__chapter-deck {
+		font-family: var(--font-sans);
+		font-size: var(--text-body);
+		line-height: 1.6;
+		color: var(--ink-secondary);
+		max-width: 60ch;
+		margin: 0 0 var(--space-2xl);
+	}
+
+	// ── Philosophy section ───────────────────────────────────────────
+
+	&__philosophy {
+		padding-block: var(--space-3xl);
+
+		@include mobile {
+			padding-block: var(--space-2xl);
+		}
+	}
+
+	&__philosophy-list {
+		display: flex;
+		flex-direction: column;
+	}
+
+	// ── Career section ───────────────────────────────────────────────
+
+	&__career {
+		padding-block: var(--space-3xl);
+
+		@include mobile {
+			padding-block: var(--space-2xl);
+		}
+	}
+
+	&__career-header {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: var(--space-xl);
+		margin-bottom: var(--space-2xl);
+
+		@include mobile {
+			flex-direction: column;
+			gap: var(--space-lg);
+		}
+	}
+
+	&__cv-btn {
+		display: inline-block;
+		font-family: var(--font-sans);
+		font-size: var(--text-small);
+		font-weight: 600;
+		color: var(--accent);
+		text-decoration: none;
+		border: 1.5px solid var(--accent);
+		padding: var(--space-sm) var(--space-lg);
+		white-space: nowrap;
+		transition: background var(--dur-hover), color var(--dur-hover);
+
+		&:hover {
+			background: var(--accent);
+			color: var(--paper);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: 4px;
+		}
+	}
+
+	&__timeline {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__career-footer {
+		margin-top: var(--space-2xl);
+		padding-top: var(--space-xl);
+		border-top: 0.5px solid var(--rule);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-xl);
+
+		@include mobile {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: var(--space-lg);
+		}
+	}
+
+	&__career-note {
+		font-family: var(--font-sans);
+		font-size: var(--text-small);
+		color: var(--ink-tertiary);
+		margin: 0;
+		max-width: 50ch;
 	}
 }

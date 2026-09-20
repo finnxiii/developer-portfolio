@@ -23,7 +23,7 @@ export default function SelectedWork() {
 			/>
 			<div className="container">
 				<header className="selected-work__header rv">
-					<span className="selected-work__eyebrow label-text">Selected Work</span>
+					<span className="selected-work__eyebrow">Selected Work</span>
 					<h1 className="selected-work__title">
 						Projects worth explaining.
 					</h1>
@@ -34,20 +34,25 @@ export default function SelectedWork() {
 
 				<Rule />
 
+				{/* Lead: full-width horizontal layout */}
 				{leadProject && (
 					<div className="rv" data-reveal-delay="0.05">
 						<ArticleCard project={leadProject} lead headingAs="h2" />
 					</div>
 				)}
 
+				{/* Rest: 2-column grid with vertical rules */}
 				{rest.length > 0 && (
-					<div className="selected-work__grid">
-						{rest.map((p, i) => (
-							<div key={p.slug} className="rv" data-reveal-delay={0.08 + i * 0.07}>
-								<ArticleCard project={p} headingAs="h2" />
-							</div>
-						))}
-					</div>
+					<>
+						<Rule />
+						<div className="selected-work__grid">
+							{rest.map((p, i) => (
+								<div key={p.slug} className="selected-work__col rv" data-reveal-delay={0.08 + i * 0.07}>
+									<ArticleCard project={p} headingAs="h2" />
+								</div>
+							))}
+						</div>
+					</>
 				)}
 			</div>
 		</div>

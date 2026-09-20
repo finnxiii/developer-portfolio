@@ -13,7 +13,7 @@ export default function StoryLead({ eyebrow, headline, standfirst, ctaLabel, cta
 			)}
 			{ctaTo && ctaLabel && (
 				<Link to={ctaTo} className="story-lead__cta">
-					{ctaLabel}
+					{ctaLabel} <span className="arrow">→</span>
 				</Link>
 			)}
 		</div>
