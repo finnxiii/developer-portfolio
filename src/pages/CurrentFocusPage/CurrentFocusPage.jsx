@@ -16,7 +16,7 @@ export default function CurrentFocusPage() {
 	return (
 		<div className="current-focus-page" ref={containerRef}>
 			<SEOHead
-				title="Current Focus"
+				title="Now"
 				description={`A dated snapshot of what is on the desk right now — ${currentFocus.date}. Building, learning, and exploring.`}
 			/>
 			<div className="container">

@@ -3,17 +3,18 @@
 // SCSS variables and breakpoint mixins live in _mixins.scss.
 
 :root {
-	// Palette
-	--paper:          #F5F1E8;
+	// Palette — light (default)
+	--paper:          #FAFAF8;
 	--ink:            #161616;
 	--ink-secondary:  #4C4A46;
-	--ink-tertiary:   #6B6866;  /* darkened from #8A8680 — ~4.7:1 on --paper, passes WCAG AA */
-	--rule:           #C9C1B5;
-	--rule-light:     #DDD8D0;
-	--accent:         #8B4513;
-	--accent-hover:   #6B3410;
-	--surface:        #EEEAE2;
-	--code-bg:        #F0ECE4;
+	--ink-tertiary:   #6B6866;
+	--rule:           #D4D2CE;
+	--rule-light:     #E2E0DC;
+	--accent:         #2573B5;
+	--accent-hover:   #1D6AAA;
+	--surface:        #F0EFEC;
+	--surface-dark:   #E8E7E4;
+	--code-bg:        #F0EFEC;
 
 	// Typography
 	--font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
@@ -48,4 +49,19 @@
 	--dur-hover:  200ms;
 	--dur-reveal: 400ms;
 	--ease-out:   cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+// ── Dark mode overrides ───────────────────────────────────────────
+:root[data-theme="dark"] {
+	--paper:         #1A1918;
+	--ink:           #E8E4DC;
+	--ink-secondary: #B0ACA4;
+	--ink-tertiary:  #7E7A74;
+	--rule:          #3A3835;
+	--rule-light:    #2E2C2A;
+	--accent:        #5B9BD5;
+	--accent-hover:  #7AB0E0;
+	--surface:       #242220;
+	--surface-dark:  #2E2C2A;
+	--code-bg:       #242220;
 }

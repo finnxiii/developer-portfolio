@@ -3,27 +3,34 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- Anti-flash: apply saved theme before first paint -->
+		<script>
+			(function(){var s=localStorage.getItem('theme');var t=s||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);})();
+		</script>
 
 		<!-- Favicons -->
-		<link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
-		<link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
-		<link rel="shortcut icon" href="/favicon/favicon.ico" />
+		<link rel="icon" type="image/x-icon" href="/favicon/favicon.ico" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+		<link rel="manifest" href="/favicon/site.webmanifest" />
+		<meta name="theme-color" content="#FAFAF8" />
 
 		<!-- Default title / SEO — overridden per-route via SEOHead component -->
-		<title>FINNXIII.DEV — The Engineering Edition</title>
+		<title>Naing Htoo Lwin | Software Engineer</title>
 		<meta name="description" content="Personal engineering portfolio of Naing Htoo Lwin — selected builds, case studies, engineering philosophy, and field notes." />
 		<meta name="author" content="Naing Htoo Lwin" />
 
 		<!-- Open Graph -->
 		<meta property="og:site_name" content="FINNXIII.DEV" />
 		<meta property="og:type" content="website" />
-		<meta property="og:title" content="FINNXIII.DEV — The Engineering Edition" />
+		<meta property="og:title" content="Naing Htoo Lwin | Software Engineer" />
 		<meta property="og:description" content="Personal engineering portfolio of Naing Htoo Lwin — selected builds, case studies, engineering philosophy, and field notes." />
 		<meta property="og:image" content="/images/og/default.png" />
 
 		<!-- Twitter / X -->
 		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content="FINNXIII.DEV — The Engineering Edition" />
+		<meta name="twitter:title" content="Naing Htoo Lwin | Software Engineer" />
 		<meta name="twitter:description" content="Personal engineering portfolio of Naing Htoo Lwin." />
 		<meta name="twitter:image" content="/images/og/default.png" />
 

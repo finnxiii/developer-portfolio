@@ -1,10 +1,7 @@
 @use "../../styles/mixins" as *;
 
-// ── Section spacing ──────────────────────────────────────────────
-
 .front-page {
 
-	// Consistent vertical breathing between sections
 	&__hero,
 	&__work,
 	&__mid,
@@ -16,21 +13,30 @@
 		}
 	}
 
+	// Alternating section backgrounds — surface sections go edge-to-edge
+	&__work,
+	&__bottom {
+		background: var(--surface);
+	}
+
 	&__rule {
-		// Rules between major sections get extra margin so the page breathes
 		margin-block: 0;
 	}
 
-	// ── Section label (eyebrow-style H2) ────────────────────────
+	// ── Section labels (eyebrow-style H2) ──────────────────────────
 
 	&__section-label {
+		font-family: var(--font-sans);
+		font-size: var(--text-label);
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
 		color: var(--ink-tertiary);
-		letter-spacing: 0.14em;
 		margin-bottom: var(--space-xl);
 		display: block;
 	}
 
-	// ── "See all" row ────────────────────────────────────────────
+	// ── "See all" row ───────────────────────────────────────────────
 
 	&__see-all {
 		margin-top: var(--space-xl);
@@ -38,7 +44,7 @@
 
 	&__all-link {
 		font-family: var(--font-sans);
-		font-size: var(--text-small);
+		font-size: 14px;
 		font-weight: 500;
 		color: var(--accent);
 		text-decoration: none;
@@ -57,7 +63,7 @@
 		}
 	}
 
-	// ── D-E: Hero grid ───────────────────────────────────────────
+	// ── Hero grid ───────────────────────────────────────────────────
 
 	&__hero-grid {
 		display: grid;
@@ -71,33 +77,71 @@
 		}
 	}
 
-	// ── F: Work grid ─────────────────────────────────────────────
+	// ProfileCard gets a left border on desktop (vertical rule separator)
+	&__profile-col {
+		@include above-mobile {
+			border-left: 0.5px solid var(--rule);
+			padding-left: var(--space-2xl);
+		}
+	}
 
-	&__work-grid {
+	// ── Work section: lead + newspaper columns ──────────────────────
+
+	// Lead card is handled by article-card--lead styles (image left | rule | text right)
+
+	// Supporting projects: equal columns with vertical rules between
+	&__work-columns {
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 0;
+		margin-top: 0;
 
 		@include above-mobile {
-			grid-template-columns: 8fr 4fr;
-			gap: var(--space-2xl);
-			align-items: start;
+			grid-template-columns: 1fr 1fr;
+		}
+
+		@include desktop {
+			grid-template-columns: 1fr 1fr 1fr;
 		}
 	}
 
-	&__work-secondary {
-		display: flex;
-		flex-direction: column;
+	&__work-col {
+		padding: var(--space-lg) 0;
 
-		// On mobile the secondary cards flow below the lead
+		@include above-mobile {
+			padding: var(--space-lg) var(--space-xl);
+
+			// First column has no left padding
+			&:first-child {
+				padding-left: 0;
+			}
+
+			// Vertical rule between columns (left border on non-first columns)
+			& + & {
+				border-left: 0.5px solid var(--rule);
+			}
+
+			// Remove the top rule from article-card inside columns (we use column separation instead)
+			.article-card {
+				border-top: none;
+				padding-top: 0;
+			}
+		}
+
 		@include mobile {
-			border-top: 0.5px solid var(--rule);
-			margin-top: var(--space-lg);
-			padding-top: var(--space-lg);
+			// On mobile, horizontal rule between stacked items
+			& + & {
+				border-top: 0.5px solid var(--rule);
+			}
+
+			.article-card {
+				border-top: none;
+				padding-top: 0;
+			}
 		}
 	}
 
-	// ── G-H: Philosophy + Career ─────────────────────────────────
+	// ── Philosophy + Career ─────────────────────────────────────────
 
 	&__mid-grid {
 		display: grid;
@@ -106,19 +150,30 @@
 
 		@include desktop {
 			grid-template-columns: 5fr 7fr;
-			gap: var(--space-2xl);
+			gap: 0;
 			align-items: start;
 		}
-	}
 
-	// On tablet: two equal columns
-	@include tablet {
-		&__mid-grid {
+		@include tablet {
 			grid-template-columns: 1fr 1fr;
+			gap: 0;
 		}
 	}
 
-	// ── I: Field Notes + Current Focus ───────────────────────────
+	&__philosophy {
+		@include above-mobile {
+			padding-right: var(--space-xl);
+			border-right: 0.5px solid var(--rule);
+		}
+	}
+
+	&__career {
+		@include above-mobile {
+			padding-left: var(--space-xl);
+		}
+	}
+
+	// ── Field Notes + Current Focus ─────────────────────────────────
 
 	&__notes-grid {
 		display: grid;
@@ -127,11 +182,27 @@
 
 		@include desktop {
 			grid-template-columns: 7fr 4fr;
+			gap: 0;
 			align-items: start;
 		}
 
 		@include tablet {
 			grid-template-columns: 1fr 1fr;
+			gap: 0;
+		}
+	}
+
+	&__notes {
+		@include above-mobile {
+			padding-right: var(--space-xl);
+			border-right: 0.5px solid var(--rule);
+		}
+	}
+
+	// The current focus block (second column in notes grid) gets padding-left on desktop
+	&__notes-grid > :last-child {
+		@include above-mobile {
+			padding-left: var(--space-xl);
 		}
 	}
 }

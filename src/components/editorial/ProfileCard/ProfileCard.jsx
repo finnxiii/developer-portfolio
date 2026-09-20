@@ -22,7 +22,7 @@ export default function ProfileCard({ profile }) {
 				</ul>
 			)}
 			<Link to="/about" className="profile-card__link">
-				Read full profile →
+				Read full profile <span className="arrow">→</span>
 			</Link>
 		</aside>
 	);

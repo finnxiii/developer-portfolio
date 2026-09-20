@@ -12,15 +12,15 @@
 
 	&__headline {
 		font-family: var(--font-serif);
-		font-size: var(--text-h1);
+		font-size: clamp(36px, 5vw, 60px);
 		font-weight: 700;
-		line-height: 1.1;
+		line-height: 1.05;
 		color: var(--ink);
-		letter-spacing: -0.01em;
+		letter-spacing: -0.02em;
 		margin: 0;
 
 		@include mobile {
-			font-size: clamp(26px, 7vw, 38px);
+			font-size: clamp(28px, 8vw, 42px);
 		}
 	}
 
