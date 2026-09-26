@@ -1,208 +1,688 @@
 @use "../../styles/mixins" as *;
 
-.front-page {
+// ── §1 Lead Story ─────────────────────────────────────────────────
 
-	&__hero,
-	&__work,
-	&__mid,
-	&__bottom {
-		padding-block: var(--space-3xl);
+.fp-lead {
+	padding-block: var(--space-3xl) var(--space-2xl);
 
-		@include mobile {
-			padding-block: var(--space-2xl);
-		}
-	}
+	@include mobile { padding-block: var(--space-2xl) var(--space-xl); }
 
-	// Alternating section backgrounds — surface sections go edge-to-edge
-	&__work,
-	&__bottom {
-		background: var(--surface);
-	}
-
-	&__rule {
-		margin-block: 0;
-	}
-
-	// ── Section labels (eyebrow-style H2) ──────────────────────────
-
-	&__section-label {
-		font-family: var(--font-sans);
-		font-size: var(--text-label);
-		font-weight: 500;
-		text-transform: uppercase;
-		letter-spacing: 0.12em;
-		color: var(--ink-tertiary);
-		margin-bottom: var(--space-xl);
-		display: block;
-	}
-
-	// ── "See all" row ───────────────────────────────────────────────
-
-	&__see-all {
-		margin-top: var(--space-xl);
-	}
-
-	&__all-link {
-		font-family: var(--font-sans);
-		font-size: 14px;
-		font-weight: 500;
-		color: var(--accent);
-		text-decoration: none;
-		border-bottom: 1px solid transparent;
-		padding-bottom: 1px;
-		transition: border-color var(--dur-hover);
-
-		&:hover {
-			border-color: var(--accent);
-		}
-
-		&:focus-visible {
-			outline: 2px solid var(--accent);
-			outline-offset: 4px;
-			border-radius: 1px;
-		}
-	}
-
-	// ── Hero grid ───────────────────────────────────────────────────
-
-	&__hero-grid {
+	&__grid {
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: var(--space-2xl);
 
 		@include above-mobile {
-			grid-template-columns: 8fr 4fr;
+			grid-template-columns: 1fr 360px;
+			gap: 0;
 			align-items: start;
-			gap: var(--grid-gutter);
+		}
+
+		@include mobile {
+			// index stacks below story on single column
 		}
 	}
 
-	// ProfileCard gets a left border on desktop (vertical rule separator)
-	&__profile-col {
+	&__story {
 		@include above-mobile {
-			border-left: 0.5px solid var(--rule);
+			padding-right: var(--space-2xl);
+			border-right: 1px solid var(--rule-light);
+		}
+	}
+
+	&__index {
+		@include above-mobile {
 			padding-left: var(--space-2xl);
 		}
 	}
 
-	// ── Work section: lead + newspaper columns ──────────────────────
+	&__kicker {
+		color: var(--accent);
+		margin-bottom: var(--space-lg);
+		display: block;
+	}
 
-	// Lead card is handled by article-card--lead styles (image left | rule | text right)
+	&__headline {
+		font-family: var(--font-display);
+		font-size: var(--text-display);
+		font-weight: 400;
+		line-height: 0.92;
+		letter-spacing: -0.025em;
+		color: var(--ink);
+		margin-bottom: var(--space-xl);
 
-	// Supporting projects: equal columns with vertical rules between
-	&__work-columns {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 0;
-		margin-top: 0;
+		@include mobile { font-size: clamp(44px, 12vw, 72px); }
+	}
 
+	&__headline-em {
+		color: var(--accent);
+		font-style: italic;
+	}
+
+	&__byline-wrap {
+		margin-bottom: var(--space-xl);
+	}
+
+	&__byline-rule {
+		height: 1px;
+		background: var(--rule-light);
+	}
+
+	&__byline {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		letter-spacing: 0.04em;
+		color: var(--ink-secondary);
+		padding-block: var(--space-sm);
+		margin: 0;
+	}
+
+	&__body {
+		margin-bottom: var(--space-xl);
+	}
+
+	&__columns {
 		@include above-mobile {
-			grid-template-columns: 1fr 1fr;
+			column-count: 2;
+			column-gap: 36px;
 		}
 
-		@include desktop {
-			grid-template-columns: 1fr 1fr 1fr;
+		p {
+			font-family: var(--font-serif);
+			font-size: var(--text-body);
+			line-height: var(--lh-body);
+			color: var(--ink-secondary);
+			margin-bottom: var(--space-md);
+			break-inside: avoid;
+
+			&:last-child { margin-bottom: 0; }
 		}
 	}
 
-	&__work-col {
-		padding: var(--space-lg) 0;
+	&__ctas {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-md);
+	}
+}
+
+// ── Edition index box ─────────────────────────────────────────────
+
+.fp-edition {
+	border-top: var(--rule-heavy);
+	padding-top: var(--space-md);
+	margin-bottom: var(--space-xl);
+
+	&__heading {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		font-weight: 500;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--ink-tertiary);
+		margin-bottom: var(--space-md);
+	}
+
+	&__list {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__row {
+		display: flex;
+		align-items: baseline;
+		padding-block: 7px;
+		border-bottom: 1px solid var(--rule-light);
+
+		&:first-child { border-top: 1px solid var(--rule-light); }
+	}
+
+	&__label {
+		font-family: var(--font-serif);
+		font-size: var(--text-small);
+		color: var(--ink-secondary);
+		white-space: nowrap;
+		flex-shrink: 0;
+		text-decoration: none;
+		transition: color var(--dur-hover);
+
+		&:hover { color: var(--accent); }
+	}
+
+	&__leader {
+		flex: 1;
+		min-width: 12px;
+		border-bottom: 1px dotted var(--rule-light);
+		margin: 0 6px 4px;
+	}
+
+	&__page {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		color: var(--accent);
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+}
+
+// ── Conditions on the desk box ────────────────────────────────────
+
+.fp-deskbox {
+	border: 1px solid var(--ink);
+
+	&__header {
+		background: var(--ink);
+		color: var(--paper);
+		font-family: var(--font-mono);
+		font-size: 10px;
+		font-weight: 500;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		padding: 6px var(--space-md);
+	}
+
+	&__row {
+		padding: var(--space-sm) var(--space-md);
+
+		&--ruled { border-top: 1px solid var(--rule-light); }
+	}
+
+	&__label {
+		display: block;
+		font-family: var(--font-mono);
+		font-size: 10px;
+		font-weight: 500;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--accent);
+		margin-bottom: 2px;
+	}
+
+	&__val {
+		font-family: var(--font-serif);
+		font-size: 13px;
+		line-height: 1.4;
+		color: var(--ink-secondary);
+		margin: 0;
+	}
+}
+
+// ── Ticker band ───────────────────────────────────────────────────
+
+.fp-ticker {
+	background: var(--ink);
+	height: 52px;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+
+	&__track {
+		display: flex;
+		align-items: center;
+		white-space: nowrap;
+		// Animation driven by GSAP (xPercent loop). CSS handles reduced-motion only.
+	}
+
+	&__inner {
+		display: inline-flex;
+		align-items: center;
+	}
+
+	&__item {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		letter-spacing: 0.04em;
+		color: var(--paper);
+		padding: 0 var(--space-xl);
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-sm);
+	}
+
+	&__sec {
+		opacity: 0.45;
+	}
+
+	&__sep {
+		color: var(--accent);
+		font-size: 10px;
+		margin-left: var(--space-sm);
+	}
+
+	// Reduced motion: static wrapped line instead of marquee
+	@media (prefers-reduced-motion: reduce) {
+		height: auto;
+		padding-block: var(--space-md);
+
+		&__track {
+			white-space: normal;
+			flex-wrap: wrap;
+			gap: 4px 0;
+		}
+
+		&__inner {
+			display: flex;
+			flex-wrap: wrap;
+		}
+	}
+}
+
+// ── §2 Selected Work ──────────────────────────────────────────────
+
+.fp-work {
+	padding-block: var(--space-3xl);
+	background: var(--paper-deep);
+
+	&__header {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-bottom: var(--space-md);
+		gap: var(--space-md);
+	}
+
+	&__title {
+		font-family: var(--font-display);
+		font-size: var(--text-h1);
+		font-weight: 400;
+		line-height: 0.92;
+		letter-spacing: -0.02em;
+		color: var(--ink);
+	}
+
+	&__count {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		color: var(--ink-tertiary);
+		letter-spacing: 0.04em;
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+
+	&__rule {
+		height: 4px;
+		background: var(--ink);
+		margin-bottom: var(--space-2xl);
+	}
+
+	// Lead project
+	&__lead {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-2xl);
+		margin-bottom: var(--space-2xl);
 
 		@include above-mobile {
-			padding: var(--space-lg) var(--space-xl);
+			grid-template-columns: 7fr 5fr;
+			align-items: start;
+		}
+	}
 
-			// First column has no left padding
-			&:first-child {
+	&__lead-fig {
+		// ProjectFigure wrapper
+	}
+
+	&__lead-meta {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--ink-tertiary);
+		margin-bottom: var(--space-md);
+	}
+
+	&__lead-title {
+		font-family: var(--font-display);
+		font-size: clamp(48px, 7vw, 96px);
+		font-weight: 400;
+		line-height: 0.9;
+		letter-spacing: -0.025em;
+		color: var(--ink);
+		margin-bottom: var(--space-lg);
+	}
+
+	&__lead-deck {
+		font-family: var(--font-serif);
+		font-size: var(--text-lead);
+		line-height: 1.5;
+		color: var(--ink-secondary);
+		margin-bottom: var(--space-lg);
+	}
+
+	&__lead-pullquote {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: clamp(18px, 2.5vw, 28px);
+		line-height: 1.2;
+		color: var(--ink);
+		border-top: var(--rule-heavy);
+		border-bottom: var(--rule-hair);
+		padding-block: var(--space-md);
+		margin: var(--space-lg) 0;
+		quotes: none;
+	}
+
+	&__lead-stack {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		letter-spacing: 0.04em;
+		color: var(--ink-tertiary);
+		margin-bottom: var(--space-lg);
+	}
+
+	// Supporting projects
+	&__supporting {
+		display: grid;
+		grid-template-columns: 1fr;
+		border-top: 1px solid var(--rule-light);
+		padding-top: var(--space-xl);
+
+		@include above-mobile { grid-template-columns: 1fr 1fr; }
+	}
+
+	&__sup-col {
+		padding: var(--space-lg) var(--space-xl) var(--space-lg) 0;
+
+		&--ruled {
+			border-left: 1px solid var(--rule-light);
+			padding-left: var(--space-xl);
+			padding-right: 0;
+
+			@include mobile {
+				border-left: none;
+				border-top: 1px solid var(--rule-light);
 				padding-left: 0;
+				padding-top: var(--space-lg);
 			}
+		}
+	}
 
-			// Vertical rule between columns (left border on non-first columns)
-			& + & {
-				border-left: 0.5px solid var(--rule);
-			}
+	&__sup-title {
+		font-family: var(--font-display);
+		font-size: var(--text-h3);
+		font-weight: 400;
+		line-height: 1.1;
+		letter-spacing: -0.01em;
+		color: var(--ink);
+		margin: var(--space-sm) 0;
 
-			// Remove the top rule from article-card inside columns (we use column separation instead)
-			.article-card {
-				border-top: none;
-				padding-top: 0;
+		a {
+			color: inherit;
+			text-decoration: none;
+			transition: color var(--dur-hover);
+			&:hover { color: var(--accent); }
+		}
+	}
+
+	&__sup-deck {
+		font-family: var(--font-serif);
+		font-size: var(--text-small);
+		line-height: 1.5;
+		color: var(--ink-secondary);
+		margin: 0;
+	}
+
+	&__see-all {
+		margin-top: var(--space-xl);
+	}
+}
+
+// ── §3–5 Editorial Policy ─────────────────────────────────────────
+
+.fp-policy {
+	padding-block: var(--space-3xl);
+	border-top: 1px solid var(--rule-light);
+
+	&__title {
+		font-family: var(--font-display);
+		font-size: var(--text-h2);
+		font-weight: 400;
+		line-height: 0.92;
+		letter-spacing: -0.02em;
+		color: var(--ink);
+		margin-bottom: var(--space-xl);
+	}
+
+	&__grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0;
+
+		@include above-mobile {
+			grid-template-columns: repeat(5, 1fr);
+		}
+
+		@include mobile {
+			gap: 0;
+		}
+	}
+
+	&__col {
+		padding: 0 var(--space-xl) var(--space-xl) 0;
+
+		@include above-mobile {
+			border-left: 1px solid var(--rule-light);
+			padding: var(--space-lg) var(--space-lg) var(--space-lg) var(--space-xl);
+
+			&:first-child {
+				border-left: none;
+				padding-left: 0;
 			}
 		}
 
 		@include mobile {
-			// On mobile, horizontal rule between stacked items
-			& + & {
-				border-top: 0.5px solid var(--rule);
-			}
+			padding: var(--space-xl) 0;
+			border-top: 1px solid var(--rule-light);
 
-			.article-card {
-				border-top: none;
-				padding-top: 0;
-			}
+			&:first-child { border-top: none; padding-top: 0; }
 		}
 	}
 
-	// ── Philosophy + Career ─────────────────────────────────────────
+	&__num {
+		display: block;
+		font-family: var(--font-display);
+		font-size: 72px;
+		font-weight: 400;
+		line-height: 0.85;
+		color: var(--accent);
+		margin-bottom: var(--space-md);
+		letter-spacing: -0.03em;
+	}
 
-	&__mid-grid {
+	&__principle {
+		font-family: var(--font-serif);
+		font-size: 21px;
+		font-weight: 600;
+		line-height: 1.3;
+		color: var(--ink);
+		margin-bottom: var(--space-sm);
+	}
+
+	&__position {
+		font-family: var(--font-serif);
+		font-size: var(--text-small);
+		line-height: 1.5;
+		color: var(--ink-secondary);
+		margin-bottom: var(--space-md);
+	}
+
+	// .fp-policy__link uses .cta-link from _typography.scss
+}
+
+// ── §6 Appointments + Field Notes ────────────────────────────────
+
+.fp-two-col {
+	padding-block: var(--space-3xl);
+	border-top: 1px solid var(--rule-light);
+	background: var(--paper-deep);
+
+	&__grid {
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: var(--space-2xl);
 
 		@include desktop {
-			grid-template-columns: 5fr 7fr;
-			gap: 0;
-			align-items: start;
-		}
-
-		@include tablet {
 			grid-template-columns: 1fr 1fr;
 			gap: 0;
 		}
 	}
 
-	&__philosophy {
-		@include above-mobile {
-			padding-right: var(--space-xl);
-			border-right: 0.5px solid var(--rule);
+	&__left {
+		@include desktop {
+			padding-right: var(--space-2xl);
+			border-right: 1px solid var(--rule-light);
 		}
 	}
 
-	&__career {
-		@include above-mobile {
-			padding-left: var(--space-xl);
+	&__right {
+		@include desktop { padding-left: var(--space-2xl); }
+		@include mobile  {
+			border-top: 1px solid var(--rule-light);
+			padding-top: var(--space-2xl);
 		}
 	}
 
-	// ── Field Notes + Current Focus ─────────────────────────────────
+	&__heading {
+		font-family: var(--font-display);
+		font-size: var(--text-h3);
+		font-weight: 400;
+		letter-spacing: -0.01em;
+		line-height: 1.1;
+		color: var(--ink);
+		margin-bottom: var(--space-xl);
+		border-bottom: var(--rule-heavy);
+		padding-bottom: var(--space-sm);
+	}
 
-	&__notes-grid {
+	&__see-all { margin-top: var(--space-lg); }
+}
+
+.fp-appt {
+	display: grid;
+	grid-template-columns: 150px 1fr;
+	gap: var(--space-md);
+	padding-block: var(--space-md);
+	border-bottom: 1px solid var(--rule-light);
+
+	@include mobile {
+		grid-template-columns: 1fr;
+		gap: var(--space-xs);
+	}
+
+	&__date {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.03em;
+		color: var(--ink-tertiary);
+		padding-top: 3px;
+		line-height: 1.4;
+	}
+
+	&__body {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	&__org {
+		font-family: var(--font-serif);
+		font-size: 20px;
+		font-weight: 700;
+		color: var(--ink);
+		line-height: 1.2;
+	}
+
+	&__role {
+		font-family: var(--font-serif);
+		font-size: var(--text-small);
+		color: var(--ink-secondary);
+		font-style: italic;
+	}
+}
+
+.fp-fnote {
+	padding-block: var(--space-md);
+	border-bottom: 1px solid var(--rule-light);
+
+	&__dateline {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.04em;
+		color: var(--ink-secondary);
+		margin-bottom: var(--space-sm);
+	}
+
+	&__place {
+		color: var(--accent);
+		font-weight: 500;
+	}
+
+	&__title {
+		font-family: var(--font-display);
+		font-size: 30px;
+		font-weight: 400;
+		line-height: 1.05;
+		letter-spacing: -0.015em;
+		color: var(--ink);
+
+		a {
+			color: inherit;
+			text-decoration: none;
+			transition: color var(--dur-hover);
+			&:hover { color: var(--accent); }
+		}
+	}
+}
+
+// ── Colophon ──────────────────────────────────────────────────────
+
+.fp-colophon {
+	padding-block: var(--space-3xl);
+	background: var(--paper);
+	border-top: var(--rule-heavy);
+
+	&__wordmark {
+		font-family: var(--font-display);
+		font-size: clamp(64px, 15vw, 216px);
+		font-weight: 400;
+		line-height: 0.9;
+		letter-spacing: -0.03em;
+		-webkit-text-stroke: 1.5px var(--ink);
+		color: transparent;
+		margin-bottom: var(--space-2xl);
+	}
+
+	&__cols {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: var(--space-2xl);
+		gap: var(--space-xl);
 
-		@include desktop {
-			grid-template-columns: 7fr 4fr;
-			gap: 0;
-			align-items: start;
-		}
-
-		@include tablet {
-			grid-template-columns: 1fr 1fr;
-			gap: 0;
+		@include above-mobile {
+			grid-template-columns: 1fr 1fr 1fr;
+			gap: var(--space-2xl);
 		}
 	}
 
-	&__notes {
-		@include above-mobile {
-			padding-right: var(--space-xl);
-			border-right: 0.5px solid var(--rule);
+	&__col {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		line-height: 1.6;
+		color: var(--ink-secondary);
+		margin: 0;
+
+		a {
+			color: var(--ink);
+			text-decoration: none;
+			border-bottom: 1px solid var(--rule-light);
+			transition: color var(--dur-hover), border-color var(--dur-hover);
+
+			&:hover { color: var(--accent); border-color: var(--accent); }
 		}
 	}
 
-	// The current focus block (second column in notes grid) gets padding-left on desktop
-	&__notes-grid > :last-child {
-		@include above-mobile {
-			padding-left: var(--space-xl);
-		}
+	&__hash {
+		font-family: var(--font-mono);
+		font-size: inherit;
+		color: var(--accent);
 	}
 }

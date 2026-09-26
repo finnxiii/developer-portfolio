@@ -1,37 +1,17 @@
 import { useState, useEffect } from "react";
+import { usePortfolioData } from "../../../hooks/usePortfolioData";
 import ThemeToggle from "../../ui/ThemeToggle/index";
 import "./UtilityBar.scss";
 
-function formatMobile(date) {
-	return new Intl.DateTimeFormat("en-US", {
-		month: "short",
-		day: "numeric",
-		year: "numeric",
-	}).format(date);
-}
+const COMMIT = typeof __COMMIT__ !== "undefined" ? __COMMIT__ : "dev";
 
-function formatTablet(date) {
-	return new Intl.DateTimeFormat("en-US", {
+function formatLongDate(date) {
+	return new Intl.DateTimeFormat("en-GB", {
 		weekday: "long",
-		month: "short",
 		day: "numeric",
-		year: "numeric",
-	}).format(date);
-}
-
-function formatDesktop(date) {
-	const part = new Intl.DateTimeFormat("en-US", {
-		weekday: "long",
 		month: "long",
-		day: "numeric",
 		year: "numeric",
 	}).format(date);
-	const time = new Intl.DateTimeFormat("en-US", {
-		hour: "numeric",
-		minute: "2-digit",
-		hour12: true,
-	}).format(date);
-	return `${part} · ${time}`;
 }
 
 function useLiveClock() {
@@ -45,51 +25,40 @@ function useLiveClock() {
 
 export default function UtilityBar() {
 	const date = useLiveClock();
+	const { data } = usePortfolioData();
+	const editionNum = (data.meta?.editionLabel ?? "").match(/\d+/)?.[0] ?? "01";
 
 	return (
-		<div className="utility-bar">
+		<div className="utility-bar" role="complementary" aria-label="Publication details">
 			<div className="utility-bar__inner container">
-				<time className="utility-bar__date" dateTime={date.toISOString()}>
-					<span className="utility-bar__date--mobile">{formatMobile(date)}</span>
-					<span className="utility-bar__date--tablet">{formatTablet(date)}</span>
-					<span className="utility-bar__date--desktop">{formatDesktop(date)}</span>
-				</time>
+
+				<div className="utility-bar__left">
+					<span className="utility-bar__item">Vol.&nbsp;II · No.&nbsp;{editionNum}</span>
+					<span className="utility-bar__sep utility-bar__sep--sm" aria-hidden="true" />
+					<time className="utility-bar__item utility-bar__item--sm" dateTime={date.toISOString()}>
+						Sheffield, {formatLongDate(date)}
+					</time>
+					<span className="utility-bar__sep utility-bar__sep--md" aria-hidden="true" />
+					<span className="utility-bar__item utility-bar__item--md">
+						Printed from commit&nbsp;<code className="utility-bar__hash">{COMMIT}</code>
+					</span>
+					<span className="utility-bar__sep utility-bar__sep--lg" aria-hidden="true" />
+					<span className="utility-bar__item utility-bar__item--lg">
+						Price: free · No cookies
+					</span>
+				</div>
+
 				<div className="utility-bar__right">
-					<nav className="utility-bar__links" aria-label="Utility links">
-						<a
-							href="/cv.pdf"
-							className="utility-bar__link"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							CV
-						</a>
-						<a
-							href="https://github.com/finnxiii"
-							className="utility-bar__link"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							GitHub
-						</a>
-						<a
-							href="https://linkedin.com/in/nainghtoolwin"
-							className="utility-bar__link"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							LinkedIn
-						</a>
-						<a
-							href="mailto:nainghtoolwin1385@gmail.com"
-							className="utility-bar__link"
-						>
-							Email
-						</a>
+					<nav className="utility-bar__links" aria-label="External links">
+						<a href="/cv.pdf" className="utility-bar__link" target="_blank" rel="noopener noreferrer">CV</a>
+						<a href="https://github.com/finnxiii" className="utility-bar__link" target="_blank" rel="noopener noreferrer">GitHub</a>
+						<a href="https://linkedin.com/in/nainghtoolwin" className="utility-bar__link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+						<a href="mailto:nainghtoolwin1385@gmail.com" className="utility-bar__link">Email</a>
 					</nav>
-					<span className="utility-bar__divider" aria-hidden="true" />
+					<span className="utility-bar__sep" aria-hidden="true" />
 					<ThemeToggle />
 				</div>
+
 			</div>
 		</div>
 	);

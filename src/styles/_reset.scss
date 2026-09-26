@@ -11,35 +11,28 @@
 html {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	scroll-behavior: smooth;
-	background-color: #FAFAF8;
-	background-color: var(--paper, #FAFAF8);
-	color: #161616;
-	color: var(--ink, #161616);
-}
-
-// Honour vestibular motion preferences for smooth scroll
-@media (prefers-reduced-motion: reduce) {
-	html {
-		scroll-behavior: auto;
-	}
+	scroll-behavior: auto; // Lenis manages smooth scrolling
+	background-color: #EEEAE0;
+	background-color: var(--paper, #EEEAE0);
+	color: #151412;
+	color: var(--ink, #151412);
 }
 
 // Global keyboard focus ring — catches any interactive element not styled individually
 :focus-visible {
-	outline: 2px solid var(--accent, #2573B5);
+	outline: 2px solid var(--accent, #B82B18);
 	outline-offset: 3px;
-	border-radius: 2px;
+	border-radius: 0;
 }
 
 body {
-	font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
-	background-color: #FAFAF8;
-	background-color: var(--paper, #FAFAF8);
-	color: #161616;
-	color: var(--ink, #161616);
+	font-family: var(--font-serif, 'Source Serif 4', Georgia, serif);
+	background-color: #EEEAE0;
+	background-color: var(--paper, #EEEAE0);
+	color: #151412;
+	color: var(--ink, #151412);
 	overflow-x: hidden;
-	line-height: 1.6;
+	line-height: var(--lh-body, 1.7);
 }
 
 img,
