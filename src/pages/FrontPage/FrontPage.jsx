@@ -7,7 +7,7 @@ import { useScrollReveal } from "../../hooks/useScrollReveal";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { getLenis } from "../../hooks/useSmoothScroll";
 import SEOHead from "../../components/ui/SEOHead/SEOHead";
-import { ProjectFigure } from "../../components/figures/index";
+import WorkStories from "../../components/editorial/WorkStories/WorkStories";
 import "./FrontPage.scss";
 
 function firstSentence(text = "") {
@@ -99,7 +99,8 @@ export default function FrontPage() {
 
 	const allFeatured = projects.filter((p) => p.featured);
 	const leadProject = allFeatured.find((p) => p.leadProject) ?? allFeatured[0];
-	const supporting  = allFeatured.filter((p) => p !== leadProject).slice(0, 2);
+	const supporting  = allFeatured.filter((p) => p !== leadProject);
+	const orderedWork = leadProject ? [leadProject, ...supporting] : allFeatured;
 
 	return (
 		<div className="front-page" ref={containerRef}>
@@ -220,55 +221,9 @@ export default function FrontPage() {
 					</div>
 					<div className="fp-work__rule" aria-hidden="true" />
 
-					{leadProject && (
-						<div className="fp-work__lead rv">
-							<div className="fp-work__lead-fig">
-								<ProjectFigure slug={leadProject.slug} caption={leadProject.figureCaption} />
-							</div>
-							<div className="fp-work__lead-text">
-								<p className="fp-work__lead-meta">
-									No. 01 · {leadProject.category} · {leadProject.status}
-								</p>
-								<h3 className="fp-work__lead-title">{leadProject.title}</h3>
-								{leadProject.deck && (
-									<p className="fp-work__lead-deck">{leadProject.deck}</p>
-								)}
-								{leadProject.pullQuote && (
-									<blockquote className="fp-work__lead-pullquote">
-										{leadProject.pullQuote}
-									</blockquote>
-								)}
-								{leadProject.stack?.length > 0 && (
-									<p className="fp-work__lead-stack">
-										{leadProject.stack.join(" / ")}
-									</p>
-								)}
-								<Link to={`/work/${leadProject.slug}`} className="btn btn--solid">
-									Read the case study <span className="arrow" aria-hidden="true">→</span>
-								</Link>
-							</div>
-						</div>
-					)}
-
-					{supporting.length > 0 && (
-						<div className="fp-work__supporting">
-							{supporting.map((p, i) => (
-								<div
-									key={p.slug}
-									className={`fp-work__sup-col rv${i > 0 ? " fp-work__sup-col--ruled" : ""}`}
-									data-reveal-delay={0.08 + i * 0.07}
-								>
-									<ProjectFigure slug={p.slug} caption={p.figureCaption} compact />
-									<p className="fp-work__lead-meta">No. 0{i + 2} · {p.category}</p>
-									<h3 className="fp-work__sup-title">{p.title}</h3>
-									{p.deck && <p className="fp-work__sup-deck">{p.deck}</p>}
-									<Link to={`/work/${p.slug}`} className="btn btn--solid">
-										Read case study <span className="arrow" aria-hidden="true">→</span>
-									</Link>
-								</div>
-							))}
-						</div>
-					)}
+					<div className="rv">
+						<WorkStories projects={orderedWork} />
+					</div>
 
 					<div className="fp-work__see-all rv">
 						<Link to="/work" className="cta-link">

@@ -1,0 +1,166 @@
+@use "../../../styles/mixins" as *;
+
+// ── A. Lead story ─────────────────────────────────────────────────
+
+.work-stories__lead {
+	display: grid;
+	grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+	gap: 48px;
+	padding: 40px 0 48px;
+	border-bottom: 1px solid var(--rule);
+	align-items: start;
+
+	@include mobile {
+		grid-template-columns: 1fr;
+		gap: var(--space-xl);
+		padding: var(--space-xl) 0 var(--space-2xl);
+	}
+}
+
+.work-stories__lead-fig {
+	// Override ProjectFigure's default padding/margin/borders
+	// and apply spec values: 1px rule top + bottom, padding 24px 0 14px
+	.project-figure {
+		border-top: 1px solid var(--rule);
+		border-bottom: 1px solid var(--rule);
+		padding: 24px 0 14px;
+		margin: 0;
+	}
+
+	@include mobile { order: 1; } // figure below text on mobile
+}
+
+.work-stories__lead-text {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	@include mobile { order: -1; } // text first on mobile
+}
+
+.work-stories__lead-title {
+	font-family: var(--font-display);
+	font-size: 96px;
+	font-weight: 400;
+	line-height: 0.9;
+	letter-spacing: -0.025em;
+	color: var(--ink);
+	margin: 0;
+
+	@include mobile { font-size: 56px; }
+}
+
+.work-stories__lead-deck {
+	font-family: var(--font-serif);
+	font-size: 21px;
+	line-height: 1.45;
+	color: var(--ink-secondary);
+	margin: 0;
+}
+
+.work-stories__pullquote {
+	font-family: var(--font-display);
+	font-style: italic;
+	font-size: 34px;
+	line-height: 1.12;
+	color: var(--ink);
+	border-top: 1px solid var(--ink);
+	border-bottom: 1px solid var(--ink);
+	padding: 18px 0;
+	margin: 0;
+	quotes: none;
+}
+
+.work-stories__stack {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	letter-spacing: 0.04em;
+	color: var(--ink-tertiary);
+	margin: 0;
+}
+
+// ── Meta row (shared by lead + supporting) ────────────────────────
+
+.work-stories__meta {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 400;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	margin: 0;
+}
+
+.work-stories__num    { color: var(--accent); }
+.work-stories__sep    { color: var(--ink-tertiary); }
+.work-stories__cat    { color: var(--ink-secondary); }
+.work-stories__status { color: var(--ink-secondary); }
+
+// ── B. Supporting rows ────────────────────────────────────────────
+
+.work-stories__row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	border-bottom: 4px solid var(--rule);
+
+	@include mobile {
+		grid-template-columns: 1fr;
+		border-bottom: 4px solid var(--rule);
+	}
+}
+
+.work-stories__col {
+	padding: 40px 40px 48px 0;
+	border-right: 1px solid var(--rule);
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	&--right {
+		border-right: none;
+		padding: 40px 0 48px 40px;
+
+		@include mobile {
+			border-right: none;
+			padding: var(--space-xl) 0 var(--space-2xl);
+			border-top: 1px solid var(--rule);
+		}
+	}
+
+	@include mobile {
+		padding: var(--space-xl) 0 var(--space-2xl);
+		border-right: none;
+	}
+}
+
+.work-stories__sup-title {
+	font-family: var(--font-display);
+	font-size: 60px;
+	font-weight: 400;
+	line-height: 0.95;
+	letter-spacing: -0.025em;
+	color: var(--ink);
+	margin: 0;
+
+	@include mobile { font-size: 44px; }
+}
+
+.work-stories__sup-deck {
+	font-family: var(--font-serif);
+	font-size: 18px;
+	line-height: 1.5;
+	color: var(--ink-secondary);
+	margin: 0;
+}
+
+.work-stories__sup-fig {
+	// Override compact figure's 0.5px border → 1px per spec
+	.project-figure--compact {
+		border-top: 1px solid var(--rule);
+		border-bottom: 1px solid var(--rule);
+		padding: var(--space-md) 0;
+		margin: 0;
+	}
+}
