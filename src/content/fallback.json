@@ -57,6 +57,7 @@
 			"github": "https://github.com/finnxiii/vigil",
 			"live": null,
 			"screenshot": "",
+			"relatedNote": "timescaledb-gotchas",
 			"figureCaption": "Fig. 1 — Request path through Vigil. Intake, enrichment and scoring happen before storage; the dashboard reads aggregates and a live WebSocket feed.",
 			"sections": {
 				"problem": "Most analytics tools either send visitor data to a third party, charge a monthly fee, or need serious infrastructure to self-host. For my own sites I wanted to see who was visiting, where they were coming from, and what looked automated, without cookies, fingerprinting, or a bill. I set one hard constraint from the start: the whole system had to run on a single free-tier virtual machine.",
@@ -91,6 +92,7 @@
 			"github": "",
 			"live": null,
 			"screenshot": "",
+			"relatedNote": "why-the-import-shows-a-diff",
 			"figureCaption": "Fig. 1 — The import difference view. Changes are staged and shown before anything is written. Illustrative data.",
 			"sections": {
 				"problem": "The project was developed for an AMRC client to help organisations understand the cost of meetings based on participants, roles, grades, and charge-out rates. The application needed to make this information easier to manage while supporting real-world workflow such as importing calendar data and maintaining user and client information.",

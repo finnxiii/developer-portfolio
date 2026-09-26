@@ -61,7 +61,7 @@ export default function CaseStudy() {
 	useScrollReveal(containerRef);
 
 	const { data } = usePortfolioData();
-	const { projects = [] } = data;
+	const { projects = [], fieldNotes = [] } = data;
 	const idx = projects.findIndex((p) => p.slug === slug);
 	const project = projects[idx];
 
@@ -80,6 +80,9 @@ export default function CaseStudy() {
 	const readTime = calcReadTime(sections);
 	const next = idx < projects.length - 1 ? projects[idx + 1] : null;
 	const nextNum = next ? String(idx + 2).padStart(2, "0") : null;
+	const relatedNote = project.relatedNote
+		? fieldNotes.find((n) => n.slug === project.relatedNote) ?? null
+		: null;
 
 	const facts = [
 		{ label: "Role",      val: project.role },
@@ -240,25 +243,48 @@ export default function CaseStudy() {
 							)}
 						</article>
 
-						{/* Right: empty (visible ≥1200px) */}
-						<div className="case-study__right-col" aria-hidden="true" />
+						{/* Right: sidenotes (visible ≥1200px) */}
+						<aside className="case-study__right-col" aria-label="Sidenotes">
+							{figureCaption && (
+								<div className="case-study__sidenote case-study__sidenote--note">
+									<span className="case-study__sidenote-label">Note</span>
+									<p className="case-study__sidenote-text">{figureCaption}</p>
+								</div>
+							)}
+							{relatedNote && (
+								<div className="case-study__sidenote case-study__sidenote--related">
+									<span className="case-study__sidenote-label">Related field note</span>
+									<Link
+										to={`/notes/${relatedNote.slug}`}
+										className="case-study__sidenote-link"
+									>
+										{relatedNote.title}
+									</Link>
+								</div>
+							)}
+						</aside>
 					</div>
 				</div>
 			</div>
 
 			{/* ── Next story bar ────────────────────────────────────────── */}
 			{next && (
-				<Link to={`/work/${next.slug}`} className="case-study__next-bar">
+				<div className="case-study__next-bar">
 					<div className="container">
 						<div className="case-study__next-inner">
 							<span className="case-study__next-label label-text">
 								Next story · No. {nextNum}
 							</span>
 							<p className="case-study__next-title">{next.title}</p>
-							<span className="case-study__next-cta">Continue reading →</span>
+							<Link
+								to={`/work/${next.slug}`}
+								className="btn btn--outline case-study__next-cta"
+							>
+								Read the case study <span className="arrow" aria-hidden="true">→</span>
+							</Link>
 						</div>
 					</div>
-				</Link>
+				</div>
 			)}
 		</div>
 	);

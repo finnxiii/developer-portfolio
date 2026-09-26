@@ -162,7 +162,7 @@ const EMPTY_PROJECT = {
 	featured: false, leadProject: false,
 	role: "", timeframe: "", team: "", status: "",
 	stack: [], github: "", live: null, screenshot: "", figureCaption: "",
-	pullQuote: "", numbers: [],
+	pullQuote: "", relatedNote: "", numbers: [],
 	sections: { problem: "", investigation: "", implementation: "", whatBroke: "", outcome: "", learned: "" },
 };
 
@@ -216,6 +216,7 @@ function ProjectsTab({ data, onChange }) {
 									onChange={(v) => setDraft((d) => ({ ...d, live: v || null }))}
 								/>
 								<Field label="Screenshot path" id="pj-img" value={draft.screenshot} onChange={set("screenshot")} placeholder="/images/projects/name.png" />
+								<Field label="Related field note (slug)" id="pj-related" value={draft.relatedNote ?? ""} onChange={set("relatedNote")} placeholder="timescaledb-gotchas" note="Shown as a sidenote on the case study page" />
 							</div>
 							<Field label="Deck (one sentence)" id="pj-deck" value={draft.deck} onChange={set("deck")} />
 							<Field
