@@ -24,7 +24,7 @@
 		gap: var(--space-sm);
 
 		dt {
-			font-family: var(--font-sans);
+			font-family: var(--font-mono);
 			font-size: var(--text-meta);
 			font-weight: 600;
 			letter-spacing: 0.06em;
@@ -34,7 +34,7 @@
 		}
 
 		dd {
-			font-family: var(--font-sans);
+			font-family: var(--font-mono);
 			font-size: var(--text-small);
 			color: var(--ink-secondary);
 			margin: 0;
@@ -64,7 +64,7 @@
 	}
 
 	&__link {
-		font-family: var(--font-sans);
+		font-family: var(--font-mono);
 		font-size: var(--text-small);
 		font-weight: 500;
 		color: var(--accent);
@@ -81,12 +81,12 @@
 		&:focus-visible {
 			outline: 2px solid var(--accent);
 			outline-offset: 4px;
-			border-radius: 1px;
+			border-radius: 0;
 		}
 	}
 
 	&__private {
-		font-family: var(--font-sans);
+		font-family: var(--font-mono);
 		font-size: var(--text-meta);
 		color: var(--ink-tertiary);
 		font-style: italic;

@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import "./FieldNoteCard.scss";
 
-export default function FieldNoteCard({ note, headingAs: H = "h3" }) {
+export default function FieldNoteCard({ note, headingAs = "h3" }) {
+	const Heading = headingAs;
 	const { slug, title, date, topic, readTime } = note;
 
 	return (
@@ -11,11 +12,11 @@ export default function FieldNoteCard({ note, headingAs: H = "h3" }) {
 				{topic && <span className="field-note-card__topic">{topic}</span>}
 				{readTime && <span className="field-note-card__read">{readTime} read</span>}
 			</div>
-			<H className="field-note-card__title">
+			<Heading className="field-note-card__title">
 				<Link to={`/notes/${slug}`} className="field-note-card__link">
 					{title}
 				</Link>
-			</H>
+			</Heading>
 		</article>
 	);
 }

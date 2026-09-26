@@ -1,164 +1,375 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import { usePortfolioData } from "../../hooks/usePortfolioData";
 import { useScrollReveal } from "../../hooks/useScrollReveal";
-import Rule from "../../components/ui/Rule/Rule";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { getLenis } from "../../hooks/useSmoothScroll";
 import SEOHead from "../../components/ui/SEOHead/SEOHead";
-import StoryLead from "../../components/editorial/StoryLead/StoryLead";
-import ProfileCard from "../../components/editorial/ProfileCard/ProfileCard";
-import ArticleCard from "../../components/editorial/ArticleCard/ArticleCard";
-import PhilosophyItem from "../../components/editorial/PhilosophyItem/PhilosophyItem";
-import TimelineEntry from "../../components/editorial/TimelineEntry/TimelineEntry";
-import FieldNoteCard from "../../components/editorial/FieldNoteCard/FieldNoteCard";
-import CurrentFocusBlock from "../../components/editorial/CurrentFocusBlock/CurrentFocusBlock";
+import { ProjectFigure } from "../../components/figures/index";
 import "./FrontPage.scss";
+
+function firstSentence(text = "") {
+	const m = text.match(/^[^.!?]+[.!?]/);
+	return m ? m[0] : text.slice(0, 120);
+}
+
+function formatDateline(isoDate) {
+	if (!isoDate) return "";
+	const d = new Date(isoDate + "T12:00:00");
+	return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" })
+		.format(d)
+		.toUpperCase();
+}
+
+function emphasizeWord(text, word) {
+	if (!text) return text;
+	const parts = text.split(new RegExp(`(\\b${word}\\b)`, "i"));
+	return parts.map((part, i) =>
+		part.toLowerCase() === word.toLowerCase()
+			? <em key={i} className="fp-lead__headline-em">{part}</em>
+			: part
+	);
+}
+
+const EDITION_ITEMS = [
+	{ label: "Selected Work", href: "#work",  page: "p.02" },
+	{ label: "The Engineer",  href: "/about", page: "p.03" },
+	{ label: "Field Notes",   href: "#notes", page: "p.04" },
+	{ label: "Now",           href: "/now",   page: "p.05" },
+];
 
 export default function FrontPage() {
 	const containerRef = useRef(null);
+	const tickerRef = useRef(null);
+	const prefersReduced = useReducedMotion();
+
 	useScrollReveal(containerRef);
 
-	const { data } = usePortfolioData();
+	// ── GSAP infinite ticker (replaces CSS animation) ─────────────
+	useGSAP(
+		() => {
+			if (prefersReduced) return;
+			const track = tickerRef.current;
+			if (!track) return;
 
+			const tl = gsap.to(track, {
+				xPercent: -50,
+				duration: 40,
+				ease: "linear",
+				repeat: -1,
+			});
+
+			// Speed up with scroll velocity, reset when scrolling stops
+			let velocityTimer;
+			const onScroll = () => {
+				const lenis = getLenis();
+				const vel = lenis ? Math.abs(lenis.velocity) : 0;
+				if (vel > 0.05) {
+					clearTimeout(velocityTimer);
+					tl.timeScale(1 + Math.min(vel * 0.3, 3));
+					velocityTimer = window.setTimeout(() => {
+						gsap.to(tl, { timeScale: 1, duration: 0.8, ease: "power2.out" });
+					}, 300);
+				}
+			};
+			window.addEventListener("scroll", onScroll, { passive: true });
+
+			// Pause on hover
+			const tickerEl = track.closest(".fp-ticker");
+			const pause = () => tl.pause();
+			const resume = () => tl.resume();
+			tickerEl?.addEventListener("mouseenter", pause);
+			tickerEl?.addEventListener("mouseleave", resume);
+
+			return () => {
+				tl.kill();
+				clearTimeout(velocityTimer);
+				window.removeEventListener("scroll", onScroll);
+				tickerEl?.removeEventListener("mouseenter", pause);
+				tickerEl?.removeEventListener("mouseleave", resume);
+			};
+		},
+		{ scope: containerRef, dependencies: [prefersReduced] }
+	);
+
+	const { data } = usePortfolioData();
 	const { profile, projects = [], philosophy = [], experience = [], fieldNotes = [], currentFocus } = data;
 
-	const featuredProjects = projects.filter((p) => p.featured);
-	const leadProject = featuredProjects.find((p) => p.leadProject) ?? featuredProjects[0];
-	const supportingProjects = featuredProjects.filter((p) => p !== leadProject).slice(0, 3);
+	const allFeatured = projects.filter((p) => p.featured);
+	const leadProject = allFeatured.find((p) => p.leadProject) ?? allFeatured[0];
+	const supporting  = allFeatured.filter((p) => p !== leadProject).slice(0, 2);
 
 	return (
 		<div className="front-page" ref={containerRef}>
 			<SEOHead
-				description={`${profile.heroStandfirst} Selected builds, case studies, engineering philosophy, and field notes.`}
+				description={`${profile?.heroStandfirst ?? ""} Selected builds, case studies, engineering philosophy, and field notes.`}
 			/>
 
-			{/* ── Hero: Lead story + Profile ── */}
-			<section className="front-page__hero" aria-label="Lead story">
+			{/* ── §1 Lead Story ───────────────────────────────────────── */}
+			<section className="fp-lead" aria-label="Lead story">
 				<div className="container">
-					<div className="front-page__hero-grid">
-						<div className="rv">
-							<StoryLead
-								eyebrow="Engineering Profile"
-								headline={profile.heroHeadline}
-								standfirst={profile.heroStandfirst}
-								ctaLabel="Explore selected work"
-								ctaTo="/work"
-							/>
-						</div>
-						<div className="rv front-page__profile-col" data-reveal-delay="0.12">
-							<ProfileCard profile={profile} />
-						</div>
-					</div>
-				</div>
-			</section>
+					<div className="fp-lead__grid">
 
-			<Rule className="front-page__rule" />
+						<div className="fp-lead__story">
+							<p className="fp-lead__kicker label-text">
+								Lead story — Engineering profile
+							</p>
 
-			{/* ── Selected Work: newspaper grid ── */}
-			<section className="front-page__work" aria-labelledby="work-heading">
-				<div className="container">
-					<h2 id="work-heading" className="front-page__section-label rv">
-						Selected Work
-					</h2>
+							<h1 className="fp-lead__headline rv">
+								{emphasizeWord(profile?.heroHeadline, "understand")}
+							</h1>
 
-					{/* Lead: full-width horizontal card */}
-					{leadProject && (
-						<div className="rv" data-reveal-delay="0.05">
-							<ArticleCard project={leadProject} lead />
-						</div>
-					)}
-
-					{/* Supporting: column row with vertical rules */}
-					{supportingProjects.length > 0 && (
-						<>
-							<Rule />
-							<div className="front-page__work-columns">
-								{supportingProjects.map((p, i) => (
-									<div key={p.slug} className="front-page__work-col rv" data-reveal-delay={0.08 + i * 0.07}>
-										<ArticleCard project={p} />
-									</div>
-								))}
+							<div className="fp-lead__byline-wrap">
+								<div className="fp-lead__byline-rule" aria-hidden="true" />
+								<p className="fp-lead__byline">
+									By <strong>{profile?.name}</strong> · {profile?.role} · {profile?.university}
+								</p>
+								<div className="fp-lead__byline-rule" aria-hidden="true" />
 							</div>
-						</>
-					)}
 
-					<div className="front-page__see-all rv" data-reveal-delay="0.15">
-						<Link to="/work" className="front-page__all-link">All projects <span className="arrow">→</span></Link>
+							<div className="fp-lead__body rv">
+								<div className="fp-lead__columns">
+									<p className="drop-cap">{profile?.heroStandfirst}</p>
+									<p>{profile?.bio}</p>
+								</div>
+							</div>
+
+							<div className="fp-lead__ctas rv">
+								<Link to="/work" className="btn btn--solid">
+									Read selected work <span className="arrow">→</span>
+								</Link>
+								<a
+									href="/cv.pdf"
+									className="btn btn--outline"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Download CV (PDF)
+								</a>
+							</div>
+						</div>
+
+						<aside className="fp-lead__index" aria-label="In this edition">
+							<div className="fp-edition">
+								<h2 className="fp-edition__heading">In this edition</h2>
+								<ul className="fp-edition__list">
+									{EDITION_ITEMS.map(({ label, href, page }) => (
+										<li key={href} className="fp-edition__row">
+											{href.startsWith("/") ? (
+												<Link to={href} className="fp-edition__label">{label}</Link>
+											) : (
+												<a href={href} className="fp-edition__label">{label}</a>
+											)}
+											<span className="fp-edition__leader" aria-hidden="true" />
+											<span className="fp-edition__page">{page}</span>
+										</li>
+									))}
+								</ul>
+							</div>
+
+							{currentFocus && (
+								<div className="fp-deskbox">
+									<div className="fp-deskbox__header">
+										Conditions on the desk · {currentFocus.date}
+									</div>
+									<div className="fp-deskbox__body">
+										{[
+											{ label: "Building",  val: firstSentence(currentFocus.building) },
+											{ label: "Learning",  val: firstSentence(currentFocus.learning) },
+											{ label: "Exploring", val: firstSentence(currentFocus.exploring) },
+										].map(({ label, val }, i) => (
+											<div key={label} className={`fp-deskbox__row${i > 0 ? " fp-deskbox__row--ruled" : ""}`}>
+												<span className="fp-deskbox__label">{label}</span>
+												<p className="fp-deskbox__val">{val}</p>
+											</div>
+										))}
+									</div>
+								</div>
+							)}
+						</aside>
+
 					</div>
 				</div>
 			</section>
 
-			<Rule className="front-page__rule" />
-
-			{/* ── Philosophy + Career preview ── */}
-			<section className="front-page__mid" aria-label="Philosophy and career">
-				<div className="container">
-					<div className="front-page__mid-grid">
-
-						<div className="front-page__philosophy">
-							<h2 className="front-page__section-label rv">
-								Engineering Philosophy
-							</h2>
-							{philosophy.slice(0, 4).map((item, i) => (
-								<div key={i} className="rv" data-reveal-delay={0.05 + i * 0.07}>
-									<PhilosophyItem {...item} />
-								</div>
+			{/* ── §1↓ Ticker band ─────────────────────────────────────── */}
+			<div className="fp-ticker" aria-hidden="true">
+				<div className="fp-ticker__track" ref={tickerRef}>
+					{[0, 1].map((copy) => (
+						<span key={copy} className="fp-ticker__inner">
+							{philosophy.map((item, i) => (
+								<span key={i} className="fp-ticker__item">
+									<span className="fp-ticker__sec">§{i + 1}</span>
+									{item.principle}
+									<span className="fp-ticker__sep">✦</span>
+								</span>
 							))}
-							<div className="front-page__see-all rv" data-reveal-delay="0.3">
-								<Link to="/about#philosophy" className="front-page__all-link">
-									Full philosophy <span className="arrow">→</span>
+						</span>
+					))}
+				</div>
+			</div>
+
+			{/* ── §2 Selected Work ────────────────────────────────────── */}
+			<section id="work" className="fp-work" aria-labelledby="work-heading">
+				<div className="container">
+					<div className="fp-work__header rv">
+						<h2 id="work-heading" className="fp-work__title">Selected Work</h2>
+						<span className="fp-work__count">§2 · {allFeatured.length} stories</span>
+					</div>
+					<div className="fp-work__rule" aria-hidden="true" />
+
+					{leadProject && (
+						<div className="fp-work__lead rv">
+							<div className="fp-work__lead-fig">
+								<ProjectFigure slug={leadProject.slug} caption={leadProject.figureCaption} />
+							</div>
+							<div className="fp-work__lead-text">
+								<p className="fp-work__lead-meta">
+									No. 01 · {leadProject.category} · {leadProject.status}
+								</p>
+								<h3 className="fp-work__lead-title">{leadProject.title}</h3>
+								{leadProject.deck && (
+									<p className="fp-work__lead-deck">{leadProject.deck}</p>
+								)}
+								{leadProject.pullQuote && (
+									<blockquote className="fp-work__lead-pullquote">
+										{leadProject.pullQuote}
+									</blockquote>
+								)}
+								{leadProject.stack?.length > 0 && (
+									<p className="fp-work__lead-stack">
+										{leadProject.stack.join(" / ")}
+									</p>
+								)}
+								<Link to={`/work/${leadProject.slug}`} className="btn btn--solid">
+									Read the case study <span className="arrow" aria-hidden="true">→</span>
 								</Link>
 							</div>
 						</div>
+					)}
 
-						<div className="front-page__career">
-							<h2 className="front-page__section-label rv">
-								Career Desk
-							</h2>
-							{experience.slice(0, 2).map((entry, i) => (
-								<div key={i} className="rv" data-reveal-delay={0.05 + i * 0.07}>
-									<TimelineEntry {...entry} />
+					{supporting.length > 0 && (
+						<div className="fp-work__supporting">
+							{supporting.map((p, i) => (
+								<div
+									key={p.slug}
+									className={`fp-work__sup-col rv${i > 0 ? " fp-work__sup-col--ruled" : ""}`}
+									data-reveal-delay={0.08 + i * 0.07}
+								>
+									<ProjectFigure slug={p.slug} caption={p.figureCaption} compact />
+									<p className="fp-work__lead-meta">No. 0{i + 2} · {p.category}</p>
+									<h3 className="fp-work__sup-title">{p.title}</h3>
+									{p.deck && <p className="fp-work__sup-deck">{p.deck}</p>}
+									<Link to={`/work/${p.slug}`} className="btn btn--solid">
+										Read case study <span className="arrow" aria-hidden="true">→</span>
+									</Link>
 								</div>
 							))}
-							<div className="front-page__see-all rv" data-reveal-delay="0.2">
-								<Link to="/about#career" className="front-page__all-link">
+						</div>
+					)}
+
+					<div className="fp-work__see-all rv">
+						<Link to="/work" className="cta-link">
+							View all projects <span className="arrow">→</span>
+						</Link>
+					</div>
+				</div>
+			</section>
+
+			{/* ── §3–5 Editorial Policy ───────────────────────────────── */}
+			<section className="fp-policy" aria-labelledby="policy-heading">
+				<div className="container">
+					<h2 id="policy-heading" className="fp-policy__title rv">
+						Editorial Policy
+					</h2>
+					<div className="fp-policy__grid">
+						{philosophy.map((item, i) => (
+							<div key={i} className="fp-policy__col rv" data-reveal-delay={i * 0.06}>
+								<span className="fp-policy__num" aria-hidden="true">§{i + 1}</span>
+								<p className="fp-policy__principle">{item.principle}</p>
+								<p className="fp-policy__position">{item.position}</p>
+								{item.projectLink && (
+									<Link to={item.projectLink} className="fp-policy__link cta-link">
+										In practice <span className="arrow">→</span>
+									</Link>
+								)}
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+
+			{/* ── §6 Appointments + Field Notes ───────────────────────── */}
+			<section id="notes" className="fp-two-col" aria-label="Appointments and field notes">
+				<div className="container">
+					<div className="fp-two-col__grid">
+
+						<div className="fp-two-col__left">
+							<h2 className="fp-two-col__heading rv">Appointments</h2>
+							{experience.slice(0, 4).map((entry, i) => (
+								<div key={i} className="fp-appt rv" data-reveal-delay={i * 0.06}>
+									<span className="fp-appt__date">{entry.dateRange}</span>
+									<div className="fp-appt__body">
+										<strong className="fp-appt__org">{entry.org}</strong>
+										<em className="fp-appt__role">{entry.role}</em>
+									</div>
+								</div>
+							))}
+							<div className="fp-two-col__see-all rv">
+								<Link to="/career" className="cta-link">
 									Full career desk + CV <span className="arrow">→</span>
 								</Link>
 							</div>
 						</div>
 
-					</div>
-				</div>
-			</section>
-
-			<Rule className="front-page__rule" />
-
-			{/* ── Field Notes + Current Focus ── */}
-			<section className="front-page__bottom" aria-label="Field notes and current focus">
-				<div className="container">
-					<div className="front-page__notes-grid">
-
-						<div className="front-page__notes">
-							<h2 className="front-page__section-label rv">
-								Field Notes
+						<div className="fp-two-col__right">
+							<h2 className="fp-two-col__heading rv">
+								Field Notes — Letters from the workshop
 							</h2>
-							{fieldNotes.slice(0, 3).map((note, i) => (
-								<div key={note.slug} className="rv" data-reveal-delay={i * 0.08}>
-									<FieldNoteCard note={note} />
+							{fieldNotes.slice(0, 4).map((note, i) => (
+								<div key={note.slug} className="fp-fnote rv" data-reveal-delay={i * 0.06}>
+									<p className="fp-fnote__dateline">
+										<span className="fp-fnote__place">
+											Sheffield, {formatDateline(note.date)}
+										</span>
+										{" — "}{note.topic} · {note.readTime} read
+									</p>
+									<h3 className="fp-fnote__title">
+										<Link to={`/notes/${note.slug}`}>{note.title}</Link>
+									</h3>
 								</div>
 							))}
-							<div className="front-page__see-all rv" data-reveal-delay="0.2">
-								<Link to="/notes" className="front-page__all-link">
+							<div className="fp-two-col__see-all rv">
+								<Link to="/notes" className="cta-link">
 									All field notes <span className="arrow">→</span>
 								</Link>
 							</div>
 						</div>
 
-						{currentFocus && (
-							<div className="rv" data-reveal-delay="0.1">
-								<CurrentFocusBlock focus={currentFocus} />
-							</div>
-						)}
+					</div>
+				</div>
+			</section>
 
+			{/* ── Colophon ────────────────────────────────────────────── */}
+			<section className="fp-colophon" aria-label="Colophon">
+				<div className="container">
+					<p className="fp-colophon__wordmark" aria-label="FINNXIII.DEV">
+						FINNXIII.DEV
+					</p>
+					<div className="fp-colophon__cols">
+						<p className="fp-colophon__col">
+							Set in Instrument Serif, Source Serif 4 &amp; JetBrains Mono.
+							Printed on Cloudflare Pages.
+						</p>
+						<p className="fp-colophon__col">No cookies. No trackers.</p>
+						<p className="fp-colophon__col">
+							&copy; 2026 Naing Htoo Lwin ·{" "}
+							<a href="mailto:nainghtoolwin1385@gmail.com">
+								nainghtoolwin1385@gmail.com
+							</a>
+						</p>
 					</div>
 				</div>
 			</section>

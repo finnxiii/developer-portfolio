@@ -3,32 +3,16 @@
 .article-card {
 	padding: var(--space-lg) 0;
 	border-top: 0.5px solid var(--rule);
-	transition: background var(--dur-hover);
-
-	&:hover {
-		background: var(--surface-dark);
-	}
 
 	&:first-child {
 		border-top: none;
 		padding-top: 0;
 	}
 
-	// ── Image ──────────────────────────────────────────────────────
+	// ── Figure ────────────────────────────────────────────────────
 
-	&__image-wrap {
+	&__figure-wrap {
 		margin-bottom: var(--space-md);
-		overflow: hidden;
-		border-radius: 2px;
-	}
-
-	&__image {
-		width: 100%;
-		aspect-ratio: 16 / 9;
-		object-fit: cover;
-		display: block;
-		border-radius: 2px;
-		outline: 0.5px solid var(--rule);
 	}
 
 	// ── Content ────────────────────────────────────────────────────
@@ -46,7 +30,7 @@
 	}
 
 	&__status {
-		font-family: var(--font-sans);
+		font-family: var(--font-mono);
 		font-size: var(--text-meta);
 		color: var(--ink-tertiary);
 	}
@@ -72,12 +56,12 @@
 		&:focus-visible {
 			outline: 2px solid var(--accent);
 			outline-offset: 3px;
-			border-radius: 1px;
+			border-radius: 0;
 		}
 	}
 
 	&__deck {
-		font-family: var(--font-sans);
+		font-family: var(--font-serif);
 		font-size: var(--text-body);
 		line-height: 1.55;
 		color: var(--ink-secondary);
@@ -99,7 +83,7 @@
 	}
 
 	&__link {
-		font-family: var(--font-sans);
+		font-family: var(--font-mono);
 		font-size: 14px;
 		font-weight: 500;
 		color: var(--accent);
@@ -115,7 +99,7 @@
 		&:focus-visible {
 			outline: 2px solid var(--accent);
 			outline-offset: 4px;
-			border-radius: 1px;
+			border-radius: 0;
 		}
 	}
 
@@ -131,15 +115,15 @@
 			font-size: var(--text-lead);
 		}
 
-		// Only apply side-by-side grid when an image is present
+		// Side-by-side grid: figure left (7fr) | content right (5fr)
 		@include above-mobile {
-			&:has(.article-card__image-wrap) {
+			&:has(.article-card__figure-wrap) {
 				display: grid;
 				grid-template-columns: 7fr 5fr;
 				gap: 0;
 				align-items: start;
 
-				.article-card__image-wrap {
+				.article-card__figure-wrap {
 					margin-bottom: 0;
 					padding-right: var(--space-xl);
 					border-right: 0.5px solid var(--rule);
@@ -153,7 +137,7 @@
 		}
 
 		@include mobile {
-			.article-card__image-wrap {
+			.article-card__figure-wrap {
 				margin-bottom: var(--space-lg);
 			}
 		}

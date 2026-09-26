@@ -161,7 +161,8 @@ const EMPTY_PROJECT = {
 	slug: "", category: "", title: "", deck: "",
 	featured: false, leadProject: false,
 	role: "", timeframe: "", team: "", status: "",
-	stack: [], github: "", live: null, screenshot: "",
+	stack: [], github: "", live: null, screenshot: "", figureCaption: "",
+	pullQuote: "", numbers: [],
 	sections: { problem: "", investigation: "", implementation: "", whatBroke: "", outcome: "", learned: "" },
 };
 
@@ -217,6 +218,49 @@ function ProjectsTab({ data, onChange }) {
 								<Field label="Screenshot path" id="pj-img" value={draft.screenshot} onChange={set("screenshot")} placeholder="/images/projects/name.png" />
 							</div>
 							<Field label="Deck (one sentence)" id="pj-deck" value={draft.deck} onChange={set("deck")} />
+							<Field
+								label="Pull quote (optional, shown on front page lead)"
+								id="pj-pullquote"
+								value={draft.pullQuote ?? ""}
+								onChange={set("pullQuote")}
+								note="Short punchy sentence from the case study"
+							/>
+							<Field
+								label="By the numbers (value | label, one per line)"
+								id="pj-numbers"
+								value={
+									Array.isArray(draft.numbers)
+										? draft.numbers.map((n) => `${n.value} | ${n.label}`).join("\n")
+										: ""
+								}
+								onChange={(v) =>
+									setDraft((d) => ({
+										...d,
+										numbers: v
+											.split("\n")
+											.map((s) => s.trim())
+											.filter(Boolean)
+											.map((s) => {
+												const pipe = s.indexOf("|");
+												if (pipe === -1) return { value: s.trim(), label: "" };
+												return {
+													value: s.slice(0, pipe).trim(),
+													label: s.slice(pipe + 1).trim(),
+												};
+											}),
+									}))
+								}
+								rows={4}
+								note="Example: 0–100 | bot score per request"
+							/>
+							<Field
+								label="Figure caption"
+								id="pj-fig"
+								value={draft.figureCaption ?? ""}
+								onChange={set("figureCaption")}
+								placeholder="Fig. 1 — Short description of the diagram."
+								note="Shown below the inline diagram on the case study page"
+							/>
 							<div className="adm-checks">
 								<Check label="Featured on front page" checked={draft.featured} onChange={(v) => setDraft((d) => ({ ...d, featured: v }))} />
 								<Check label="Lead project (largest card)" checked={draft.leadProject} onChange={(v) => setDraft((d) => ({ ...d, leadProject: v }))} />

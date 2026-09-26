@@ -18,7 +18,7 @@
 	&__date,
 	&__topic,
 	&__read {
-		font-family: var(--font-sans);
+		font-family: var(--font-mono);
 		font-size: var(--text-meta);
 		color: var(--ink-tertiary);
 	}
@@ -58,7 +58,7 @@
 		&:focus-visible {
 			outline: 2px solid var(--accent);
 			outline-offset: 3px;
-			border-radius: 1px;
+			border-radius: 0;
 		}
 	}
 }

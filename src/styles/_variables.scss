@@ -4,32 +4,43 @@
 
 :root {
 	// Palette — light (default)
-	--paper:          #FAFAF8;
-	--ink:            #161616;
-	--ink-secondary:  #4C4A46;
-	--ink-tertiary:   #6B6866;
-	--rule:           #D4D2CE;
-	--rule-light:     #E2E0DC;
-	--accent:         #2573B5;
-	--accent-hover:   #1D6AAA;
-	--surface:        #F0EFEC;
-	--surface-dark:   #E8E7E4;
-	--code-bg:        #F0EFEC;
+	--paper:          #EEEAE0;
+	--paper-deep:     #E4DFD3;
+	--ink:            #151412;
+	--ink-secondary:  #4A463F;
+	--ink-tertiary:   #8A8478;
+	--rule:           #151412;
+	--rule-light:     #CFC9BC;
+	--accent:         #B82B18;
+	--accent-hover:   #9B2013;
+	--surface:        #E4DFD3;
+	--surface-dark:   #D8D2C5;
+	--code-bg:        #E4DFD3;
 
 	// Typography
-	--font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
-	--font-sans:  'Inter', -apple-system, system-ui, sans-serif;
+	--font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+	--font-serif:   'Source Serif 4', Georgia, 'Times New Roman', serif;
+	--font-mono:    'JetBrains Mono', 'Courier New', monospace;
 
 	// Type scale
-	--text-masthead: clamp(32px, 6vw, 64px);
-	--text-h1:       clamp(28px, 4vw, 48px);
-	--text-h2:       clamp(22px, 3vw, 32px);
-	--text-h3:       clamp(18px, 2.5vw, 24px);
-	--text-lead:     18px;
-	--text-body:     16px;
-	--text-small:    14px;
-	--text-meta:     12px;
+	--text-masthead: clamp(64px, 12vw, 176px);
+	--text-display:  clamp(56px, 9vw, 128px);
+	--text-h1:       clamp(44px, 6vw, 88px);
+	--text-h2:       clamp(32px, 4vw, 56px);
+	--text-h3:       clamp(22px, 2.5vw, 32px);
+	--text-lead:     21px;
+	--text-body:     19px;
+	--text-small:    15px;
+	--text-meta:     13px;
 	--text-label:    11px;
+
+	// Line heights
+	--lh-display: 0.92;
+	--lh-body:    1.7;
+
+	// Rule tokens (full border shorthand)
+	--rule-heavy: 4px solid var(--rule);
+	--rule-hair:  1px solid var(--rule-light);
 
 	// Spacing
 	--space-xs:  4px;
@@ -53,15 +64,16 @@
 
 // ── Dark mode overrides ───────────────────────────────────────────
 :root[data-theme="dark"] {
-	--paper:         #1A1918;
-	--ink:           #E8E4DC;
-	--ink-secondary: #B0ACA4;
-	--ink-tertiary:  #7E7A74;
-	--rule:          #3A3835;
-	--rule-light:    #2E2C2A;
-	--accent:        #5B9BD5;
-	--accent-hover:  #7AB0E0;
-	--surface:       #242220;
-	--surface-dark:  #2E2C2A;
-	--code-bg:       #242220;
+	--paper:         #121110;
+	--paper-deep:    #1C1A18;
+	--ink:           #ECE6DA;
+	--ink-secondary: #B3AC9F;
+	--ink-tertiary:  #7F786D;
+	--rule:          #ECE6DA;
+	--rule-light:    #34312C;
+	--accent:        #FF6A4D;
+	--accent-hover:  #FF8A70;
+	--surface:       #1C1A18;
+	--surface-dark:  #252320;
+	--code-bg:       #1C1A18;
 }

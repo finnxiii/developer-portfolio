@@ -19,7 +19,7 @@ export async function onRequestPost({ request, env }) {
 	try {
 		await env.PORTFOLIO_DATA.put("content", JSON.stringify(data));
 		return jsonResponse({ success: true });
-	} catch (err) {
+	} catch {
 		return jsonResponse({ error: "Failed to write to KV" }, 500);
 	}
 }
