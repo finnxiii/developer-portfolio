@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import { usePortfolioData } from "../../hooks/usePortfolioData";
 import { useScrollReveal } from "../../hooks/useScrollReveal";
-import ArticleCard from "../../components/editorial/ArticleCard/ArticleCard";
 import Rule from "../../components/ui/Rule/Rule";
 import SEOHead from "../../components/ui/SEOHead/SEOHead";
+import WorkStories from "../../components/editorial/WorkStories/WorkStories";
 import "./SelectedWork.scss";
 
 export default function SelectedWork() {
@@ -14,6 +14,7 @@ export default function SelectedWork() {
 	const { projects = [] } = data;
 	const leadProject = projects.find((p) => p.leadProject) ?? projects[0];
 	const rest = projects.filter((p) => p !== leadProject);
+	const orderedProjects = leadProject ? [leadProject, ...rest] : projects;
 
 	return (
 		<div className="selected-work" ref={containerRef}>
@@ -34,26 +35,9 @@ export default function SelectedWork() {
 
 				<Rule />
 
-				{/* Lead: full-width horizontal layout */}
-				{leadProject && (
-					<div className="rv" data-reveal-delay="0.05">
-						<ArticleCard project={leadProject} lead headingAs="h2" />
-					</div>
-				)}
-
-				{/* Rest: 2-column grid with vertical rules */}
-				{rest.length > 0 && (
-					<>
-						<Rule />
-						<div className="selected-work__grid">
-							{rest.map((p, i) => (
-								<div key={p.slug} className="selected-work__col rv" data-reveal-delay={0.08 + i * 0.07}>
-									<ArticleCard project={p} headingAs="h2" />
-								</div>
-							))}
-						</div>
-					</>
-				)}
+				<div className="rv" data-reveal-delay="0.05">
+					<WorkStories projects={orderedProjects} />
+				</div>
 			</div>
 		</div>
 	);
