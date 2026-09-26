@@ -11,12 +11,12 @@ export function useAdmin() {
 	const isAuthenticated = Boolean(token);
 
 	const login = useCallback((newToken) => {
-		try { localStorage.setItem(TOKEN_KEY, newToken); } catch {}
+		try { localStorage.setItem(TOKEN_KEY, newToken); } catch { /* storage unavailable */ }
 		setToken(newToken);
 	}, []);
 
 	const logout = useCallback(() => {
-		try { localStorage.removeItem(TOKEN_KEY); } catch {}
+		try { localStorage.removeItem(TOKEN_KEY); } catch { /* storage unavailable */ }
 		setToken(null);
 	}, []);
 

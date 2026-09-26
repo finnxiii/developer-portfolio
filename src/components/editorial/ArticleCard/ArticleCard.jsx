@@ -1,21 +1,18 @@
 import { Link } from "react-router-dom";
 import CategoryTag from "../../ui/CategoryTag/CategoryTag";
 import TechTag from "../../ui/TechTag/TechTag";
+import { ProjectFigure } from "../../figures/index";
 import "./ArticleCard.scss";
 
-export default function ArticleCard({ project, lead = false, headingAs: H = "h3" }) {
-	const { slug, category, title, deck, stack = [], status, timeframe, screenshot } = project;
+export default function ArticleCard({ project, lead = false, headingAs = "h3" }) {
+	const Heading = headingAs;
+	const { slug, category, title, deck, stack = [], status, timeframe } = project;
 
 	return (
 		<article className={`article-card${lead ? " article-card--lead" : ""}`}>
-			{screenshot && (
-				<div className="article-card__image-wrap">
-					<img
-						src={screenshot}
-						alt={title}
-						loading="lazy"
-						className="article-card__image"
-					/>
+			{lead && (
+				<div className="article-card__figure-wrap">
+					<ProjectFigure slug={slug} compact />
 				</div>
 			)}
 			<div className="article-card__content">
@@ -25,11 +22,7 @@ export default function ArticleCard({ project, lead = false, headingAs: H = "h3"
 						<span className="article-card__status">{status || timeframe}</span>
 					)}
 				</div>
-				<H className="article-card__headline">
-					<Link to={`/work/${slug}`} className="article-card__headline-link">
-						{title}
-					</Link>
-				</H>
+				<Heading className="article-card__headline">{title}</Heading>
 				{deck && <p className="article-card__deck">{deck}</p>}
 				{stack.length > 0 && (
 					<div className="article-card__tags" aria-label="Technology stack">
@@ -39,8 +32,8 @@ export default function ArticleCard({ project, lead = false, headingAs: H = "h3"
 					</div>
 				)}
 				<div className="article-card__footer">
-					<Link to={`/work/${slug}`} className="article-card__link">
-						Read case study <span className="arrow">→</span>
+					<Link to={`/work/${slug}`} className="btn btn--solid">
+						Read case study <span className="arrow" aria-hidden="true">→</span>
 					</Link>
 				</div>
 			</div>

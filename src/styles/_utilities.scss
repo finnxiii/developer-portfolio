@@ -12,8 +12,10 @@
 	border: 0;
 }
 
-.text-serif { font-family: var(--font-serif); }
-.text-sans  { font-family: var(--font-sans); }
+.text-display { font-family: var(--font-display); }
+.text-serif   { font-family: var(--font-serif); }
+.text-mono    { font-family: var(--font-mono); }
+.text-sans    { font-family: var(--font-mono); } // alias: labels/UI use mono
 
 .text-ink            { color: var(--ink); }
 .text-ink-secondary  { color: var(--ink-secondary); }

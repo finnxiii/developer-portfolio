@@ -1,0 +1,157 @@
+@use "../../styles/mixins" as *;
+
+// ── Project figure plate ─────────────────────────────────────────
+.project-figure {
+	border-top: 1px solid var(--rule);
+	border-bottom: 1px solid var(--rule);
+	padding: var(--space-lg);
+	margin: 0 0 var(--space-2xl);
+
+	&--compact {
+		padding: var(--space-sm) 0;
+		margin: 0;
+		border-top: 0.5px solid var(--rule);
+		border-bottom: 0.5px solid var(--rule);
+	}
+
+	&__caption {
+		margin-top: var(--space-md);
+		font-family: var(--font-serif);
+		font-size: var(--text-small);
+		font-style: italic;
+		color: var(--ink-secondary);
+		line-height: 1.55;
+	}
+
+	&__fig-label {
+		font-style: normal;
+		font-family: var(--font-mono);
+		font-size: var(--text-label);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--ink-tertiary);
+	}
+}
+
+// ── VigilFigure ──────────────────────────────────────────────────
+.vigil-figure {
+	&__h {
+		display: block;
+		width: 100%;
+		@media (max-width: 639px) { display: none; }
+	}
+	&__v {
+		display: none;
+		width: 100%;
+		@media (max-width: 639px) { display: block; }
+	}
+}
+
+// ── MccFigure ────────────────────────────────────────────────────
+.mcc-figure {
+	&__toolbar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: var(--space-sm);
+		padding: var(--space-sm) var(--space-md);
+		border: 1px solid var(--rule);
+		border-bottom: none;
+		background: var(--surface);
+		font-family: var(--font-mono);
+		font-size: var(--text-meta);
+		color: var(--ink-secondary);
+	}
+
+	&__filename {
+		font-size: 11px;
+		letter-spacing: 0.01em;
+		color: var(--ink-tertiary);
+	}
+
+	&__confirm-btn {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		padding: 3px 10px;
+		border: 1px solid var(--rule);
+		background: none;
+		color: var(--ink-secondary);
+		cursor: default;
+		flex-shrink: 0;
+		letter-spacing: 0.04em;
+	}
+
+	&__scroll {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	&__table {
+		width: 100%;
+		min-width: 400px;
+		border-collapse: collapse;
+		font-family: var(--font-mono);
+		font-size: var(--text-small);
+
+		th,
+		td {
+			padding: var(--space-sm) var(--space-md);
+			border: 1px solid var(--rule);
+			text-align: left;
+			vertical-align: middle;
+		}
+
+		th {
+			font-size: var(--text-label);
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+			color: var(--ink-tertiary);
+			background: var(--surface);
+			font-weight: 500;
+			white-space: nowrap;
+		}
+
+		td {
+			color: var(--ink-secondary);
+		}
+
+		tbody tr:nth-child(even) td {
+			background: var(--surface);
+		}
+	}
+
+	&__status {
+		display: inline-block;
+		font-family: var(--font-mono);
+		font-size: 10px;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		padding: 1px 5px;
+		border: 1px solid currentColor;
+		border-radius: 0;
+		white-space: nowrap;
+
+		&--new      { color: var(--accent); }
+		&--changed  { color: var(--ink); }
+		&--unchanged { color: var(--ink-tertiary); }
+	}
+
+	&__old {
+		text-decoration: line-through;
+		color: var(--ink-tertiary);
+	}
+
+	&__new {
+		color: var(--accent);
+		font-weight: 500;
+	}
+}
+
+// ── SortsFigure ──────────────────────────────────────────────────
+.sorts-figure {
+	display: block;
+	width: 100%;
+	max-width: 360px;
+	margin: 0 auto;
+}

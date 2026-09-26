@@ -1,19 +1,23 @@
 {
 	"meta": {
 		"version": "2.0",
-		"lastUpdated": "2026-09-16T00:00:00Z",
+		"lastUpdated": "2026-09-25T00:00:00Z",
 		"editionLabel": "Edition No. 02"
 	},
 	"profile": {
 		"name": "Naing Htoo Lwin",
-		"role": "Software Engineering Student",
+		"role": "Student Software Engineer",
 		"university": "University of Sheffield",
-		"graduation": "2027",
+		"graduation": "2028",
 		"location": "Sheffield, England",
 		"bio": "Software engineering student at the University of Sheffield with a focus on building useful, reliable systems and explaining how they work. Currently working on Android apps, full-stack web applications, and learning to think clearly about engineering trade-offs.",
-		"interests": ["Mobile Development", "Full-Stack Engineering", "Systems Design", "Open Source"],
-		"heroHeadline": "Building useful software with a systems mindset.",
-		"heroStandfirst": "I'm Finn, a software engineer turning ambiguous problems into reliable, well-explained products — from mobile apps to full-stack systems. Explore selected builds, decisions, and notes from the work.",
+		"interests": [
+			"Software Engineering",
+			"Mobile Development",
+			"AI & Intelligent Systems"
+		],
+		"heroHeadline": "I build software to understand how things work.",
+		"heroStandfirst": "I'm Finn, a software engineering student exploring the space between software, AI, and intelligent systems. I like taking ambiguous problems, turning them into working software, and learning from the decisions, failures, and trade-offs along the way.",
 		"links": {
 			"email": "nainghtoolwin1385@gmail.com",
 			"github": "https://github.com/finnxiii",
@@ -23,69 +27,166 @@
 	},
 	"projects": [
 		{
-			"slug": "project-echo",
-			"category": "MOBILE ENGINEERING",
-			"title": "Project Echo",
-			"deck": "An Android companion app designed to improve the experience of hearing aid users.",
+			"slug": "vigil",
+			"category": "SECURITY & OBSERVABILITY",
+			"title": "Vigil",
+			"deck": "A self-hosted, privacy-first web analytics and security monitoring platform that turns raw website traffic into live metrics, bot scores, and a 3D map of where requests come from.",
 			"featured": true,
 			"leadProject": true,
-			"role": "Mobile Developer",
-			"timeframe": "Oct 2025 — Present",
-			"team": "Project Echo team",
+			"pullQuote": "Losing a location is acceptable; losing the page view is not.",
+			"numbers": [
+				{"value": "0–100", "label": "bot score per request"},
+				{"value": "4",     "label": "time buckets, 5 min to 1 day"},
+				{"value": "£0",    "label": "target hosting cost, one free-tier VM"},
+				{"value": "0",     "label": "cookies set on visitors"}
+			],
+			"role": "Sole Developer",
+			"timeframe": "Jul 2025 - Present",
+			"team": "Solo - personal project",
 			"status": "In development",
-			"stack": ["Kotlin", "Jetpack Compose", "Android"],
-			"github": "",
+			"stack": [
+				"Python",
+				"FastAPI",
+				"TimescaleDB",
+				"PostgreSQL",
+				"React",
+				"TypeScript",
+				"Three.js",
+				"Docker"
+			],
+			"github": "https://github.com/finnxiii/vigil",
 			"live": null,
-			"screenshot": "/images/projects/echo.png",
+			"screenshot": "",
+			"figureCaption": "Fig. 1 — Request path through Vigil. Intake, enrichment and scoring happen before storage; the dashboard reads aggregates and a live WebSocket feed.",
 			"sections": {
-				"problem": "Project description goes here. Describe the real problem this project was built to solve — the constraint, the inefficiency, or the gap that made it worth building.",
-				"investigation": "Investigation and research approach goes here. What did you explore before committing to an approach? What alternatives did you consider?",
-				"implementation": "Implementation details go here. Describe the architecture, the meaningful technical choices, and why you made them.",
-				"whatBroke": "Trade-offs and obstacles encountered go here. What didn't work? What would you change? Be honest — this is the part that makes the work credible.",
-				"outcome": "Outcome and results go here. What was actually delivered? What is the current state of the project?",
-				"learned": "What you learned goes here. Specific, honest reflection demonstrating growth from this project."
+				"problem": "Most analytics tools either send visitor data to a third party, charge a monthly fee, or need serious infrastructure to self-host. For my own sites I wanted to see who was visiting, where they were coming from, and what looked automated, without cookies, fingerprinting, or a bill. I set one hard constraint from the start: the whole system had to run on a single free-tier virtual machine.",
+				"investigation": "Vigil started in July 2025 as a Python command-line script written during the IEUK 2025 programme. It parsed web server logs with a regular expression, counted requests by IP, endpoint and hour, and flagged user agents that matched common crawler patterns. It could answer questions about a log file after the fact, but it could not say anything about traffic as it happened, and every run started from zero. For the second version I worked out what a real-time system would need: an intake endpoint that stays fast, storage designed for time-bucketed queries, and a dashboard that updates live. TimescaleDB fitted the free-tier constraint because it is a Postgres extension rather than another service to run, while still providing time_bucket queries and continuous aggregates.",
+				"implementation": "The backend is an asynchronous FastAPI service using SQLAlchemy and Alembic migrations. A small JavaScript snippet, added to a site with one script tag, sends page views to a /collect endpoint, including navigations in single-page apps, with guards against double-loading and duplicate events. Each request is enriched with location data from MaxMind GeoLite2, given a 0-100 bot score by a heuristic engine (user-agent patterns, request rate, missing referrer), and stored in a TimescaleDB hypertable. Metrics endpoints group traffic into buckets from five minutes to one day, and an hourly continuous aggregate pre-computes totals, unique IPs, bot share and p95 latency. The React and TypeScript dashboard includes traffic charts, top pages, IPs and user agents, a WebSocket live tail, JWT authentication with per-site management, and a 3D globe built with React Three Fiber that plots traffic origins sized by volume. The parser from the original script was refactored into the new backend and is covered by unit tests alongside the detection engine.",
+				"whatBroke": "Several of the hardest problems came from the database layer rather than the application code. TimescaleDB requires the time column in every unique constraint, so the requests table needed a composite primary key of id and timestamp. The asyncpg driver rejected bucket intervals passed as strings, so they are now passed as Python timedelta values. Refreshing a continuous aggregate cannot run inside a transaction, so it could not live in an Alembic migration and is handled by a refresh policy instead. The main trade-off still open is the pipeline itself: /collect currently writes to the database and broadcasts to the live tail within the same request. That keeps the system easy to reason about while it takes shape, but it couples intake to storage. Moving processing behind a Redis Streams worker, so traffic spikes cannot block collection, is the next architectural step. The bot score is also deliberately simple. It catches crawlers that identify themselves, but not bots that disguise their user agent, and request-rate scoring is not yet wired into live ingestion.",
+				"outcome": "The core flow works end to end in local development with Docker Compose: a site can be registered, the snippet embedded, and page views appear in the dashboard, live tail and globe as they arrive. The remaining roadmap covers the Redis Streams worker, server log forwarding for Nginx and Apache, threshold-based alerting with webhook delivery, production deployment on Oracle Cloud's free tier with the dashboard on Vercel, and a CI/CD pipeline.",
+				"learned": "Rebuilding a script as a system showed me how much of the work sits between components: schema design, migrations, data types crossing the driver boundary, and deciding where each piece of processing should happen. It also made me more careful about the claims a tool makes. A bot score is only as good as its signals, and writing tests for the heuristics made their blind spots far easier to see than looking at dashboard output."
 			}
 		},
 		{
-			"slug": "placeholder-project",
+			"slug": "meeting-cost-calculator",
 			"category": "FULL-STACK ENGINEERING",
-			"title": "Second project title goes here",
-			"deck": "A one-sentence description of the project and why it mattered.",
+			"title": "Meeting Cost Calculator",
+			"deck": "A web application built for an AMRC client to make the cost of meetings easier to understand and manage.",
 			"featured": true,
 			"leadProject": false,
-			"role": "Role goes here",
-			"timeframe": "Timeframe goes here",
-			"team": "Solo / Team name",
+			"pullQuote": "",
+			"numbers": [
+				{"value": "6",   "label": "engineers on the team"},
+				{"value": "1st", "label": "class result"}
+			],
+			"role": "Software Developer",
+			"timeframe": "Feb 2026 - May 2026",
+			"team": "Software Hut - Team of 6",
 			"status": "Completed",
-			"stack": ["React", "Node.js", "PostgreSQL"],
+			"stack": [
+				"Ruby on Rails",
+				"PostgreSQL",
+				"JavaScript"
+			],
 			"github": "",
 			"live": null,
-			"screenshot": "/images/projects/placeholder.png",
+			"screenshot": "",
+			"figureCaption": "Fig. 1 — The import difference view. Changes are staged and shown before anything is written. Illustrative data.",
 			"sections": {
-				"problem": "Project description goes here.",
-				"investigation": "Investigation goes here.",
-				"implementation": "Implementation goes here.",
-				"whatBroke": "Trade-offs go here.",
-				"outcome": "Outcome goes here.",
-				"learned": "Learning goes here."
+				"problem": "The project was developed for an AMRC client to help organisations understand the cost of meetings based on participants, roles, grades, and charge-out rates. The application needed to make this information easier to manage while supporting real-world workflow such as importing calendar data and maintaining user and client information.",
+				"investigation": "Working as part of a six-person software engineering tea, we translated the client's requirements into an application that could support different meeting and organisational workflows. We worked iteratively and used the client's feedback to refine the system throughtout development. ",
+				"implementation": "I worked primarily on the data import and management workflows. This included implementing CSV upload functionality, a preview and difference view before changed were applied, searching and inline editing of grade information, and client email functionality. The application was built using Ruby on Rails with PostgreSQL.",
+				"whatBroke": "One of the recurring challenges was making data-management workflow safe enought for users to understand before commiting changes. Importing a CSV should not simply overwrite existing information without showing what is going to change. This led to the inclusion of a preview and difference workflow so users could inspect changes first.",
+				"outcome": "The team delivered a working web application for the AMRC client and achieved a first class result. My contribution focused on several of the application's data-management and client-facing workflows.",
+				"learned": "The project taught me how mch software engineering happens outside of writing individual features. Working with a real client made requirements, communication, data integrity, and usability feel much more concrete. It also gave me experience contributing to a larger codebase where my work had to fit into decisions made by the rest of the team."
+			}
+		},
+		{
+			"slug": "sorts",
+			"category": "AI / EMBEDDED SYSTEMS",
+			"title": "SORTS -  Embedded AI Waste Sorting System",
+			"deck": "An embedded AI waste-sorting prototye combining computer vision, microcontrollers, and physical actuation.",
+			"featured": true,
+			"leadProject": false,
+			"pullQuote": "",
+			"numbers": [
+				{"value": "6 hrs", "label": "from idea to prototype"},
+				{"value": "1",     "label": "award: Most Adventurous Hack"}
+			],
+			"role": "Developer",
+			"timeframe": "April 2025",
+			"team": "iForge Hack Day 2025",
+			"status": "Prototype",
+			"stack": [
+				"Python",
+				"Gemini API",
+				"ESP32-CAM",
+				"Arduino Uno R4",
+				"C/C++"
+			],
+			"github": "https://github.com/finnxiii/sorts-embedded-ai",
+			"live": null,
+			"screenshot": "",
+			"figureCaption": "Fig. 1 — The SORTS loop, built in six hours: capture, classify, actuate.",
+			"sections": {
+				"problem": "We wanted to explore whether computer vision could be connected to a physical waste-sorting system capable of identifying objects and deciding where they should be placed. The challenge was not just recognising an object, but connecting sensing, inference, and physical actuation into one working system.",
+				"investigation": "The project was developed during a six-hour multidisciplinary hackathon. We experimented with an ESP32-CAM for image capture, a Python inference pipeline for processing the captured images, and the Gemini API for image classificaton before passing the result into the embedded system.",
+				"implementation": "I developed the Python-based data processing and inference pipeline and integrated the Google Gemini API to classify waste from captured images. The wider system combined the ESP32-CAM, Arduino Uno R4, and software components into a single embedded prototype.",
+				"whatBroke": "The biggest challenge was connecting an AI model to a physical system. A classification result that looks reasonable on a screen still needs to be translated into a reliable action by hardware. Camera positioning, real-world objects, communication between components, and the limitations of a short hackthon all affected the system.",
+				"outcome": "We delivered a functional embedded waste-sorting prototype within six hours and received the Most Adventurous Hack award at iForge Hack Day 2025.",
+				"learned": "SORTS was one of my first experiences working across software, AI, and physical hardware. It taught me to think about intelligent systems as complete pipelines rather than isolated models and showed me how quickly real-world constraints appear once software has to control something physical."
 			}
 		}
 	],
 	"experience": [
 		{
-			"dateRange": "Oct 2025 — Present",
-			"org": "iForge Makerspace",
-			"role": "IT Representative",
+			"dateRange": "Sept 2026 - Present",
+			"org": "University of Sheffield",
+			"role": "Undergraduate Demonstrator",
 			"bullets": [
-				"Role responsibility goes here — describe what you actually do.",
-				"Second responsibility or achievement goes here."
+				"Support undergraduate teachning for COM114 during Semester 1, helping students understand programming concepts and work through practical problems.",
+				"Guide students through debugging and problem-solbing rather than simply providing solutions, drawing on experience with Java and software development."
+			],
+			"current": true
+		},
+		{
+			"dateRange": "Jan 2026 — Jun 2026",
+			"org": "iForge Makerspace",
+			"role": "Student Representative - IT Team",
+			"bullets": [
+				"Provide technical support across software environments, hardware systems, and workstation configurations, diagnosing and resolving issues for makerspace users.",
+				"Troubleshoot system-level problems involving developmental tools, operating-system environments, and device integration."
+			],
+			"current": false
+		},
+		{
+			"dateRange": "Nov 2025 - Jan 2026",
+			"org": "Kith AI Lab",
+			"role": "Product QA Intern",
+			"bullets": [
+				"Tested an LLM-powered prototyping platform across multiple user workflows, identifying functional issues, usabilty inconsistencies, and unexpected AI behaviours.",
+				"Conducted A/B testing of AI agents, evaluating differences in outputs and behaviour across prompts and use cases.",
+				"Reported reproducible bugs and testing findings through structured feedback and issue tracking using Notion.",
+				"Collaborated with the product team during weekly review cycles to validate fixes and improve platform reliabilty."
+			],
+			"current": false
+		},
+		{
+			"dateRange": "Oct 2025 — Present",
+			"org": "Project Echo UOS",
+			"role": "Software Engineer",
+			"bullets": [
+				"Collaborate in a multidisciplinary team developing an Android companion application for an AI-assisted hearing aid device.",
+				"Design application workflows, interface prototypes, and acessibility-focused UI concepts using Figma through iterative team discussions and user-oriented design research.",
+				"Develop mobile interfaces using Kotlin and Jetpack Compose, building reusable UI components and navigation flows.",
+				"Designed and implemented the application Settings interface with a focus on usability and maintainable UI structure."
 			],
 			"current": true
 		},
 		{
 			"dateRange": "Sep 2024 — Present",
 			"org": "University of Sheffield",
-			"role": "BEng Software Engineering",
+			"role": "MEng Computer Science(Software Engineering)",
 			"bullets": [
 				"Second-year student, expected graduation 2027.",
 				"Relevant modules, societies, or responsibilities go here."
@@ -97,36 +198,72 @@
 		{
 			"principle": "Start with the constraint, not the framework.",
 			"position": "Understanding the real limitation shapes every decision that follows. Choosing a tool before understanding the constraint is backwards.",
-			"example": "Example of this principle in practice goes here — reference a specific project or decision.",
-			"projectLink": "/work/project-echo"
+			"example": "Vigil had one hard constraint: it had to run on a single free-tier virtual machine. That ruled out running a separate time-series database and led me to TimescaleDB, which runs inside Postgres but still provides time-bucketed queries and continuous aggregates. The constraint chose the tool, not the other way round.",
+			"projectLink": "/work/vigil"
 		},
 		{
 			"principle": "Make the trade-off visible.",
-			"position": "Every engineering decision is a trade-off. The job is to make those trade-offs explicit so collaborators can challenge them.",
-			"example": "Example of this principle in practice goes here.",
-			"projectLink": ""
+			"position": "Every engineering decision is a trade-off. The job is to make those trade-offs explicit so collaborators, and users, can challenge them.",
+			"example": "On the Meeting Cost Calculator, a CSV import could silently overwrite the grade and rate data behind every cost figure. Instead of hiding that risk, the import shows a preview and a difference view first, so the person making the change can see exactly what will happen before deciding.",
+			"projectLink": "/work/meeting-cost-calculator"
 		},
 		{
 			"principle": "Build the smallest reliable version first.",
 			"position": "A working small thing teaches more than a broken ambitious one. Reliability compounds.",
-			"example": "Example of this principle in practice goes here.",
-			"projectLink": ""
+			"example": "SORTS had six hours. We focused on one complete loop, capture an image, classify it, move the hardware, before adding anything else. A narrow pipeline that worked end to end was worth more than a clever model with nothing attached to it.",
+			"projectLink": "/work/sorts"
+		},
+		{
+			"principle": "Treat failure modes as part of the design.",
+			"position": "What happens when a dependency is missing, slow or wrong is a design question, not a clean-up task for later.",
+			"example": "Vigil's location lookup skips private and loopback addresses, and if the GeoIP database is missing or a lookup fails, it returns nothing rather than failing the request. Losing a location is acceptable; losing the page view is not.",
+			"projectLink": "/work/vigil"
+		},
+		{
+			"principle": "Validate the direction before building all of it.",
+			"position": "A brief, a sketch or a static mockup can reject a bad idea in an afternoon. Building it fully can take weeks.",
+			"example": "I built one portfolio design through six full phases before admitting it did not work. For this version I wrote a design brief and settled the typography, palette and structure before writing a single component.",
+			"projectLink": "/notes/three-portfolio-designs"
 		}
 	],
 	"fieldNotes": [
 		{
-			"slug": "placeholder-note",
-			"title": "Field note title goes here",
-			"date": "2026-09-01",
-			"topic": "Engineering",
-			"readTime": "4 min",
-			"body": "Field note body goes here. Replace this with the full text of the note. Markdown is supported.\n\n## A section heading\n\nContent goes here. Write honest, specific technical notes — build logs, debugging postmortems, design decisions, or learning reflections.\n\nKeep it short and useful rather than comprehensive and empty."
+			"slug": "three-portfolio-designs",
+			"title": "Three portfolio designs I built and threw away",
+			"date": "2026-09-18",
+			"topic": "Design",
+			"readTime": "2 min",
+			"body": "This site is the fourth design direction I have tried for my portfolio. I built most of two of the others before deciding they were wrong. That was expensive, but it taught me more about design process than anything that worked first time.\n\n## 1. Render\n\nThe first direction was a 3D hero: a lo-fi workspace scene built with React Three Fiber, meant to feel like sitting down at my desk. I got it running, but procedural geometry has a quality ceiling. Without properly modelled assets the scene never looked as good as the idea in my head, and writing more code did not close that gap.\n\n## 2. Newspaper × Code\n\nNext was a hybrid of editorial layout and developer culture: a newspaper grid, Playfair Display headlines, warm grey paper, and commit messages as section labels. I built it fully, across six phases. By the end it worked, but it felt like two concepts competing for attention rather than one clear identity.\n\n## 3. Doodle Notebook\n\nThe third idea was a hand-drawn notebook, with sketchy illustrations on lined paper. This time I stopped at the concept stage. When I pictured a recruiter skimming it on a laptop between meetings, the charm did not outweigh the effort it would take to read.\n\n## 4. The Engineering Edition\n\nThe current design keeps the editorial part that worked and drops the gimmicks: Source Serif 4 and Inter, cream paper and charcoal ink, restrained motion, and projects written as case studies rather than cards.\n\n## What I would tell myself earlier\n\n- **Validate a direction before building it.** A written brief and a few static mockups would have caught the problems with the second direction in an afternoon, not six phases.\n- **Know where the ceiling is.** Some ideas are limited by assets or skills you do not have yet, not by effort.\n- **Separate content from presentation.** This version reads everything from one structured content source. If there is ever a fifth design, it will be a new front end rather than a rewrite of everything."
+		},
+		{
+			"slug": "timescaledb-gotchas",
+			"title": "Three TimescaleDB gotchas I hit in one week",
+			"date": "2026-07-02",
+			"topic": "Databases",
+			"readTime": "2 min",
+			"body": "Vigil stores every request in a TimescaleDB hypertable. TimescaleDB is a Postgres extension, which is exactly why I chose it: one database to run on a free-tier VM, with time-series features on top. Most of it behaved like ordinary Postgres. Three things did not.\n\n## 1. The primary key has to include the time column\n\nA hypertable is split into chunks by time. For a unique constraint to be enforced across all of those chunks, the partitioning column has to be part of it. My first model used a plain auto-incrementing `id` as the primary key, and turning the table into a hypertable failed.\n\nThe fix was a composite primary key of `id` and `timestamp`. It looks unusual in a model definition, but it reflects how the data is actually stored.\n\n## 2. Intervals are not strings\n\nThe metrics endpoint groups requests with `time_bucket()`, and the client chooses the bucket size: five minutes, fifteen minutes, an hour or a day. I passed the interval as a string like `'1 hour'`, which is what you would type in psql. Through asyncpg it failed, because the driver infers the parameter type as `text`, not `interval`.\n\nasyncpg maps a Python `timedelta` to a Postgres `INTERVAL` natively, so the fix was a small lookup table from bucket names to `timedelta` values. A side benefit: an unexpected bucket name now falls back to a known value instead of reaching the query.\n\n## 3. Some commands cannot run in a migration\n\nVigil keeps an hourly continuous aggregate, a materialised view of totals, unique IPs, bot share and p95 latency that TimescaleDB keeps up to date. I wanted the migration to create the view and fill it straight away. But `refresh_continuous_aggregate()` cannot run inside a transaction block, and Alembic runs each migration inside one.\n\nThe migration now creates the view `WITH NO DATA` and adds a refresh policy. The policy fills it on its first scheduled run and re-processes the last few hours each time, so late-arriving data is still counted.\n\n## The common thread\n\nNone of these were bugs in my application logic. Each was a place where an assumption from plain Postgres did not survive contact with the extension or the driver. Reading the error carefully, then reading the documentation for the layer that produced it, was faster every time than changing code and hoping."
+		},
+		{
+			"slug": "from-log-script-to-live-pipeline",
+			"title": "From a log script to a live pipeline: where Vigil came from",
+			"date": "2026-06-20",
+			"topic": "Build Log",
+			"readTime": "2 min",
+			"body": "Vigil started as a single Python file. During the IEUK 2025 programme I was given a web server log and asked to work out what was happening in it: who was sending the most traffic, which endpoints were busiest, and whether any of it looked automated.\n\n## The first version\n\nThe script read the log line by line, matched each line against one regular expression, and counted things: requests per IP, hits per endpoint, traffic per hour. Any user agent containing words like `bot`, `crawl`, `spider`, `python` or `curl` was flagged as suspicious. It printed a summary and exited.\n\nIt worked, and it was useful for the task. But it had three limits that became obvious as soon as I imagined running it on my own sites:\n\n- **It only worked after the fact.** You needed a finished log file before you could learn anything.\n- **Every run started from zero.** Nothing was stored, so there was no history to compare against.\n- **Detection was yes or no.** A user agent either matched the pattern or it did not.\n\n## What changed in v2\n\nEach limit became a design decision.\n\nTo see traffic as it happens, v2 collects page views from a small JavaScript snippet and streams them to the dashboard over a WebSocket. To keep history, requests go into a TimescaleDB hypertable, where time-bucketed queries stay fast as the table grows. And instead of yes or no, each request gets a bot score from 0 to 100 built from several signals, so where to draw the line is a decision rather than something baked into a regex.\n\n## What survived\n\nThe original parsing regex is still in the codebase, refactored into the backend's parser service and now covered by tests. The crawler pattern from the first script is the first signal in the new scoring engine. The legacy script is kept in the repository too, partly for history and partly as a reminder that a working small tool is a good place to start.\n\n## What is next\n\nIngestion currently writes straight to the database inside the request. The next step is a Redis Streams worker between intake and storage, so a burst of traffic cannot slow down collection."
+		},
+		{
+			"slug": "why-the-import-shows-a-diff",
+			"title": "Why the CSV import shows you a diff first",
+			"date": "2026-05-28",
+			"topic": "Design Decisions",
+			"readTime": "2 min",
+			"body": "On Software Hut, my team built a Meeting Cost Calculator for a client at the AMRC. The application works out what a meeting costs from who attends, their grade, and the charge-out rate for that grade. I worked mainly on the data import and management side, including CSV upload.\n\n## The obvious version\n\nThe simplest way to build an import is: upload a file, parse it, write every row to the database. It is quick to build and easy to demo.\n\nThe problem is what the data does. Grades and rates feed directly into every cost the application shows. A file with one wrong column, an old export or a changed rate could quietly shift figures across the whole system, and the person uploading it would have no way of knowing until someone noticed a strange number.\n\n## The version we shipped\n\nInstead of applying changes straight away, the import works in stages:\n\n1. **Upload.** The file is parsed and checked, but nothing is saved.\n2. **Preview.** The user sees what the file contains.\n3. **Difference view.** Rows are compared against existing data, so new, changed and unchanged records are shown separately.\n4. **Confirm.** Only then are changes written.\n\nThe same idea shaped the grades page. Edits are staged and saved together rather than saved instantly on every change, because accidental instant saves are a poor fit for data that affects money.\n\n## The trade-off\n\nThis took more work to build and test, and it adds a step for the user. For a file with no real changes it can feel slower than it needs to be. But the cost of the extra step is a few seconds, and the cost of a silent mistake is a figure nobody trusts afterwards.\n\n## What I took from it\n\nThe question I now ask about any feature that changes data is: *can the user see what is about to happen before it happens?* If the answer is no, and the data matters, that is usually worth fixing before anything else."
 		}
 	],
 	"currentFocus": {
 		"date": "September 2026",
-		"building": "This portfolio — a personal engineering publication built with React, GSAP, and Cloudflare Pages.",
-		"learning": "What you are currently learning goes here — be specific.",
-		"exploring": "What you are currently exploring or reading goes here."
+		"building": "Vigil, a self-hosted, privacy-first web analytics and security monitoring platform. Next up: moving ingestion behind a Redis Streams worker and deploying to a free-tier VM.",
+		"learning": "Mobile development, building Android interfaces with Kotlin and Jetpack Compose on Project Echo.",
+		"exploring": "VR development and the IoT side of technology: where software meets headsets, sensors and physical devices."
 	}
 }

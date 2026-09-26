@@ -25,7 +25,7 @@
 	}
 
 	&__deck {
-		font-family: var(--font-sans);
+		font-family: var(--font-serif);
 		font-size: var(--text-lead);
 		line-height: 1.6;
 		color: var(--ink-secondary);
@@ -41,7 +41,7 @@
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-sm);
-		font-family: var(--font-sans);
+		font-family: var(--font-mono);
 		font-size: var(--text-small);
 		font-weight: 600;
 		color: var(--paper);
@@ -59,7 +59,7 @@
 		&:focus-visible {
 			outline: 2px solid var(--accent);
 			outline-offset: 4px;
-			border-radius: 1px;
+			border-radius: 0;
 		}
 	}
 
@@ -77,7 +77,7 @@
 	}
 
 	&__footer-note {
-		font-family: var(--font-sans);
+		font-family: var(--font-serif);
 		font-size: var(--text-small);
 		color: var(--ink-tertiary);
 		margin: 0;

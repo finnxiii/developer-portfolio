@@ -1,39 +1,153 @@
 @use "../../../styles/mixins" as *;
 
 .masthead {
-	border-bottom: 0.5px solid var(--rule);
-	padding-block: var(--space-xl);
+	background: var(--paper);
+	padding-top: var(--space-2xl);
 
-	&__inner {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: var(--space-sm);
+	// ── Body ──────────────────────────────────────────────────────
+
+	&__grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-areas: "centre";
+		justify-items: center;
+		gap: var(--space-xl);
+		padding-bottom: var(--space-xl);
+
+		@include desktop {
+			grid-template-columns: 260px 1fr 260px;
+			grid-template-areas: "left centre right";
+			align-items: center;
+			gap: var(--space-lg);
+		}
+	}
+
+	// ── Wordmark ──────────────────────────────────────────────────
+
+	&__centre {
+		grid-area: centre;
 		text-align: center;
 	}
 
 	&__wordmark {
-		font-family: var(--font-serif);
+		display: block;
+		font-family: var(--font-display);
 		font-size: var(--text-masthead);
-		font-weight: 700;
-		letter-spacing: -0.02em;
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.86;
 		color: var(--ink);
-		line-height: 1;
+		text-align: center;
 		transition: color var(--dur-hover);
 
-		&:hover {
-			color: var(--accent);
+		@include mobile {
+			font-size: clamp(52px, 14vw, 100px);
 		}
+
+		&:hover { color: var(--accent); }
 
 		&:focus-visible {
 			outline: 2px solid var(--accent);
-			outline-offset: 4px;
-			border-radius: 2px;
+			outline-offset: 6px;
 		}
 	}
 
-	&__descriptor {
-		color: var(--ink-tertiary);
-		letter-spacing: 0.2em;
+	// ── Ears (desktop only) ───────────────────────────────────────
+
+	&__ear {
+		display: none;
+
+		@include desktop {
+			display: block;
+			border: 1px solid var(--ink);
+			padding: var(--space-md);
+			align-self: center;
+		}
+
+		&--left { grid-area: left; }
+		&--right { grid-area: right; }
 	}
+
+	&__ear-label {
+		font-family: var(--font-mono);
+		font-size: 10px;
+		font-weight: 500;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--accent);
+		margin-bottom: var(--space-xs);
+	}
+
+	&__ear-sub {
+		font-family: var(--font-serif);
+		font-size: 13px;
+		line-height: 1.45;
+		color: var(--ink-secondary);
+		font-style: italic;
+		margin: 0;
+	}
+
+	&__ear-now-row {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		margin-bottom: var(--space-xs);
+	}
+
+	&__ear-dot {
+		display: inline-block;
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--accent);
+		flex-shrink: 0;
+		animation: masthead-pulse 2s ease-in-out infinite;
+
+		@media (prefers-reduced-motion: reduce) { animation: none; }
+	}
+
+	&__ear-now-label {
+		font-family: var(--font-mono);
+		font-size: 10px;
+		font-weight: 500;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--accent);
+	}
+
+	&__ear-building {
+		font-family: var(--font-serif);
+		font-size: 13px;
+		line-height: 1.45;
+		color: var(--ink-secondary);
+		margin: 0;
+	}
+
+	// ── Double rule ───────────────────────────────────────────────
+
+	&__rule {
+		position: relative;
+		height: 8px;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0; left: 0; right: 0;
+			height: 4px;
+			background: var(--ink);
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			top: 7px; left: 0; right: 0;
+			height: 1px;
+			background: var(--ink);
+		}
+	}
+}
+
+@keyframes masthead-pulse {
+	0%, 100% { opacity: 1; }
+	50%       { opacity: 0.3; }
 }

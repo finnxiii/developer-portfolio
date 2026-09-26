@@ -2,11 +2,23 @@ import { useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { usePortfolioData } from "../../hooks/usePortfolioData";
 import { useScrollReveal } from "../../hooks/useScrollReveal";
-import Breadcrumb from "../../components/ui/Breadcrumb/Breadcrumb";
 import SEOHead from "../../components/ui/SEOHead/SEOHead";
-import CategoryTag from "../../components/ui/CategoryTag/CategoryTag";
-import ProjectFacts from "../../components/ui/ProjectFacts/ProjectFacts";
+import { ProjectFigure } from "../../components/figures/index";
 import "./CaseStudy.scss";
+
+const ROMAN = ["I", "II", "III", "IV", "V", "VI"];
+
+function countWords(text = "") {
+	return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+function calcReadTime(sections = {}) {
+	const total = Object.values(sections).reduce(
+		(acc, v) => acc + countWords(v ?? ""),
+		0
+	);
+	return Math.max(1, Math.ceil(total / 200));
+}
 
 function renderBody(text) {
 	if (!text) return null;
@@ -16,15 +28,32 @@ function renderBody(text) {
 		.map((para, i) => <p key={i}>{para}</p>);
 }
 
-function ArticleSection({ title, content }) {
-	if (!content) return null;
-	return (
-		<section className="case-study__section rv">
-			<h2 className="case-study__section-title">{title}</h2>
-			<div className="case-study__section-body">{renderBody(content)}</div>
-		</section>
-	);
+function renderCorrectionsBody(text) {
+	if (!text) return null;
+	const paras = text.split(/\n\n+/).filter(Boolean);
+	return paras.map((para, i) => {
+		if (i === 0) {
+			const spaceIdx = para.indexOf(" ");
+			const firstWord = spaceIdx === -1 ? para : para.slice(0, spaceIdx);
+			const rest = spaceIdx === -1 ? "" : para.slice(spaceIdx);
+			return (
+				<p key={i}>
+					<span className="case-study__corrections-firstword">{firstWord}</span>
+					{rest}
+				</p>
+			);
+		}
+		return <p key={i}>{para}</p>;
+	});
 }
+
+const SECTION_ORDER = [
+	{ key: "problem",        label: "The Problem" },
+	{ key: "investigation",  label: "Investigation" },
+	{ key: "implementation", label: "Implementation" },
+	{ key: "outcome",        label: "Outcome" },
+	{ key: "learned",        label: "What I Learned" },
+];
 
 export default function CaseStudy() {
 	const { slug } = useParams();
@@ -46,9 +75,19 @@ export default function CaseStudy() {
 		);
 	}
 
-	const { category, title, deck, screenshot, sections = {} } = project;
-	const prev = idx > 0 ? projects[idx - 1] : null;
+	const { category, title, deck, figureCaption, sections = {}, numbers = [] } = project;
+	const projectNum = String(idx + 1).padStart(2, "0");
+	const readTime = calcReadTime(sections);
 	const next = idx < projects.length - 1 ? projects[idx + 1] : null;
+	const nextNum = next ? String(idx + 2).padStart(2, "0") : null;
+
+	const facts = [
+		{ label: "Role",      val: project.role },
+		{ label: "Team",      val: project.team },
+		{ label: "Timeframe", val: project.timeframe },
+		{ label: "Stack",     val: project.stack?.join(" / ") },
+		{ label: "Source",    val: project.github, isLink: Boolean(project.github) },
+	];
 
 	return (
 		<div className="case-study" ref={containerRef}>
@@ -56,67 +95,171 @@ export default function CaseStudy() {
 				title={title}
 				description={deck ? `${deck} Case study — role, decisions, and outcome.` : undefined}
 			/>
-			<div className="container">
-				<Breadcrumb
-					items={[
-						{ label: "Selected Work", to: "/work" },
-						{ label: title },
-					]}
-				/>
 
-				<header className="case-study__header rv">
-					{category && <CategoryTag label={category} />}
-					<h1 className="case-study__title">{title}</h1>
-					{deck && <p className="case-study__deck">{deck}</p>}
-				</header>
+			{/* ── Breadcrumb row ────────────────────────────────────────── */}
+			<div className="case-study__crumb-row">
+				<div className="container">
+					<div className="case-study__crumb-inner">
+						<nav aria-label="Breadcrumb" className="case-study__crumb-nav">
+							<Link to="/work" className="case-study__crumb-link">Selected Work</Link>
+							<span className="case-study__crumb-sep" aria-hidden="true">→</span>
+							<span className="case-study__crumb-current" aria-current="page">{title}</span>
+						</nav>
+						<span className="case-study__crumb-meta">
+							Case study No. {projectNum} · {readTime} min read
+						</span>
+					</div>
+				</div>
+			</div>
 
-				<div className="case-study__body">
-					{/* Sidebar first in DOM → top block on mobile, right column on desktop */}
-					<aside className="case-study__sidebar rv" data-reveal-delay="0.08">
-						<ProjectFacts project={project} />
-					</aside>
-
-					<article className="case-study__article">
-						{screenshot && (
-							<div className="case-study__screenshot rv">
-								<img
-									src={screenshot}
-									alt={`Screenshot of ${title}`}
-									loading="lazy"
-									width="800"
-									height="500"
-								/>
+			{/* ── Header grid ───────────────────────────────────────────── */}
+			<div className="case-study__header-wrap">
+				<div className="container">
+					<div className="case-study__header rv">
+						<div className="case-study__header-title-col">
+							<p className="case-study__kicker label-text">
+								{category} · {project.status}
+							</p>
+							<h1 className="case-study__title">{title}</h1>
+						</div>
+						{deck && (
+							<div className="case-study__header-deck-col">
+								<p className="case-study__deck">{deck}</p>
 							</div>
 						)}
-
-						<ArticleSection title="The Problem" content={sections.problem} />
-						<ArticleSection title="Investigation" content={sections.investigation} />
-						<ArticleSection title="Implementation" content={sections.implementation} />
-						<ArticleSection title="What Broke / Trade-offs" content={sections.whatBroke} />
-						<ArticleSection title="Outcome" content={sections.outcome} />
-						<ArticleSection title="What I Learned" content={sections.learned} />
-					</article>
+					</div>
 				</div>
-
-				{(prev || next) && (
-					<nav className="case-study__nav" aria-label="Project navigation">
-						<div className="case-study__nav-inner">
-							{prev ? (
-								<Link to={`/work/${prev.slug}`} className="case-study__nav-link case-study__nav-link--prev">
-									<span className="case-study__nav-label label-text">Previous</span>
-									<span className="case-study__nav-title">{prev.title}</span>
-								</Link>
-							) : <span />}
-							{next ? (
-								<Link to={`/work/${next.slug}`} className="case-study__nav-link case-study__nav-link--next">
-									<span className="case-study__nav-label label-text">Next</span>
-									<span className="case-study__nav-title">{next.title}</span>
-								</Link>
-							) : <span />}
-						</div>
-					</nav>
-				)}
 			</div>
+
+			{/* ── Facts strip ───────────────────────────────────────────── */}
+			<div className="case-study__facts-strip">
+				<div className="container">
+					<div className="case-study__facts-inner">
+						{facts.map((fact, i) => (
+							<div key={i} className="case-study__fact">
+								<span className="case-study__fact-label label-text">{fact.label}</span>
+								{fact.isLink ? (
+									<a
+										href={fact.val}
+										className="case-study__fact-val case-study__fact-val--link"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										GitHub ↗
+									</a>
+								) : (
+									<span className="case-study__fact-val">{fact.val || "—"}</span>
+								)}
+							</div>
+						))}
+					</div>
+				</div>
+			</div>
+
+			{/* ── Full-width figure ─────────────────────────────────────── */}
+			<div className="case-study__figure-wrap">
+				<div className="container">
+					<div className="case-study__figure-panel">
+						<ProjectFigure slug={slug} caption={null} />
+					</div>
+					{figureCaption && (
+						<p className="case-study__figure-caption">{figureCaption}</p>
+					)}
+				</div>
+			</div>
+
+			{/* ── Body ──────────────────────────────────────────────────── */}
+			<div className="case-study__body-wrap">
+				<div className="container">
+					<div className="case-study__body">
+
+						{/* Left: By the numbers */}
+						<aside className="case-study__numbers rv" aria-label="By the numbers">
+							<p className="case-study__numbers-heading label-text">By the numbers</p>
+							{numbers.map((item, i) => (
+								<div key={i} className="case-study__number-item">
+									<span
+										className={`case-study__number-val${
+											i === 0 ? " case-study__number-val--accent" : ""
+										}`}
+									>
+										{item.value}
+									</span>
+									<span className="case-study__number-label">{item.label}</span>
+								</div>
+							))}
+						</aside>
+
+						{/* Centre: article */}
+						<article className="case-study__article">
+							{SECTION_ORDER.map((s, i) => {
+								if (!sections[s.key]) return null;
+								const isFirst = i === 0;
+								return (
+									<section key={s.key} className="case-study__section rv">
+										<div className="case-study__section-head">
+											<span className="case-study__section-roman" aria-hidden="true">
+												{ROMAN[i]}.
+											</span>
+											<h2 className="case-study__section-title">{s.label}</h2>
+										</div>
+										<div
+											className={`case-study__section-body${
+												isFirst ? " case-study__section-body--dropcap" : ""
+											}`}
+										>
+											{renderBody(sections[s.key])}
+										</div>
+										{isFirst && project.pullQuote && (
+											<blockquote className="case-study__pullquote rv">
+												{project.pullQuote}
+											</blockquote>
+										)}
+									</section>
+								);
+							})}
+
+							{sections.whatBroke && (
+								<aside
+									className="case-study__corrections rv"
+									aria-labelledby="corrections-heading"
+								>
+									<span className="case-study__corrections-label label-text">
+										Corrections &amp; Clarifications
+									</span>
+									<h2 id="corrections-heading" className="case-study__corrections-title">
+										What broke, and what I traded away
+									</h2>
+									<div className="case-study__corrections-body">
+										{renderCorrectionsBody(sections.whatBroke)}
+									</div>
+									<footer className="case-study__corrections-footer">
+										Published in the spirit of a newspaper correction: what went wrong, stated plainly.
+									</footer>
+								</aside>
+							)}
+						</article>
+
+						{/* Right: empty (visible ≥1200px) */}
+						<div className="case-study__right-col" aria-hidden="true" />
+					</div>
+				</div>
+			</div>
+
+			{/* ── Next story bar ────────────────────────────────────────── */}
+			{next && (
+				<Link to={`/work/${next.slug}`} className="case-study__next-bar">
+					<div className="container">
+						<div className="case-study__next-inner">
+							<span className="case-study__next-label label-text">
+								Next story · No. {nextNum}
+							</span>
+							<p className="case-study__next-title">{next.title}</p>
+							<span className="case-study__next-cta">Continue reading →</span>
+						</div>
+					</div>
+				</Link>
+			)}
 		</div>
 	);
 }

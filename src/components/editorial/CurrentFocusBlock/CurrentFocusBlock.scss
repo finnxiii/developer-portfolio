@@ -19,7 +19,7 @@
 	}
 
 	&__date {
-		font-family: var(--font-sans);
+		font-family: var(--font-mono);
 		font-size: var(--text-meta);
 		color: var(--ink-tertiary);
 	}
@@ -33,7 +33,7 @@
 
 	&__item {
 		dt {
-			font-family: var(--font-sans);
+			font-family: var(--font-mono);
 			font-size: var(--text-meta);
 			font-weight: 600;
 			letter-spacing: 0.08em;
@@ -43,7 +43,7 @@
 		}
 
 		dd {
-			font-family: var(--font-sans);
+			font-family: var(--font-serif);
 			font-size: var(--text-small);
 			line-height: 1.55;
 			color: var(--ink-secondary);

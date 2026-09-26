@@ -14,7 +14,7 @@ export async function onRequestGet({ env }) {
 				"Cache-Control": "public, max-age=60, stale-while-revalidate=300",
 			},
 		});
-	} catch (err) {
+	} catch {
 		return new Response(JSON.stringify({ error: "Failed to fetch content" }), {
 			status: 500,
 			headers: { "Content-Type": "application/json" },

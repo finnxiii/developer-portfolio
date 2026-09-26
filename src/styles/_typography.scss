@@ -1,24 +1,26 @@
 // ── Typography ──────────────────────────────────────────────────
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: var(--font-serif);
-	line-height: 1.2;
-	letter-spacing: -0.01em;
+	font-family: var(--font-display);
+	font-weight: 400;
+	line-height: var(--lh-display);
+	letter-spacing: -0.02em;
 	color: var(--ink);
 }
 
-h1 { font-size: var(--text-h1); font-weight: 700; }
-h2 { font-size: var(--text-h2); font-weight: 600; }
-h3 { font-size: var(--text-h3); font-weight: 600; }
+h1 { font-size: var(--text-h1); }
+h2 { font-size: var(--text-h2); }
+h3 { font-size: var(--text-h3); }
 
 p {
-	font-family: var(--font-sans);
+	font-family: var(--font-serif);
 	font-size: var(--text-body);
-	line-height: 1.75;
+	line-height: var(--lh-body);
 	color: var(--ink-secondary);
 }
 
 a {
+	color: inherit;
 	transition: color var(--dur-hover) var(--ease-out);
 
 	&:hover {
@@ -28,18 +30,120 @@ a {
 	&:focus-visible {
 		outline: 2px solid var(--accent);
 		outline-offset: 2px;
-		border-radius: 2px;
+		border-radius: 0;
 	}
 }
 
 strong { font-weight: 600; }
 
-// Editorial label — uppercase tracking
+// Editorial label — mono uppercase tight tracking
 .label-text {
-	font-family: var(--font-sans);
+	font-family: var(--font-mono);
 	font-size: var(--text-label);
-	font-weight: 500;
-	letter-spacing: 0.12em;
+	font-weight: 400;
+	letter-spacing: 0.08em;
 	text-transform: uppercase;
 	color: var(--ink-tertiary);
+}
+
+// Arrow CTA links — mono, uppercase, 12px, 1px accent underline
+.cta-link {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	font-weight: 400;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: var(--ink);
+	border-bottom: 1px solid var(--accent);
+	padding-bottom: 1px;
+	transition: color var(--dur-hover) var(--ease-out), border-color var(--dur-hover) var(--ease-out);
+
+	.arrow {
+		display: inline-block;
+		transition: transform var(--dur-hover) var(--ease-out);
+	}
+
+	&:hover {
+		color: var(--accent);
+
+		.arrow {
+			transform: translateX(4px);
+		}
+	}
+}
+
+// Button base — 48px tall, square corners
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 48px;
+	padding: 0 var(--space-lg);
+	font-family: var(--font-mono);
+	font-size: var(--text-label);
+	font-weight: 500;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	text-decoration: none;
+	border-radius: 0;
+	cursor: pointer;
+	transition: background var(--dur-hover) var(--ease-out),
+	            color var(--dur-hover) var(--ease-out),
+	            border-color var(--dur-hover) var(--ease-out);
+
+	&--solid {
+		background: var(--ink);
+		color: var(--paper);
+		border: 2px solid var(--ink);
+
+		&:hover {
+			background: var(--accent);
+			border-color: var(--accent);
+			color: var(--paper);
+		}
+	}
+
+	&--outline {
+		background: transparent;
+		color: var(--ink);
+		border: 1px solid var(--ink);
+
+		&:hover {
+			background: var(--ink);
+			color: var(--paper);
+		}
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 3px;
+	}
+}
+
+// Drop cap — float first letter in display font at ~4.5em in accent
+.drop-cap::first-letter {
+	font-family: var(--font-display);
+	font-size: 4.5em;
+	font-weight: 400;
+	color: var(--accent);
+	line-height: 0.78;
+	float: left;
+	margin-right: 0.08em;
+	margin-top: 0.06em;
+}
+
+// Pull quote — display italic, heavy top rule, hairline bottom
+.pull-quote {
+	font-family: var(--font-display);
+	font-style: italic;
+	font-size: clamp(34px, 4vw, 48px);
+	font-weight: 400;
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	color: var(--ink);
+	border-top: var(--rule-heavy);
+	border-bottom: var(--rule-hair);
+	padding: var(--space-lg) 0;
+	margin: var(--space-2xl) 0;
 }

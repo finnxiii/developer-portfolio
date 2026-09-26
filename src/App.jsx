@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
+import { useReducedMotion } from "./hooks/useReducedMotion";
+import { useSmoothScroll } from "./hooks/useSmoothScroll";
 import PageLayout from "./components/layout/PageLayout/PageLayout";
 import FrontPage from "./pages/FrontPage/FrontPage";
 import SelectedWork from "./pages/SelectedWork/SelectedWork";
@@ -12,9 +15,12 @@ import CurrentFocusPage from "./pages/CurrentFocusPage/CurrentFocusPage";
 import AdminLogin from "./pages/Admin/Login";
 import AdminDashboard from "./pages/Admin/Dashboard";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 export default function App() {
+	const prefersReduced = useReducedMotion();
+	useSmoothScroll(prefersReduced);
+
 	return (
 		<BrowserRouter>
 			<Routes>
