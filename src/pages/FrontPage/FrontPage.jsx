@@ -35,7 +35,7 @@ function emphasizeWord(text, word) {
 
 const EDITION_ITEMS = [
 	{ label: "Selected Work", href: "#work",  page: "p.02" },
-	{ label: "The Engineer",  href: "/about", page: "p.03" },
+	{ label: "About",         href: "/about", page: "p.03" },
 	{ label: "Field Notes",   href: "#notes", page: "p.04" },
 	{ label: "Now",           href: "/now",   page: "p.05" },
 ];
@@ -105,6 +105,8 @@ export default function FrontPage() {
 	return (
 		<div className="front-page" ref={containerRef}>
 			<SEOHead
+				title="Naing Htoo Lwin — The Build Log"
+				raw
 				description={`${profile?.heroStandfirst ?? ""} Selected builds, case studies, engineering philosophy, and field notes.`}
 			/>
 
@@ -131,9 +133,8 @@ export default function FrontPage() {
 							</div>
 
 							<div className="fp-lead__body rv">
-								<div className="fp-lead__columns">
+								<div className="fp-lead__standfirst">
 									<p className="drop-cap">{profile?.heroStandfirst}</p>
-									<p>{profile?.bio}</p>
 								</div>
 							</div>
 
@@ -141,20 +142,22 @@ export default function FrontPage() {
 								<Link to="/work" className="btn btn--solid">
 									Read selected work <span className="arrow">→</span>
 								</Link>
+								{profile?.links?.cv && (
 								<a
-									href="/cv.pdf"
+									href={profile.links.cv}
 									className="btn btn--outline"
 									target="_blank"
 									rel="noopener noreferrer"
 								>
 									Download CV (PDF)
 								</a>
+							)}
 							</div>
 						</div>
 
 						<aside className="fp-lead__index" aria-label="In this edition">
 							<div className="fp-edition">
-								<h2 className="fp-edition__heading">In this edition</h2>
+								<h2 className="fp-edition__heading">On this page</h2>
 								<ul className="fp-edition__list">
 									{EDITION_ITEMS.map(({ label, href, page }) => (
 										<li key={href} className="fp-edition__row">
@@ -173,7 +176,7 @@ export default function FrontPage() {
 							{currentFocus && (
 								<div className="fp-deskbox">
 									<div className="fp-deskbox__header">
-										Conditions on the desk · {currentFocus.date}
+										Currently · {currentFocus.date}
 									</div>
 									<div className="fp-deskbox__body">
 										{[
@@ -233,12 +236,15 @@ export default function FrontPage() {
 				</div>
 			</section>
 
-			{/* ── §3–5 Editorial Policy ───────────────────────────────── */}
+			{/* ── §3–5 How I Work ─────────────────────────────────────── */}
 			<section className="fp-policy" aria-labelledby="policy-heading">
 				<div className="container">
-					<h2 id="policy-heading" className="fp-policy__title rv">
-						Editorial Policy
-					</h2>
+					<div className="fp-policy__header rv">
+						<h2 id="policy-heading" className="fp-policy__title">
+							How I Work
+						</h2>
+						<span className="fp-policy__subtitle">§3 · Principles behind the projects</span>
+					</div>
 					<div className="fp-policy__grid">
 						{philosophy.map((item, i) => (
 							<div key={i} className="fp-policy__col rv" data-reveal-delay={i * 0.06}>
@@ -256,13 +262,13 @@ export default function FrontPage() {
 				</div>
 			</section>
 
-			{/* ── §6 Appointments + Field Notes ───────────────────────── */}
-			<section id="notes" className="fp-two-col" aria-label="Appointments and field notes">
+			{/* ── §6 Experience + Field Notes ─────────────────────────── */}
+			<section id="notes" className="fp-two-col" aria-label="Experience and field notes">
 				<div className="container">
 					<div className="fp-two-col__grid">
 
 						<div className="fp-two-col__left">
-							<h2 className="fp-two-col__heading rv">Appointments</h2>
+							<h2 className="fp-two-col__heading rv">Experience</h2>
 							{experience.slice(0, 4).map((entry, i) => (
 								<div key={i} className="fp-appt rv" data-reveal-delay={i * 0.06}>
 									<span className="fp-appt__date">{entry.dateRange}</span>
@@ -273,16 +279,17 @@ export default function FrontPage() {
 								</div>
 							))}
 							<div className="fp-two-col__see-all rv">
-								<Link to="/career" className="cta-link">
-									Full career desk + CV <span className="arrow">→</span>
+								<Link to="/about#experience" className="cta-link">
+									Full experience <span className="arrow">→</span>
 								</Link>
 							</div>
 						</div>
 
 						<div className="fp-two-col__right">
-							<h2 className="fp-two-col__heading rv">
-								Field Notes — Letters from the workshop
-							</h2>
+							<div className="fp-two-col__heading-row rv">
+								<h2 className="fp-two-col__heading">Field Notes</h2>
+								<span className="fp-two-col__subtitle">Writing on what I build</span>
+							</div>
 							{fieldNotes.slice(0, 4).map((note, i) => (
 								<div key={note.slug} className="fp-fnote rv" data-reveal-delay={i * 0.06}>
 									<p className="fp-fnote__dateline">
@@ -303,28 +310,6 @@ export default function FrontPage() {
 							</div>
 						</div>
 
-					</div>
-				</div>
-			</section>
-
-			{/* ── Colophon ────────────────────────────────────────────── */}
-			<section className="fp-colophon" aria-label="Colophon">
-				<div className="container">
-					<p className="fp-colophon__wordmark" aria-label="FINNXIII.DEV">
-						FINNXIII.DEV
-					</p>
-					<div className="fp-colophon__cols">
-						<p className="fp-colophon__col">
-							Set in Instrument Serif, Source Serif 4 &amp; JetBrains Mono.
-							Printed on Cloudflare Pages.
-						</p>
-						<p className="fp-colophon__col">No cookies. No trackers.</p>
-						<p className="fp-colophon__col">
-							&copy; 2026 Naing Htoo Lwin ·{" "}
-							<a href="mailto:nainghtoolwin1385@gmail.com">
-								nainghtoolwin1385@gmail.com
-							</a>
-						</p>
 					</div>
 				</div>
 			</section>

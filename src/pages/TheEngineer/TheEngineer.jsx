@@ -1,9 +1,10 @@
 import { useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { usePortfolioData } from "../../hooks/usePortfolioData";
 import { useScrollReveal } from "../../hooks/useScrollReveal";
 import PhilosophyItem from "../../components/editorial/PhilosophyItem/PhilosophyItem";
-import TimelineEntry from "../../components/editorial/TimelineEntry/TimelineEntry";
+import Timeline from "../../components/editorial/Timeline/Timeline";
 import Rule from "../../components/ui/Rule/Rule";
 import SEOHead from "../../components/ui/SEOHead/SEOHead";
 import "./TheEngineer.scss";
@@ -13,173 +14,201 @@ export default function TheEngineer() {
 	useScrollReveal(containerRef);
 
 	const { hash } = useLocation();
-
-	// Scroll to hash anchor after mount
 	useEffect(() => {
 		if (!hash) return;
 		const id = hash.replace("#", "");
 		const el = document.getElementById(id);
-		if (el) {
-			setTimeout(() => {
-				el.scrollIntoView({ behavior: "smooth", block: "start" });
-			}, 100);
-		}
+		if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
 	}, [hash]);
 
 	const { data } = usePortfolioData();
-	const { profile, philosophy = [], experience = [] } = data;
-	const { name, role, university, graduation, location, bio, interests = [], links = {} } = profile;
+	const { profile, philosophy = [], experience = [], currentFocus } = data;
+	const {
+		name, role, university, graduation, location,
+		bio, interests = [], links = {},
+	} = profile;
+
+	const bioParagraphs = (bio || "").split(/\n\n+/).filter(Boolean);
 
 	return (
 		<div className="the-engineer" ref={containerRef}>
-			<SEOHead
-				title="The Engineer"
-				description={bio}
-			/>
+			<SEOHead title="About" description={bio} />
+
+			{/* ── Header ───────────────────────────────────────────────── */}
 			<div className="container">
-
-				<header className="the-engineer__header rv">
-					<span className="the-engineer__eyebrow">The Engineer</span>
-					<h1 className="the-engineer__name">{name}</h1>
-					<p className="the-engineer__role">{role}</p>
-					{(university || location) && (
-						<p className="the-engineer__meta">
-							{[university, graduation && `(${graduation})`, location].filter(Boolean).join(" · ")}
-						</p>
-					)}
+				<header className="te-header rv">
+					<span className="te-header__kicker label-text">§3 · About</span>
+					<h1 className="te-header__name">{name}</h1>
+					<p className="te-header__subtitle">{role} · {university}</p>
 				</header>
+			</div>
 
-				<Rule />
+			<Rule />
 
-				{/* ── Section 1: Bio ── */}
-				<div className="the-engineer__body">
-					<div className="the-engineer__main">
-						{bio && (
-							<section className="the-engineer__section rv" data-reveal-delay="0.05">
-								<h2 className="the-engineer__section-title">Background</h2>
-								<p className="the-engineer__bio">{bio}</p>
+			{/* ── Two-column body ───────────────────────────────────────── */}
+			<div className="container">
+				<div className="te-body">
+
+					{/* ── Main column ──────────────────────────────────── */}
+					<div className="te-main">
+
+						{/* Bio prose */}
+						{bioParagraphs.length > 0 && (
+							<section className="te-section rv" aria-label="Biography">
+								<span className="te-section__label">About</span>
+								<div className="te-section__body">
+									{bioParagraphs.map((p, i) => (
+										<p key={i} className="te-section__p">{p}</p>
+									))}
+								</div>
 							</section>
 						)}
 
+						{/* Background */}
+						<section className="te-section rv" data-reveal-delay="0.05" aria-label="Background">
+							<span className="te-section__label">Background</span>
+							<ul className="te-list" role="list">
+								{location && <li className="te-list__item"><span className="te-list__key">Location</span> — {location}</li>}
+								{university && <li className="te-list__item"><span className="te-list__key">University</span> — {university}</li>}
+								{graduation && <li className="te-list__item"><span className="te-list__key">Graduating</span> — {graduation}</li>}
+							</ul>
+						</section>
+
+						{/* Interests */}
 						{interests.length > 0 && (
-							<section className="the-engineer__section rv" data-reveal-delay="0.1">
-								<h2 className="the-engineer__section-title">Areas of Interest</h2>
-								<ul className="the-engineer__interests" role="list">
-									{interests.map((interest) => (
-										<li key={interest}>{interest}</li>
+							<section className="te-section rv" data-reveal-delay="0.08" aria-label="Interests">
+								<span className="te-section__label">Interests</span>
+								<ul className="te-list" role="list">
+									{interests.map((item, i) => (
+										<li key={i} className="te-list__item">{item}</li>
 									))}
 								</ul>
 							</section>
 						)}
 
-						<section className="the-engineer__section rv" data-reveal-delay="0.15">
-							<h2 className="the-engineer__section-title">Working Style</h2>
-							<p className="the-engineer__body-text">
-								I prefer to understand a constraint fully before picking a tool. I work best
-								when I can see the shape of the problem clearly — what is fixed, what is
-								flexible, and where the real cost is. Trade-offs are normal; hiding them is
-								not. I write code that communicates intent, add comments only when the why
-								is non-obvious, and ship small reliable things before ambitious fragile ones.
-							</p>
-						</section>
+						{/* Philosophy preview */}
+						{philosophy.length > 0 && (
+							<>
+								<Rule />
+								<section id="how-i-work" style={{ scrollMarginTop: "80px" }} className="te-philosophy rv" data-reveal-delay="0.05">
+									<span className="te-section__label">How I Work</span>
+									<div className="te-philosophy__list">
+										{philosophy.map((item, i) => (
+											<div key={i} className="rv" data-reveal-delay={i * 0.06}>
+												<PhilosophyItem {...item} showExample />
+											</div>
+										))}
+									</div>
+									<div className="te-philosophy__more">
+										<Link to="/about#how-i-work" className="te-philosophy__more">
+											How I work →
+										</Link>
+									</div>
+								</section>
+							</>
+						)}
 					</div>
 
-					<aside className="the-engineer__sidebar rv" data-reveal-delay="0.08">
-						<div className="the-engineer__contact">
-							<p className="the-engineer__contact-label">Contact & Links</p>
-							<ul className="the-engineer__contact-list" role="list">
+					{/* ── Sidebar ───────────────────────────────────────── */}
+					<aside className="te-sidebar rv" data-reveal-delay="0.1">
+
+						{/* Contact */}
+						<div className="te-sidebar__block">
+							<span className="te-sidebar__label">Contact</span>
+							<ul className="te-sidebar__list" role="list">
 								{links.email && (
 									<li>
-										<a href={`mailto:${links.email}`} className="the-engineer__contact-link">
-											{links.email}
+										<a href={`mailto:${links.email}`} className="te-sidebar__link">
+											Email ↗
 										</a>
 									</li>
 								)}
 								{links.github && (
 									<li>
-										<a href={links.github} className="the-engineer__contact-link" target="_blank" rel="noopener noreferrer">
+										<a href={links.github} className="te-sidebar__link" target="_blank" rel="noopener noreferrer">
 											GitHub ↗
 										</a>
 									</li>
 								)}
 								{links.linkedin && (
 									<li>
-										<a href={links.linkedin} className="the-engineer__contact-link" target="_blank" rel="noopener noreferrer">
+										<a href={links.linkedin} className="te-sidebar__link" target="_blank" rel="noopener noreferrer">
 											LinkedIn ↗
 										</a>
 									</li>
 								)}
 								{links.cv && (
 									<li>
-										<a href={links.cv} className="the-engineer__contact-link the-engineer__contact-link--cta" download>
+										<a href={links.cv} className="te-sidebar__link te-sidebar__link--cta" target="_blank" rel="noopener noreferrer">
 											Download CV (PDF)
 										</a>
 									</li>
 								)}
 							</ul>
 						</div>
+
+						{/* Currently */}
+						{currentFocus && (
+							<div className="te-sidebar__block">
+								<span className="te-sidebar__label">Currently</span>
+								<ul className="te-sidebar__list" role="list">
+									{currentFocus.building && (
+										<li>
+											<span className="te-sidebar__sub">Building</span>
+											{currentFocus.buildingLink
+												? <Link to={currentFocus.buildingLink} className="te-sidebar__link">{currentFocus.buildingShort || currentFocus.building}</Link>
+												: <span className="te-sidebar__val">{currentFocus.buildingShort || currentFocus.building}</span>
+											}
+										</li>
+									)}
+									{currentFocus.learning && (
+										<li>
+											<span className="te-sidebar__sub">Learning</span>
+											<span className="te-sidebar__val">{currentFocus.learningShort || currentFocus.learning}</span>
+										</li>
+									)}
+									{currentFocus.exploring && (
+										<li>
+											<span className="te-sidebar__sub">Exploring</span>
+											<span className="te-sidebar__val">{currentFocus.exploringShort || currentFocus.exploring}</span>
+										</li>
+									)}
+								</ul>
+								<Link to="/now" className="te-sidebar__more">
+									View /now page →
+								</Link>
+							</div>
+						)}
+
 					</aside>
 				</div>
+			</div>
 
-				{/* ── Section 2: Engineering Philosophy ── */}
-				{philosophy.length > 0 && (
-					<>
-						<Rule />
-						<section id="philosophy" className="the-engineer__philosophy rv" data-reveal-delay="0.05">
-							<h2 className="the-engineer__chapter-label">Engineering Philosophy</h2>
-							<p className="the-engineer__chapter-deck">
-								Operating principles — not generic values. Each is grounded in real decisions, real constraints, and real projects.
-							</p>
-							<div className="the-engineer__philosophy-list">
-								{philosophy.map((item, i) => (
-									<div key={i} className="rv" data-reveal-delay={i * 0.07}>
-										<PhilosophyItem {...item} showExample />
-									</div>
-								))}
-							</div>
-						</section>
-					</>
-				)}
+			{/* ── Experience timeline ───────────────────────────────────── */}
+			{experience.length > 0 && (
+				<section id="experience" style={{ scrollMarginTop: "80px" }} aria-label="Experience">
+					<Timeline experience={experience} />
+				</section>
+			)}
 
-				{/* ── Section 3: Career Desk ── */}
-				{experience.length > 0 && (
-					<>
-						<Rule />
-						<section id="career" className="the-engineer__career rv" data-reveal-delay="0.05">
-							<div className="the-engineer__career-header">
-								<div>
-									<h2 className="the-engineer__chapter-label">Career Desk</h2>
-									<p className="the-engineer__chapter-deck">
-										Education, roles, and responsibilities — in reverse-chronological order. A readable layer on top of the CV.
-									</p>
-								</div>
-								{links.cv && (
-									<a href={links.cv} className="the-engineer__cv-btn" download>
-										Download CV (PDF) ↓
-									</a>
-								)}
-							</div>
-							<div className="the-engineer__timeline">
-								{experience.map((entry, i) => (
-									<div key={i} className="rv" data-reveal-delay={i * 0.08}>
-										<TimelineEntry {...entry} />
-									</div>
-								))}
-							</div>
-							{links.cv && (
-								<div className="the-engineer__career-footer">
-									<p className="the-engineer__career-note">
-										The CV contains the full picture, including grades, links, and details not listed here.
-									</p>
-									<a href={links.cv} className="the-engineer__cv-btn" download>
-										Download CV (PDF) ↓
-									</a>
-								</div>
-							)}
-						</section>
-					</>
-				)}
-
+			{/* ── CV CTA ───────────────────────────────────────────────── */}
+			<div className="container">
+				<Rule />
+				<div className="te-cta-row rv">
+					{links.cv && (
+						<a href={links.cv} className="btn btn--solid" target="_blank" rel="noopener noreferrer">
+							Download CV (PDF)
+						</a>
+					)}
+					{links.email && (
+						<a href={`mailto:${links.email}`} className="btn btn--outline">
+							Email me
+						</a>
+					)}
+					<Link to="/about#experience" className="btn btn--outline">
+						Full experience →
+					</Link>
+				</div>
 			</div>
 		</div>
 	);

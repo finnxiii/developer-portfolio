@@ -23,12 +23,38 @@
 		overflow: hidden;
 	}
 
-	&__item {
+	&__clock {
 		font-family: var(--font-mono);
 		font-size: 11px;
-		color: var(--ink-tertiary);
 		white-space: nowrap;
-		flex-shrink: 0;
+	}
+
+	&__datestamp {
+		display: none;
+		color: var(--ink-secondary);
+
+		// ≥1024px: full format
+		&--long {
+			@media (min-width: 1024px) { display: inline; }
+		}
+
+		// 640–1023px: short format
+		&--mid {
+			@media (min-width: 640px) and (max-width: 1023px) { display: inline; }
+		}
+
+		// <640px: minimal format
+		&--short {
+			@media (max-width: 639px) { display: inline; }
+		}
+	}
+
+	&__date {
+		color: var(--ink-secondary);
+	}
+
+	&__time {
+		color: var(--ink);
 	}
 
 	// ── Right block ───────────────────────────────────────────────

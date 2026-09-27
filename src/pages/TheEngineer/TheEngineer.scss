@@ -1,281 +1,268 @@
 @use "../../styles/mixins" as *;
 
 .the-engineer {
-	padding-block: var(--space-3xl);
+	padding-block: var(--space-xl) var(--space-3xl);
+}
 
-	&__header {
-		padding-bottom: var(--space-2xl);
+// ── Header ─────────────────────────────────────────────────────────────
+
+.te-header {
+	padding-block: var(--space-2xl) var(--space-xl);
+}
+
+.te-header__kicker {
+	display: block;
+	color: var(--ink-secondary);
+	margin-bottom: var(--space-sm);
+}
+
+.te-header__name {
+	font-family: var(--font-display);
+	font-size: clamp(48px, 8vw, 96px);
+	font-weight: 600;
+	line-height: 0.9;
+	letter-spacing: -0.03em;
+	color: var(--ink);
+	margin: 0 0 var(--space-md);
+}
+
+.te-header__subtitle {
+	font-family: var(--font-mono);
+	font-size: 14px;
+	letter-spacing: 0.04em;
+	color: var(--ink-secondary);
+	margin: 0;
+}
+
+// ── Two-column body ────────────────────────────────────────────────────
+
+.te-body {
+	display: grid;
+	grid-template-columns: minmax(0, 680px) 280px;
+	gap: var(--space-3xl);
+	align-items: start;
+	padding-block: var(--space-2xl) var(--space-3xl);
+
+	@media (max-width: 1023px) {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+// ── Main column ────────────────────────────────────────────────────────
+
+.te-section {
+	display: grid;
+	grid-template-columns: 120px minmax(0, 1fr);
+	gap: var(--space-xl);
+	padding-block: var(--space-xl);
+	border-bottom: 0.5px solid var(--rule);
+
+	&:first-child {
+		padding-top: 0;
 	}
 
-	&__eyebrow {
-		display: block;
-		font-family: var(--font-mono);
-		font-size: var(--text-label);
-		font-weight: 500;
-		text-transform: uppercase;
-		letter-spacing: 0.12em;
-		color: var(--ink-tertiary);
-		margin-bottom: var(--space-md);
-	}
-
-	&__name {
-		font-family: var(--font-serif);
-		font-size: var(--text-h1);
-		font-weight: 700;
-		line-height: 1.1;
-		color: var(--ink);
-		margin: 0 0 var(--space-sm);
-		letter-spacing: -0.01em;
-	}
-
-	&__role {
-		font-family: var(--font-mono);
-		font-size: var(--text-lead);
-		color: var(--ink-secondary);
-		margin: 0 0 var(--space-xs);
-	}
-
-	&__meta {
-		font-family: var(--font-mono);
-		font-size: var(--text-small);
-		color: var(--ink-tertiary);
-		margin: 0;
-	}
-
-	// ── Bio + Sidebar grid ──────────────────────────────────────────
-
-	&__body {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-2xl);
-		padding-top: var(--space-2xl);
-
-		@include desktop {
-			grid-template-columns: 8fr 4fr;
-			align-items: start;
-		}
-	}
-
-	// ── Bio sections ────────────────────────────────────────────────
-
-	&__section {
-		padding: var(--space-xl) 0;
-		border-top: 0.5px solid var(--rule);
-
-		&:first-child {
-			border-top: none;
-			padding-top: 0;
-		}
-	}
-
-	&__section-title {
-		display: block;
-		font-family: var(--font-mono);
-		font-size: var(--text-label);
-		font-weight: 500;
-		text-transform: uppercase;
-		letter-spacing: 0.12em;
-		color: var(--ink-tertiary);
-		margin-bottom: var(--space-md);
-	}
-
-	&__bio,
-	&__body-text {
-		font-family: var(--font-serif);
-		font-size: var(--text-body);
-		line-height: 1.7;
-		color: var(--ink-secondary);
-		max-width: 68ch;
-		margin: 0;
-	}
-
-	&__interests {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: flex;
-		flex-direction: column;
+	@include mobile {
+		grid-template-columns: minmax(0, 1fr);
 		gap: var(--space-sm);
-
-		li {
-			font-family: var(--font-serif);
-			font-size: var(--text-body);
-			color: var(--ink-secondary);
-			padding-left: var(--space-lg);
-			position: relative;
-
-			&::before {
-				content: "—";
-				position: absolute;
-				left: 0;
-				color: var(--rule);
-			}
-		}
 	}
+}
 
-	// ── Sidebar ─────────────────────────────────────────────────────
+.te-section__label {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--ink-tertiary);
+	padding-top: 4px;
+}
 
-	&__contact {
-		border: 0.5px solid var(--rule);
-		padding: var(--space-xl) var(--space-lg);
-		background: var(--surface);
-	}
+.te-section__body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-md);
+}
 
-	&__contact-label {
-		display: block;
-		font-family: var(--font-mono);
-		font-size: var(--text-label);
-		font-weight: 500;
-		text-transform: uppercase;
-		letter-spacing: 0.12em;
+.te-section__p {
+	font-family: var(--font-serif);
+	font-size: var(--text-body);
+	line-height: var(--lh-body);
+	color: var(--ink-secondary);
+	margin: 0;
+	max-width: 56ch;
+}
+
+// ── Em-dash lists ──────────────────────────────────────────────────────
+
+.te-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-xs);
+}
+
+.te-list__item {
+	font-family: var(--font-serif);
+	font-size: var(--text-small);
+	line-height: 1.5;
+	color: var(--ink-secondary);
+
+	&::before {
+		content: "— ";
 		color: var(--ink-tertiary);
-		margin-bottom: var(--space-lg);
 	}
+}
 
-	&__contact-list {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-md);
+.te-list__key {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--ink-tertiary);
+}
+
+// ── Philosophy section ─────────────────────────────────────────────────
+
+.te-philosophy {
+	padding-block: var(--space-2xl) var(--space-xl);
+}
+
+.te-philosophy__list {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: var(--space-lg);
+}
+
+.te-philosophy__more {
+	padding-top: var(--space-md);
+	font-family: var(--font-mono);
+	font-size: 13px;
+	letter-spacing: 0.03em;
+	color: var(--ink-secondary);
+	text-decoration: none;
+	transition: color var(--dur-hover);
+
+	&:hover { color: var(--accent); }
+
+	&:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
 	}
+}
 
-	&__contact-link {
-		font-family: var(--font-mono);
-		font-size: var(--text-small);
-		color: var(--ink-secondary);
-		text-decoration: none;
-		border-bottom: 1px solid transparent;
-		padding-bottom: 1px;
-		transition: color var(--dur-hover), border-color var(--dur-hover);
+// ── Sidebar ────────────────────────────────────────────────────────────
 
-		&:hover {
-			color: var(--accent);
-			border-color: var(--accent);
-		}
+.te-sidebar {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2xl);
+	position: sticky;
+	top: 80px;
 
-		&:focus-visible {
-			outline: 2px solid var(--accent);
-			outline-offset: 4px;
-			border-radius: 0;
-		}
-
-		&--cta {
-			font-weight: 600;
-			color: var(--accent);
-		}
-	}
-
-	// ── Chapter sections (Philosophy, Career) ────────────────────────
-
-	&__chapter-label {
-		font-family: var(--font-mono);
-		font-size: var(--text-label);
-		font-weight: 500;
-		text-transform: uppercase;
-		letter-spacing: 0.12em;
-		color: var(--ink-tertiary);
-		margin-bottom: var(--space-md);
-		display: block;
-	}
-
-	&__chapter-deck {
-		font-family: var(--font-serif);
-		font-size: var(--text-body);
-		line-height: 1.6;
-		color: var(--ink-secondary);
-		max-width: 60ch;
-		margin: 0 0 var(--space-2xl);
-	}
-
-	// ── Philosophy section ───────────────────────────────────────────
-
-	&__philosophy {
-		padding-block: var(--space-3xl);
-
-		@include mobile {
-			padding-block: var(--space-2xl);
-		}
-	}
-
-	&__philosophy-list {
-		display: flex;
-		flex-direction: column;
-	}
-
-	// ── Career section ───────────────────────────────────────────────
-
-	&__career {
-		padding-block: var(--space-3xl);
-
-		@include mobile {
-			padding-block: var(--space-2xl);
-		}
-	}
-
-	&__career-header {
-		display: flex;
-		align-items: flex-start;
-		justify-content: space-between;
+	@media (max-width: 1023px) {
+		position: static;
+		flex-direction: row;
+		flex-wrap: wrap;
 		gap: var(--space-xl);
-		margin-bottom: var(--space-2xl);
-
-		@include mobile {
-			flex-direction: column;
-			gap: var(--space-lg);
-		}
-	}
-
-	&__cv-btn {
-		display: inline-block;
-		font-family: var(--font-mono);
-		font-size: var(--text-small);
-		font-weight: 600;
-		color: var(--accent);
-		text-decoration: none;
-		border: 1.5px solid var(--accent);
-		padding: var(--space-sm) var(--space-lg);
-		white-space: nowrap;
-		transition: background var(--dur-hover), color var(--dur-hover);
-
-		&:hover {
-			background: var(--accent);
-			color: var(--paper);
-		}
-
-		&:focus-visible {
-			outline: 2px solid var(--accent);
-			outline-offset: 4px;
-		}
-	}
-
-	&__timeline {
-		display: flex;
-		flex-direction: column;
-	}
-
-	&__career-footer {
-		margin-top: var(--space-2xl);
-		padding-top: var(--space-xl);
 		border-top: 0.5px solid var(--rule);
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: var(--space-xl);
-
-		@include mobile {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: var(--space-lg);
-		}
+		padding-top: var(--space-2xl);
 	}
 
-	&__career-note {
-		font-family: var(--font-serif);
-		font-size: var(--text-small);
-		color: var(--ink-tertiary);
-		margin: 0;
-		max-width: 50ch;
+	@include mobile {
+		flex-direction: column;
+	}
+}
+
+.te-sidebar__block {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
+
+	@media (max-width: 1023px) {
+		flex: 1;
+		min-width: 180px;
+	}
+}
+
+.te-sidebar__label {
+	font-family: var(--font-mono);
+	font-size: 10px;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--ink-tertiary);
+	padding-bottom: var(--space-xs);
+	border-bottom: 0.5px solid var(--rule);
+}
+
+.te-sidebar__list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-xs);
+}
+
+.te-sidebar__link {
+	font-family: var(--font-mono);
+	font-size: 13px;
+	letter-spacing: 0.03em;
+	color: var(--ink-secondary);
+	text-decoration: none;
+	transition: color var(--dur-hover);
+
+	&:hover { color: var(--accent); }
+
+	&:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+	}
+}
+
+.te-sidebar__link--cta {
+	color: var(--accent);
+	font-weight: 500;
+}
+
+.te-sidebar__sub {
+	display: block;
+	font-family: var(--font-mono);
+	font-size: 10px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--ink-tertiary);
+	margin-bottom: 1px;
+}
+
+.te-sidebar__val {
+	font-family: var(--font-mono);
+	font-size: 13px;
+	color: var(--ink-secondary);
+}
+
+.te-sidebar__more {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.04em;
+	color: var(--ink-tertiary);
+	text-decoration: none;
+	transition: color var(--dur-hover);
+
+	&:hover { color: var(--accent); }
+}
+
+// ── CTA row ────────────────────────────────────────────────────────────
+
+.te-cta-row {
+	padding-block: var(--space-2xl) var(--space-3xl);
+	display: flex;
+	gap: var(--space-md);
+	flex-wrap: wrap;
+
+	@include mobile {
+		flex-direction: column;
+
+		.btn { text-align: center; }
 	}
 }

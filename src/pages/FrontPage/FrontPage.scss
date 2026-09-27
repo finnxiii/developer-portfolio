@@ -3,17 +3,17 @@
 // ── §1 Lead Story ─────────────────────────────────────────────────
 
 .fp-lead {
-	padding-block: var(--space-3xl) var(--space-2xl);
+	padding-block: var(--space-xl) var(--space-2xl);
 
-	@include mobile { padding-block: var(--space-2xl) var(--space-xl); }
+	@include mobile { padding-block: var(--space-lg) var(--space-xl); }
 
 	&__grid {
 		display: grid;
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
 		gap: var(--space-2xl);
 
 		@include above-mobile {
-			grid-template-columns: 1fr 360px;
+			grid-template-columns: minmax(0, 1fr) 360px;
 			gap: 0;
 			align-items: start;
 		}
@@ -81,21 +81,14 @@
 		margin-bottom: var(--space-xl);
 	}
 
-	&__columns {
-		@include above-mobile {
-			column-count: 2;
-			column-gap: 36px;
-		}
-
+	&__standfirst {
 		p {
 			font-family: var(--font-serif);
-			font-size: var(--text-body);
-			line-height: var(--lh-body);
+			font-size: 22px;
+			line-height: 1.6;
+			max-width: 62ch;
 			color: var(--ink-secondary);
-			margin-bottom: var(--space-md);
-			break-inside: avoid;
-
-			&:last-child { margin-bottom: 0; }
+			margin: 0;
 		}
 	}
 
@@ -165,7 +158,7 @@
 	}
 }
 
-// ── Conditions on the desk box ────────────────────────────────────
+// ── Currently box ─────────────────────────────────────────────────
 
 .fp-deskbox {
 	border: 1px solid var(--ink);
@@ -215,6 +208,8 @@
 	display: flex;
 	align-items: center;
 	overflow: hidden;
+	max-width: 100%;
+	width: 100%;
 
 	&__track {
 		display: flex;
@@ -310,11 +305,19 @@
 	}
 }
 
-// ── §3–5 Editorial Policy ─────────────────────────────────────────
+// ── §3–5 How I Work ───────────────────────────────────────────────
 
 .fp-policy {
 	padding-block: var(--space-3xl);
 	border-top: 1px solid var(--rule-light);
+
+	&__header {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: var(--space-md);
+		margin-bottom: var(--space-xl);
+	}
 
 	&__title {
 		font-family: var(--font-display);
@@ -323,27 +326,37 @@
 		line-height: 0.92;
 		letter-spacing: -0.02em;
 		color: var(--ink);
-		margin-bottom: var(--space-xl);
+		margin: 0;
+	}
+
+	&__subtitle {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		color: var(--ink-tertiary);
+		letter-spacing: 0.04em;
+		white-space: nowrap;
+		flex-shrink: 0;
 	}
 
 	&__grid {
 		display: grid;
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
 		gap: 0;
 
-		@include above-mobile {
-			grid-template-columns: repeat(5, 1fr);
+		@media (min-width: 768px) and (max-width: 1199px) {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 
-		@include mobile {
-			gap: 0;
+		@media (min-width: 1200px) {
+			grid-template-columns: repeat(5, minmax(0, 1fr));
 		}
 	}
 
 	&__col {
 		padding: 0 var(--space-xl) var(--space-xl) 0;
 
-		@include above-mobile {
+		// ≥1200px — 5 columns: left border on all except first
+		@media (min-width: 1200px) {
 			border-left: 1px solid var(--rule-light);
 			padding: var(--space-lg) var(--space-lg) var(--space-lg) var(--space-xl);
 
@@ -353,6 +366,22 @@
 			}
 		}
 
+		// 768–1199px — 2 columns: left border on 2nd/4th, not on 3rd or 5th (spans full)
+		@media (min-width: 768px) and (max-width: 1199px) {
+			padding: var(--space-lg) var(--space-lg) var(--space-lg) var(--space-xl);
+			border-left: none;
+
+			&:nth-child(2n) {
+				border-left: 1px solid var(--rule-light);
+			}
+
+			&:last-child {
+				grid-column: 1 / -1;
+				border-left: none;
+			}
+		}
+
+		// <768px — single column: top border dividers
 		@include mobile {
 			padding: var(--space-xl) 0;
 			border-top: 1px solid var(--rule-light);
@@ -392,7 +421,7 @@
 	// .fp-policy__link uses .cta-link from _typography.scss
 }
 
-// ── §6 Appointments + Field Notes ────────────────────────────────
+// ── §6 Experience + Field Notes ───────────────────────────────────
 
 .fp-two-col {
 	padding-block: var(--space-3xl);
@@ -401,11 +430,11 @@
 
 	&__grid {
 		display: grid;
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
 		gap: var(--space-2xl);
 
 		@include desktop {
-			grid-template-columns: 1fr 1fr;
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 			gap: 0;
 		}
 	}
@@ -425,6 +454,10 @@
 		}
 	}
 
+	&__heading-row {
+		margin-bottom: var(--space-xl);
+	}
+
 	&__heading {
 		font-family: var(--font-display);
 		font-size: var(--text-h3);
@@ -432,9 +465,18 @@
 		letter-spacing: -0.01em;
 		line-height: 1.1;
 		color: var(--ink);
-		margin-bottom: var(--space-xl);
+		margin-bottom: var(--space-xs);
 		border-bottom: var(--rule-heavy);
 		padding-bottom: var(--space-sm);
+	}
+
+	&__subtitle {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		color: var(--ink-tertiary);
+		letter-spacing: 0.04em;
+		display: block;
+		margin-top: var(--space-sm);
 	}
 
 	&__see-all { margin-top: var(--space-lg); }
@@ -442,13 +484,13 @@
 
 .fp-appt {
 	display: grid;
-	grid-template-columns: 150px 1fr;
+	grid-template-columns: 150px minmax(0, 1fr);
 	gap: var(--space-md);
 	padding-block: var(--space-md);
 	border-bottom: 1px solid var(--rule-light);
 
 	@include mobile {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
 		gap: var(--space-xs);
 	}
 
@@ -517,55 +559,3 @@
 	}
 }
 
-// ── Colophon ──────────────────────────────────────────────────────
-
-.fp-colophon {
-	padding-block: var(--space-3xl);
-	background: var(--paper);
-	border-top: var(--rule-heavy);
-
-	&__wordmark {
-		font-family: var(--font-display);
-		font-size: clamp(64px, 15vw, 216px);
-		font-weight: 400;
-		line-height: 0.9;
-		letter-spacing: -0.03em;
-		-webkit-text-stroke: 1.5px var(--ink);
-		color: transparent;
-		margin-bottom: var(--space-2xl);
-	}
-
-	&__cols {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-xl);
-
-		@include above-mobile {
-			grid-template-columns: 1fr 1fr 1fr;
-			gap: var(--space-2xl);
-		}
-	}
-
-	&__col {
-		font-family: var(--font-mono);
-		font-size: 12px;
-		line-height: 1.6;
-		color: var(--ink-secondary);
-		margin: 0;
-
-		a {
-			color: var(--ink);
-			text-decoration: none;
-			border-bottom: 1px solid var(--rule-light);
-			transition: color var(--dur-hover), border-color var(--dur-hover);
-
-			&:hover { color: var(--accent); border-color: var(--accent); }
-		}
-	}
-
-	&__hash {
-		font-family: var(--font-mono);
-		font-size: inherit;
-		color: var(--accent);
-	}
-}
