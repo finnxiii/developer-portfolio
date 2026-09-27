@@ -6,23 +6,25 @@
 	},
 	"profile": {
 		"name": "Naing Htoo Lwin",
-		"role": "Student Software Engineer",
+		"role": "Software Engineer",
 		"university": "University of Sheffield",
 		"graduation": "2028",
 		"location": "Sheffield, England",
 		"bio": "Software engineering student at the University of Sheffield with a focus on building useful, reliable systems and explaining how they work. Currently working on Android apps, full-stack web applications, and learning to think clearly about engineering trade-offs.",
-		"interests": [
-			"Software Engineering",
-			"Mobile Development",
-			"AI & Intelligent Systems"
-		],
+		"interests": ["Software Engineering", "Artificial Intelligence", "Mobile Development", "Cloud & DevOps"],
 		"heroHeadline": "I build software to understand how things work.",
 		"heroStandfirst": "I'm Finn, a software engineering student exploring the space between software, AI, and intelligent systems. I like taking ambiguous problems, turning them into working software, and learning from the decisions, failures, and trade-offs along the way.",
 		"links": {
 			"email": "nainghtoolwin1385@gmail.com",
 			"github": "https://github.com/finnxiii",
 			"linkedin": "https://linkedin.com/in/nainghtoolwin",
-			"cv": "/cv.pdf"
+			"cv": "/NaingHtooLwin-CV.pdf"
+		},
+		"availability": {
+			"status": "Open to placements",
+			"detail": "Seeking a 12-month industrial placement.",
+			"cta": "Download CV",
+			"href": "/NaingHtooLwin-CV.pdf"
 		}
 	},
 	"projects": [
@@ -35,25 +37,16 @@
 			"leadProject": true,
 			"pullQuote": "Losing a location is acceptable; losing the page view is not.",
 			"numbers": [
-				{"value": "0–100", "label": "bot score per request"},
-				{"value": "4",     "label": "time buckets, 5 min to 1 day"},
-				{"value": "£0",    "label": "target hosting cost, one free-tier VM"},
-				{"value": "0",     "label": "cookies set on visitors"}
+				{ "value": "0–100", "label": "bot score per request" },
+				{ "value": "4", "label": "time buckets, 5 min to 1 day" },
+				{ "value": "£0", "label": "target hosting cost, one free-tier VM" },
+				{ "value": "0", "label": "cookies set on visitors" }
 			],
-			"role": "Sole Developer",
+			"role": "Software Developer",
 			"timeframe": "Jul 2025 - Present",
-			"team": "Solo - personal project",
+			"team": "Personal project",
 			"status": "In development",
-			"stack": [
-				"Python",
-				"FastAPI",
-				"TimescaleDB",
-				"PostgreSQL",
-				"React",
-				"TypeScript",
-				"Three.js",
-				"Docker"
-			],
+			"stack": ["Python", "FastAPI", "TimescaleDB", "PostgreSQL", "React", "TypeScript", "Three.js", "Docker"],
 			"github": "https://github.com/finnxiii/vigil",
 			"live": null,
 			"screenshot": "",
@@ -77,18 +70,14 @@
 			"leadProject": false,
 			"pullQuote": "",
 			"numbers": [
-				{"value": "6",   "label": "engineers on the team"},
-				{"value": "1st", "label": "class result"}
+				{ "value": "6", "label": "engineers on the team" },
+				{ "value": "1st", "label": "class result" }
 			],
 			"role": "Software Developer",
 			"timeframe": "Feb 2026 - May 2026",
 			"team": "Software Hut - Team of 6",
 			"status": "Completed",
-			"stack": [
-				"Ruby on Rails",
-				"PostgreSQL",
-				"JavaScript"
-			],
+			"stack": ["Ruby on Rails", "PostgreSQL", "JavaScript"],
 			"github": "",
 			"live": null,
 			"screenshot": "",
@@ -112,20 +101,14 @@
 			"leadProject": false,
 			"pullQuote": "",
 			"numbers": [
-				{"value": "6 hrs", "label": "from idea to prototype"},
-				{"value": "1",     "label": "award: Most Adventurous Hack"}
+				{ "value": "6 hrs", "label": "from idea to prototype" },
+				{ "value": "1", "label": "award: Most Adventurous Hack" }
 			],
 			"role": "Developer",
 			"timeframe": "April 2025",
 			"team": "iForge Hack Day 2025",
 			"status": "Prototype",
-			"stack": [
-				"Python",
-				"Gemini API",
-				"ESP32-CAM",
-				"Arduino Uno R4",
-				"C/C++"
-			],
+			"stack": ["Python", "Gemini API", "ESP32-CAM", "Arduino Uno R4", "C/C++"],
 			"github": "https://github.com/finnxiii/sorts-embedded-ai",
 			"live": null,
 			"screenshot": "",
@@ -146,8 +129,8 @@
 			"org": "University of Sheffield",
 			"role": "Undergraduate Demonstrator",
 			"bullets": [
-				"Support undergraduate teachning for COM114 during Semester 1, helping students understand programming concepts and work through practical problems.",
-				"Guide students through debugging and problem-solbing rather than simply providing solutions, drawing on experience with Java and software development."
+				"Support undergraduate teaching for COM114 during Semester 1, helping students understand programming concepts and work through practical problems.",
+				"Guide students through debugging and problem-solving rather than simply providing solutions, drawing on experience with Java and software development."
 			],
 			"current": true
 		},
@@ -188,11 +171,8 @@
 		{
 			"dateRange": "Sep 2024 — Present",
 			"org": "University of Sheffield",
-			"role": "MEng Computer Science(Software Engineering)",
-			"bullets": [
-				"Second-year student, expected graduation 2027.",
-				"Relevant modules, societies, or responsibilities go here."
-			],
+			"role": "MEng Computer Science (Software Engineering)",
+			"bullets": ["Third year student, expected graduation 2028."],
 			"current": true
 		}
 	],
@@ -235,7 +215,8 @@
 			"date": "2026-09-18",
 			"topic": "Design",
 			"readTime": "2 min",
-			"body": "This site is the fourth design direction I have tried for my portfolio. I built most of two of the others before deciding they were wrong. That was expensive, but it taught me more about design process than anything that worked first time.\n\n## 1. Render\n\nThe first direction was a 3D hero: a lo-fi workspace scene built with React Three Fiber, meant to feel like sitting down at my desk. I got it running, but procedural geometry has a quality ceiling. Without properly modelled assets the scene never looked as good as the idea in my head, and writing more code did not close that gap.\n\n## 2. Newspaper × Code\n\nNext was a hybrid of editorial layout and developer culture: a newspaper grid, Playfair Display headlines, warm grey paper, and commit messages as section labels. I built it fully, across six phases. By the end it worked, but it felt like two concepts competing for attention rather than one clear identity.\n\n## 3. Doodle Notebook\n\nThe third idea was a hand-drawn notebook, with sketchy illustrations on lined paper. This time I stopped at the concept stage. When I pictured a recruiter skimming it on a laptop between meetings, the charm did not outweigh the effort it would take to read.\n\n## 4. The Engineering Edition\n\nThe current design keeps the editorial part that worked and drops the gimmicks: Source Serif 4 and Inter, cream paper and charcoal ink, restrained motion, and projects written as case studies rather than cards.\n\n## What I would tell myself earlier\n\n- **Validate a direction before building it.** A written brief and a few static mockups would have caught the problems with the second direction in an afternoon, not six phases.\n- **Know where the ceiling is.** Some ideas are limited by assets or skills you do not have yet, not by effort.\n- **Separate content from presentation.** This version reads everything from one structured content source. If there is ever a fifth design, it will be a new front end rather than a rewrite of everything."
+			"deck": "Three abandoned directions, and what each one taught me about design process.",
+			"body": "This site is the fourth design direction I have tried for my portfolio. I built most of two of the others before deciding they were wrong. That was expensive, but it taught me more about design process than anything that worked first time.\n\n## Render\n\nThe first direction was a 3D hero: a lo-fi workspace scene built with React Three Fiber, meant to feel like sitting down at my desk. I got it running, but procedural geometry has a quality ceiling. Without properly modelled assets the scene never looked as good as the idea in my head, and writing more code did not close that gap.\n\n## Newspaper × Code\n\nNext was a hybrid of editorial layout and developer culture: a newspaper grid, Playfair Display headlines, warm grey paper, and commit messages as section labels. I built it fully, across six phases. By the end it worked, but it felt like two concepts competing for attention rather than one clear identity.\n\n## Doodle Notebook\n\nThe third idea was a hand-drawn notebook, with sketchy illustrations on lined paper. This time I stopped at the concept stage. When I pictured a recruiter skimming it on a laptop between meetings, the charm did not outweigh the effort it would take to read.\n\n## The Engineering Edition\n\nThe current design keeps the editorial part that worked and drops the gimmicks: Source Serif 4 and Inter, cream paper and charcoal ink, restrained motion, and projects written as case studies rather than cards.\n\n## What I would tell myself earlier\n\n- **Validate a direction before building it.** A written brief and a few static mockups would have caught the problems with the second direction in an afternoon, not six phases.\n- **Know where the ceiling is.** Some ideas are limited by assets or skills you do not have yet, not by effort.\n- **Separate content from presentation.** This version reads everything from one structured content source. If there is ever a fifth design, it will be a new front end rather than a rewrite of everything."
 		},
 		{
 			"slug": "timescaledb-gotchas",
@@ -243,6 +224,8 @@
 			"date": "2026-07-02",
 			"topic": "Databases",
 			"readTime": "2 min",
+			"deck": "Composite keys, interval types and transactions: where plain Postgres assumptions broke.",
+			"relatedProject": "vigil",
 			"body": "Vigil stores every request in a TimescaleDB hypertable. TimescaleDB is a Postgres extension, which is exactly why I chose it: one database to run on a free-tier VM, with time-series features on top. Most of it behaved like ordinary Postgres. Three things did not.\n\n## 1. The primary key has to include the time column\n\nA hypertable is split into chunks by time. For a unique constraint to be enforced across all of those chunks, the partitioning column has to be part of it. My first model used a plain auto-incrementing `id` as the primary key, and turning the table into a hypertable failed.\n\nThe fix was a composite primary key of `id` and `timestamp`. It looks unusual in a model definition, but it reflects how the data is actually stored.\n\n## 2. Intervals are not strings\n\nThe metrics endpoint groups requests with `time_bucket()`, and the client chooses the bucket size: five minutes, fifteen minutes, an hour or a day. I passed the interval as a string like `'1 hour'`, which is what you would type in psql. Through asyncpg it failed, because the driver infers the parameter type as `text`, not `interval`.\n\nasyncpg maps a Python `timedelta` to a Postgres `INTERVAL` natively, so the fix was a small lookup table from bucket names to `timedelta` values. A side benefit: an unexpected bucket name now falls back to a known value instead of reaching the query.\n\n## 3. Some commands cannot run in a migration\n\nVigil keeps an hourly continuous aggregate, a materialised view of totals, unique IPs, bot share and p95 latency that TimescaleDB keeps up to date. I wanted the migration to create the view and fill it straight away. But `refresh_continuous_aggregate()` cannot run inside a transaction block, and Alembic runs each migration inside one.\n\nThe migration now creates the view `WITH NO DATA` and adds a refresh policy. The policy fills it on its first scheduled run and re-processes the last few hours each time, so late-arriving data is still counted.\n\n## The common thread\n\nNone of these were bugs in my application logic. Each was a place where an assumption from plain Postgres did not survive contact with the extension or the driver. Reading the error carefully, then reading the documentation for the layer that produced it, was faster every time than changing code and hoping."
 		},
 		{
@@ -251,6 +234,8 @@
 			"date": "2026-06-20",
 			"topic": "Build Log",
 			"readTime": "2 min",
+			"deck": "How a 70-line log parser became a real-time analytics platform.",
+			"relatedProject": "vigil",
 			"body": "Vigil started as a single Python file. During the IEUK 2025 programme I was given a web server log and asked to work out what was happening in it: who was sending the most traffic, which endpoints were busiest, and whether any of it looked automated.\n\n## The first version\n\nThe script read the log line by line, matched each line against one regular expression, and counted things: requests per IP, hits per endpoint, traffic per hour. Any user agent containing words like `bot`, `crawl`, `spider`, `python` or `curl` was flagged as suspicious. It printed a summary and exited.\n\nIt worked, and it was useful for the task. But it had three limits that became obvious as soon as I imagined running it on my own sites:\n\n- **It only worked after the fact.** You needed a finished log file before you could learn anything.\n- **Every run started from zero.** Nothing was stored, so there was no history to compare against.\n- **Detection was yes or no.** A user agent either matched the pattern or it did not.\n\n## What changed in v2\n\nEach limit became a design decision.\n\nTo see traffic as it happens, v2 collects page views from a small JavaScript snippet and streams them to the dashboard over a WebSocket. To keep history, requests go into a TimescaleDB hypertable, where time-bucketed queries stay fast as the table grows. And instead of yes or no, each request gets a bot score from 0 to 100 built from several signals, so where to draw the line is a decision rather than something baked into a regex.\n\n## What survived\n\nThe original parsing regex is still in the codebase, refactored into the backend's parser service and now covered by tests. The crawler pattern from the first script is the first signal in the new scoring engine. The legacy script is kept in the repository too, partly for history and partly as a reminder that a working small tool is a good place to start.\n\n## What is next\n\nIngestion currently writes straight to the database inside the request. The next step is a Redis Streams worker between intake and storage, so a burst of traffic cannot slow down collection."
 		},
 		{
@@ -259,11 +244,17 @@
 			"date": "2026-05-28",
 			"topic": "Design Decisions",
 			"readTime": "2 min",
+			"deck": "Why the CSV import stages changes and shows a diff before writing anything.",
+			"relatedProject": "meeting-cost-calculator",
 			"body": "On Software Hut, my team built a Meeting Cost Calculator for a client at the AMRC. The application works out what a meeting costs from who attends, their grade, and the charge-out rate for that grade. I worked mainly on the data import and management side, including CSV upload.\n\n## The obvious version\n\nThe simplest way to build an import is: upload a file, parse it, write every row to the database. It is quick to build and easy to demo.\n\nThe problem is what the data does. Grades and rates feed directly into every cost the application shows. A file with one wrong column, an old export or a changed rate could quietly shift figures across the whole system, and the person uploading it would have no way of knowing until someone noticed a strange number.\n\n## The version we shipped\n\nInstead of applying changes straight away, the import works in stages:\n\n1. **Upload.** The file is parsed and checked, but nothing is saved.\n2. **Preview.** The user sees what the file contains.\n3. **Difference view.** Rows are compared against existing data, so new, changed and unchanged records are shown separately.\n4. **Confirm.** Only then are changes written.\n\nThe same idea shaped the grades page. Edits are staged and saved together rather than saved instantly on every change, because accidental instant saves are a poor fit for data that affects money.\n\n## The trade-off\n\nThis took more work to build and test, and it adds a step for the user. For a file with no real changes it can feel slower than it needs to be. But the cost of the extra step is a few seconds, and the cost of a silent mistake is a figure nobody trusts afterwards.\n\n## What I took from it\n\nThe question I now ask about any feature that changes data is: *can the user see what is about to happen before it happens?* If the answer is no, and the data matters, that is usually worth fixing before anything else."
 		}
 	],
 	"currentFocus": {
 		"date": "September 2026",
+		"buildingShort": "Vigil",
+		"learningShort": "Mobile development",
+		"exploringShort": "VR & IoT",
+		"buildingLink": "/work/vigil",
 		"building": "Vigil, a self-hosted, privacy-first web analytics and security monitoring platform. Next up: moving ingestion behind a Redis Streams worker and deploying to a free-tier VM.",
 		"learning": "Mobile development, building Android interfaces with Kotlin and Jetpack Compose on Project Echo.",
 		"exploring": "VR development and the IoT side of technology: where software meets headsets, sensors and physical devices."

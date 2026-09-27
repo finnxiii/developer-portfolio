@@ -45,12 +45,19 @@ export default function PageLayout() {
 				onComplete: () => {
 					ScrollTrigger.refresh();
 					if (hash) {
-						const target = document.querySelector(hash);
-						if (target) {
-							const lenis = getLenis();
-							if (lenis) lenis.scrollTo(target, { offset: -64 });
-							else target.scrollIntoView({ behavior: "smooth" });
-						}
+						// Retry via rAF until the target element exists (data renders after mount)
+						const start = performance.now();
+						const tryScroll = () => {
+							const target = document.querySelector(hash);
+							if (target) {
+								const lenis = getLenis();
+								if (lenis) lenis.scrollTo(target, { offset: -72 });
+								else target.scrollIntoView({ behavior: "smooth", block: "start" });
+							} else if (performance.now() - start < 1000) {
+								requestAnimationFrame(tryScroll);
+							}
+						};
+						requestAnimationFrame(tryScroll);
 					}
 				},
 			});

@@ -17,6 +17,8 @@ import AdminDashboard from "./pages/Admin/Dashboard";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
+const USE_KV = import.meta.env.VITE_USE_KV === "true";
+
 export default function App() {
 	const prefersReduced = useReducedMotion();
 	useSmoothScroll(prefersReduced);
@@ -24,9 +26,9 @@ export default function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
-				{/* Admin — standalone, no editorial layout */}
-				<Route path="/admin" element={<AdminLogin />} />
-				<Route path="/admin/dashboard" element={<AdminDashboard />} />
+				{/* Admin — only registered when KV backend is enabled */}
+				{USE_KV && <Route path="/admin" element={<AdminLogin />} />}
+				{USE_KV && <Route path="/admin/dashboard" element={<AdminDashboard />} />}
 
 				{/* Public — all wrapped in PageLayout */}
 				<Route element={<PageLayout />}>
@@ -34,8 +36,8 @@ export default function App() {
 					<Route path="/work" element={<SelectedWork />} />
 					<Route path="/work/:slug" element={<CaseStudy />} />
 					<Route path="/about" element={<TheEngineer />} />
-					<Route path="/philosophy" element={<Navigate to="/about#philosophy" replace />} />
-					<Route path="/career" element={<Navigate to="/about#career" replace />} />
+					<Route path="/philosophy" element={<Navigate to="/about#how-i-work" replace />} />
+					<Route path="/career" element={<Navigate to="/about#experience" replace />} />
 					<Route path="/notes" element={<FieldNotes />} />
 					<Route path="/notes/:slug" element={<FieldNote />} />
 					<Route path="/now" element={<CurrentFocusPage />} />

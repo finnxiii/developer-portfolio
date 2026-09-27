@@ -15,15 +15,15 @@
 
 .grid {
 	display: grid;
-	grid-template-columns: repeat(12, 1fr);
+	grid-template-columns: repeat(12, minmax(0, 1fr));
 	gap: var(--grid-gutter);
 
 	@include tablet {
-		grid-template-columns: repeat(6, 1fr);
+		grid-template-columns: repeat(6, minmax(0, 1fr));
 	}
 
 	@include mobile {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
 	}
 }
 

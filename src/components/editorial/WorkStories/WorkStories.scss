@@ -11,7 +11,7 @@
 	align-items: start;
 
 	@include mobile {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
 		gap: var(--space-xl);
 		padding: var(--space-xl) 0 var(--space-2xl);
 	}
@@ -102,11 +102,11 @@
 
 .work-stories__row {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 	border-bottom: 4px solid var(--rule);
 
 	@include mobile {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
 		border-bottom: 4px solid var(--rule);
 	}
 }

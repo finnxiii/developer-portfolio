@@ -4,6 +4,7 @@ import { usePortfolioData } from "../../hooks/usePortfolioData";
 import { useScrollReveal } from "../../hooks/useScrollReveal";
 import SEOHead from "../../components/ui/SEOHead/SEOHead";
 import { ProjectFigure } from "../../components/figures/index";
+import StoryPager from "../../components/editorial/StoryPager/StoryPager";
 import "./CaseStudy.scss";
 
 const ROMAN = ["I", "II", "III", "IV", "V", "VI"];
@@ -78,6 +79,8 @@ export default function CaseStudy() {
 	const { category, title, deck, figureCaption, sections = {}, numbers = [] } = project;
 	const projectNum = String(idx + 1).padStart(2, "0");
 	const readTime = calcReadTime(sections);
+	const prev = idx > 0 ? projects[idx - 1] : null;
+	const prevNum = prev ? String(idx).padStart(2, "0") : null;
 	const next = idx < projects.length - 1 ? projects[idx + 1] : null;
 	const nextNum = next ? String(idx + 2).padStart(2, "0") : null;
 	const relatedNote = project.relatedNote
@@ -228,7 +231,7 @@ export default function CaseStudy() {
 									aria-labelledby="corrections-heading"
 								>
 									<span className="case-study__corrections-label label-text">
-										Corrections &amp; Clarifications
+										Trade-offs
 									</span>
 									<h2 id="corrections-heading" className="case-study__corrections-title">
 										What broke, and what I traded away
@@ -236,9 +239,6 @@ export default function CaseStudy() {
 									<div className="case-study__corrections-body">
 										{renderCorrectionsBody(sections.whatBroke)}
 									</div>
-									<footer className="case-study__corrections-footer">
-										Published in the spirit of a newspaper correction: what went wrong, stated plainly.
-									</footer>
 								</aside>
 							)}
 						</article>
@@ -267,25 +267,13 @@ export default function CaseStudy() {
 				</div>
 			</div>
 
-			{/* ── Next story bar ────────────────────────────────────────── */}
-			{next && (
-				<div className="case-study__next-bar">
-					<div className="container">
-						<div className="case-study__next-inner">
-							<span className="case-study__next-label label-text">
-								Next story · No. {nextNum}
-							</span>
-							<p className="case-study__next-title">{next.title}</p>
-							<Link
-								to={`/work/${next.slug}`}
-								className="btn btn--outline case-study__next-cta"
-							>
-								Read the case study <span className="arrow" aria-hidden="true">→</span>
-							</Link>
-						</div>
-					</div>
-				</div>
-			)}
+			{/* ── Prev / Next pager ────────────────────────────────────── */}
+			<StoryPager
+				prev={prev ? { slug: prev.slug, title: prev.title, num: prevNum } : null}
+				next={next ? { slug: next.slug, title: next.title, num: nextNum } : null}
+				kind="case study"
+				basePath="/work"
+			/>
 		</div>
 	);
 }

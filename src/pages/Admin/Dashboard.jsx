@@ -119,6 +119,7 @@ function CrudList({ items, onUpdate, getKey, renderSummary, emptyItem, renderFor
 function ProfileTab({ data, onChange }) {
 	const set = (key) => (val) => onChange({ ...data, [key]: val });
 	const setLink = (key) => (val) => onChange({ ...data, links: { ...data.links, [key]: val } });
+	const setAvail = (key) => (val) => onChange({ ...data, availability: { ...(data.availability ?? {}), [key]: val } });
 
 	return (
 		<div className="adm-section">
@@ -151,8 +152,16 @@ function ProfileTab({ data, onChange }) {
 				<Field label="Email" id="p-email" value={data.links?.email} onChange={setLink("email")} type="email" />
 				<Field label="GitHub URL" id="p-github" value={data.links?.github} onChange={setLink("github")} type="url" />
 				<Field label="LinkedIn URL" id="p-linkedin" value={data.links?.linkedin} onChange={setLink("linkedin")} type="url" />
-				<Field label="CV path" id="p-cv" value={data.links?.cv} onChange={setLink("cv")} placeholder="/cv.pdf" />
+				<Field label="CV path" id="p-cv" value={data.links?.cv} onChange={setLink("cv")} placeholder="/NaingHtooLwin-CV.pdf" />
+</div>
+			<h3 className="adm-section__sub">Availability (masthead ear)</h3>
+			<p className="adm-help">Leave status blank to hide the availability ear and fall back to "Now Building".</p>
+			<div className="adm-grid-2">
+				<Field label="Status (e.g. Open to placements)" id="p-av-status" value={data.availability?.status} onChange={setAvail("status")} />
+				<Field label="CTA label (e.g. Download CV)" id="p-av-cta" value={data.availability?.cta} onChange={setAvail("cta")} />
+				<Field label="CTA href (e.g. /cv.pdf)" id="p-av-href" value={data.availability?.href} onChange={setAvail("href")} placeholder="/NaingHtooLwin-CV.pdf" />
 			</div>
+			<Field label="Detail (italic line below status)" id="p-av-detail" value={data.availability?.detail} onChange={setAvail("detail")} />
 		</div>
 	);
 }
@@ -289,7 +298,7 @@ function ExperienceTab({ data, onChange }) {
 	return (
 		<div className="adm-section">
 			<h2 className="adm-section__title">Experience</h2>
-			<p className="adm-help">List in reverse-chronological order. Current roles appear at the top of the Career Desk.</p>
+			<p className="adm-help">List in reverse-chronological order. Current roles appear at the top of the Experience section.</p>
 			<CrudList
 				items={data}
 				onUpdate={onChange}
@@ -365,7 +374,7 @@ function PhilosophyTab({ data, onChange }) {
 }
 
 const EMPTY_NOTE = {
-	slug: "", title: "", date: "", topic: "", readTime: "", body: "",
+	slug: "", title: "", date: "", topic: "", readTime: "", deck: "", relatedProject: "", body: "",
 };
 
 function FieldNotesTab({ data, onChange }) {
@@ -399,6 +408,8 @@ function FieldNotesTab({ data, onChange }) {
 								<Field label="Date" id="fn-date" value={draft.date} onChange={set("date")} type="date" />
 								<Field label="Topic" id="fn-topic" value={draft.topic} onChange={set("topic")} />
 								<Field label="Read time" id="fn-read" value={draft.readTime} onChange={set("readTime")} placeholder="4 min" />
+								<Field label="Deck (one sentence)" id="fn-deck" value={draft.deck ?? ""} onChange={set("deck")} placeholder="One sentence summarising the note." />
+								<Field label="Related project (slug)" id="fn-rel" value={draft.relatedProject ?? ""} onChange={set("relatedProject")} placeholder="vigil" />
 							</div>
 							<Field label="Body (Markdown)" id="fn-body" value={draft.body} onChange={set("body")} rows={20} note="Supports Markdown" />
 						</div>
@@ -416,9 +427,15 @@ function CurrentFocusTab({ data, onChange }) {
 			<h2 className="adm-section__title">Current Focus</h2>
 			<p className="adm-help">A dated snapshot of what is on the desk right now. Keep it honest and factual — an old panel is worse than none.</p>
 			<Field label="Date (month and year)" id="cf-date" value={data.date} onChange={set("date")} placeholder="September 2026" />
-			<Field label="Building" id="cf-building" value={data.building} onChange={set("building")} rows={2} />
-			<Field label="Learning" id="cf-learning" value={data.learning} onChange={set("learning")} rows={2} />
-			<Field label="Exploring" id="cf-exploring" value={data.exploring} onChange={set("exploring")} rows={2} />
+			<div className="adm-grid-2">
+				<Field label="Building (short)" id="cf-bshort" value={data.buildingShort ?? ""} onChange={set("buildingShort")} placeholder="Vigil" />
+				<Field label="Learning (short)" id="cf-lshort" value={data.learningShort ?? ""} onChange={set("learningShort")} placeholder="Mobile development" />
+				<Field label="Exploring (short)" id="cf-eshort" value={data.exploringShort ?? ""} onChange={set("exploringShort")} placeholder="VR & IoT" />
+				<Field label="Building link (optional slug)" id="cf-blink" value={data.buildingLink ?? ""} onChange={set("buildingLink")} placeholder="/work/vigil" />
+			</div>
+			<Field label="Building" id="cf-building" value={data.building} onChange={set("building")} rows={3} />
+			<Field label="Learning" id="cf-learning" value={data.learning} onChange={set("learning")} rows={3} />
+			<Field label="Exploring" id="cf-exploring" value={data.exploring} onChange={set("exploring")} rows={3} />
 		</div>
 	);
 }

@@ -1,0 +1,392 @@
+@use "../../../styles/mixins" as *;
+
+// ── Section wrapper ────────────────────────────────────────────────────
+
+.tl {
+	padding-block: var(--space-3xl);
+	border-top: 0.5px solid var(--rule);
+}
+
+.tl__header {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-lg);
+	// tight gap to first row — no large empty space
+	margin-bottom: var(--space-lg);
+	border-bottom: 1px solid var(--rule);
+	padding-bottom: var(--space-md);
+}
+
+.tl__heading {
+	font-family: var(--font-display);
+	font-size: clamp(28px, 4vw, 40px);
+	font-weight: 600;
+	color: var(--ink);
+	margin: 0;
+	line-height: 1.1;
+}
+
+.tl__meta {
+	color: var(--ink-secondary);
+}
+
+// ── Chart wrapper ──────────────────────────────────────────────────────
+
+.tl__chart-wrap {
+	position: relative;
+	width: 100%;
+	overflow: visible;
+	user-select: none;
+}
+
+// ── Rows area ──────────────────────────────────────────────────────────
+
+.tl__rows-area {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+}
+
+// Row is 56px: label line on top, 8px gap, then bar
+.tl__row {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 56px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	border-bottom: 1px solid var(--rule-light);
+	transition: opacity 180ms;
+
+	&:first-child { border-top: 1px solid var(--rule-light); }
+
+	&:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: -2px;
+	}
+}
+
+// Selected row — full opacity, no background tint
+.tl__row--active {
+	opacity: 1;
+}
+
+// Non-selected rows dim
+.tl__row--dim {
+	opacity: 0.4;
+}
+
+// ── Label: sits at top of row, never overlaps the bar ─────────────────
+
+.tl__row-label {
+	position: absolute;
+	top: 6px;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	line-height: 1.2;
+	letter-spacing: 0.06em;
+	color: var(--ink);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	pointer-events: none;
+	z-index: 1;
+}
+
+.tl__row-label--active {
+	color: var(--accent);
+}
+
+.tl__row-org {
+	color: inherit;
+}
+
+.tl__row-role {
+	color: var(--ink-secondary);
+
+	.tl__row-label--active & {
+		color: var(--accent);
+		opacity: 0.8;
+	}
+}
+
+.tl__row-sep {
+	color: var(--ink-secondary);
+}
+
+@include tablet {
+	.tl__row-role,
+	.tl__row-sep {
+		display: none;
+	}
+}
+
+// ── Bar: sits below label with 8px gap ────────────────────────────────
+
+.tl__bar {
+	position: absolute;
+	// 6px top padding + ~13px label + 8px gap = 27px
+	top: 27px;
+	height: 8px;
+	border-radius: 0;
+	background: var(--ink);
+	transition: height 140ms, top 140ms;
+	pointer-events: none;
+}
+
+// Past roles in ink (default), current in accent — no lighter variant
+.tl__bar--current {
+	background: var(--accent);
+}
+
+// Selected bar grows to 12px, shifts up 2px to stay vertically centered
+.tl__bar--active {
+	height: 12px;
+	top: 25px;
+}
+
+// ── NOW overlay ────────────────────────────────────────────────────────
+
+.tl__now-overlay {
+	position: absolute;
+	top: 0;
+	width: 0;
+	pointer-events: none;
+	z-index: 2;
+}
+
+.tl__now-line {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1px;
+	height: 100%;
+	background: var(--accent);
+	opacity: 0.7;
+}
+
+.tl__now-label {
+	position: absolute;
+	bottom: 100%;
+	left: 0;
+	transform: translateX(-50%);
+	font-family: var(--font-mono);
+	font-size: 9px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--accent);
+	white-space: nowrap;
+	margin-bottom: 4px;
+}
+
+// ── Axis area ──────────────────────────────────────────────────────────
+
+.tl__axis-area {
+	position: relative;
+	width: 100%;
+	height: 28px;
+	margin-top: 2px;
+}
+
+.tl__year-label {
+	position: absolute;
+	top: 7px;
+	transform: translateX(-50%);
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.06em;
+	color: var(--ink-secondary);
+	white-space: nowrap;
+	// plain text, not outlined
+}
+
+.tl__year-tick {
+	position: absolute;
+	top: 0;
+	width: 1px;
+	height: 5px;
+	background: var(--ink-secondary);
+	transform: translateX(-50%);
+}
+
+.tl__quarter-tick {
+	position: absolute;
+	top: 0;
+	width: 1px;
+	height: 3px;
+	background: var(--rule);
+	transform: translateX(-50%);
+}
+
+// ── Detail panel ───────────────────────────────────────────────────────
+
+.tl__detail {
+	display: grid;
+	grid-template-columns: 180px minmax(0, 1fr);
+	gap: var(--space-xl);
+	margin-top: var(--space-xl);
+	padding-top: var(--space-xl);
+	border-top: 1px solid var(--rule);
+	min-height: 140px;
+	animation: tl-fadein 240ms ease both;
+
+	@include tablet {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--space-md);
+	}
+}
+
+@keyframes tl-fadein {
+	from { opacity: 0; transform: translateY(6px); }
+	to   { opacity: 1; transform: translateY(0); }
+}
+
+@include reduced-motion {
+	.tl__detail { animation: none; }
+}
+
+.tl__detail-left {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-xs);
+	padding-top: 2px;
+}
+
+.tl__detail-date {
+	color: var(--ink-secondary);
+}
+
+.tl__detail-current {
+	color: var(--accent);
+}
+
+.tl__detail-org {
+	font-family: var(--font-display);
+	font-size: clamp(20px, 2.5vw, 28px);
+	font-weight: 600;
+	color: var(--ink);
+	margin: 0 0 4px;
+	line-height: 1.1;
+}
+
+.tl__detail-role {
+	font-family: var(--font-mono);
+	font-size: 13px;
+	letter-spacing: 0.04em;
+	color: var(--ink-secondary);
+	font-style: normal;
+}
+
+.tl__detail-bullets {
+	list-style: none;
+	padding: 0;
+	margin: var(--space-md) 0 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-xs);
+}
+
+.tl__detail-bullet {
+	font-family: var(--font-body);
+	font-size: 14px;
+	line-height: 1.6;
+	color: var(--ink);
+	padding-left: 16px;
+	position: relative;
+
+	&::before {
+		content: "—";
+		position: absolute;
+		left: 0;
+		color: var(--ink-secondary);
+	}
+}
+
+// ── Mobile vertical list ───────────────────────────────────────────────
+
+.tl-mobile {
+	position: relative;
+	padding-left: 28px;
+}
+
+.tl-mobile__line {
+	position: absolute;
+	left: 5px;
+	top: 8px;
+	bottom: 8px;
+	width: 1px;
+	background: var(--rule);
+}
+
+.tl-mobile__entry {
+	position: relative;
+	padding-bottom: var(--space-2xl);
+
+	&:last-child { padding-bottom: 0; }
+}
+
+.tl-mobile__dot {
+	position: absolute;
+	left: -25px;
+	top: 6px;
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	border: 1.5px solid var(--ink-secondary);
+	background: var(--paper);
+}
+
+.tl-mobile__dot--current {
+	border-color: var(--accent);
+	background: var(--accent);
+}
+
+.tl-mobile__date {
+	display: block;
+	color: var(--ink-secondary);
+	margin-bottom: 6px;
+}
+
+.tl-mobile__org {
+	font-family: var(--font-display);
+	font-size: 22px;
+	font-weight: 600;
+	color: var(--ink);
+	margin: 0 0 2px;
+	line-height: 1.2;
+}
+
+.tl-mobile__role {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	letter-spacing: 0.04em;
+	color: var(--ink-secondary);
+	font-style: normal;
+	text-transform: uppercase;
+}
+
+.tl-mobile__bullets {
+	list-style: none;
+	padding: 0;
+	margin: var(--space-sm) 0 0;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.tl-mobile__bullet {
+	font-size: 14px;
+	line-height: 1.6;
+	color: var(--ink);
+	padding-left: 16px;
+	position: relative;
+
+	&::before {
+		content: "—";
+		position: absolute;
+		left: 0;
+		color: var(--ink-secondary);
+	}
+}

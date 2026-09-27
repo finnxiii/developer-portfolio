@@ -19,7 +19,8 @@ export default function Masthead() {
 	const prefersReduced = useReducedMotion();
 
 	const { data } = usePortfolioData();
-	const { currentFocus } = data;
+	const { profile, currentFocus } = data;
+	const availability = profile?.availability;
 
 	useGSAP(
 		() => {
@@ -91,29 +92,53 @@ export default function Masthead() {
 
 					{/* Left ear */}
 					<aside className="masthead__ear masthead__ear--left" aria-label="Edition subtitle">
-						<p className="masthead__ear-label">THE ENGINEERING EDITION</p>
+						<p className="masthead__ear-label">PORTFOLIO OF NAING HTOO LWIN</p>
 						<p className="masthead__ear-sub">
-							<em>Software, systems and field notes by Naing Htoo Lwin.</em>
+							<em>Software, systems and field notes.</em>
 						</p>
 					</aside>
 
 					{/* Centre wordmark */}
 					<div className="masthead__centre">
-						<Link to="/" className="masthead__wordmark" aria-label="FINNXIII.DEV — Home">
-							FINNXIII.DEV
+						<Link to="/" className="masthead__wordmark" aria-label="The Build Log — Home">
+							The Build Log
 						</Link>
 					</div>
 
-					{/* Right ear */}
-					{currentFocus && (
-						<aside className="masthead__ear masthead__ear--right" aria-label="Current focus">
-							<div className="masthead__ear-now-row">
-								<span className="masthead__ear-dot" aria-hidden="true" />
-								<span className="masthead__ear-now-label">NOW BUILDING</span>
-							</div>
-							<p className="masthead__ear-building">
-								{firstSentence(currentFocus.building)}
-							</p>
+					{/* Right ear — availability if set, else now-building fallback */}
+					{(availability || currentFocus) && (
+						<aside className="masthead__ear masthead__ear--right" aria-label={availability ? "Availability" : "Current focus"}>
+							{availability ? (
+								<>
+									<div className="masthead__ear-now-row">
+										<span className="masthead__ear-dot" aria-hidden="true" />
+										<span className="masthead__ear-now-label">{availability.status}</span>
+									</div>
+									<p className="masthead__ear-building">
+										<em>{availability.detail}</em>
+									</p>
+									{availability.cta && availability.href && (
+										<a
+											href={availability.href}
+											className="masthead__ear-cta"
+											target={availability.href.startsWith("http") ? "_blank" : undefined}
+											rel={availability.href.startsWith("http") ? "noopener noreferrer" : undefined}
+										>
+											{availability.cta} ↗
+										</a>
+									)}
+								</>
+							) : (
+								<>
+									<div className="masthead__ear-now-row">
+										<span className="masthead__ear-dot" aria-hidden="true" />
+										<span className="masthead__ear-now-label">NOW BUILDING</span>
+									</div>
+									<p className="masthead__ear-building">
+										{firstSentence(currentFocus.building)}
+									</p>
+								</>
+							)}
 						</aside>
 					)}
 

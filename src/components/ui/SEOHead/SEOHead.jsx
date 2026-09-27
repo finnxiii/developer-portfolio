@@ -2,12 +2,13 @@
 import { useLocation } from "react-router-dom";
 
 const AUTHOR = "Naing Htoo Lwin";
+const SITE_NAME = "The Build Log";
 const SITE_URL = "https://finnxiii.dev";
 const DEFAULT_OG_IMAGE = "/images/og/default.png";
 
-export default function SEOHead({ title, description, ogImage = DEFAULT_OG_IMAGE }) {
+export default function SEOHead({ title, raw = false, description, ogImage = DEFAULT_OG_IMAGE }) {
 	const { pathname } = useLocation();
-	const fullTitle = title ? `${title} | ${AUTHOR}` : `${AUTHOR} | Software Engineer`;
+	const fullTitle = raw ? title : (title ? `${title} | ${SITE_NAME}` : `${AUTHOR} | ${SITE_NAME}`);
 	const canonical = `${SITE_URL}${pathname}`;
 	const ogImageAbsolute = ogImage.startsWith("http") ? ogImage : `${SITE_URL}${ogImage}`;
 
@@ -23,7 +24,7 @@ export default function SEOHead({ title, description, ogImage = DEFAULT_OG_IMAGE
 			<meta property="og:image" content={ogImageAbsolute} />
 			<meta property="og:type" content="website" />
 			<meta property="og:url" content={canonical} />
-			<meta property="og:site_name" content="FINNXIII.DEV" />
+			<meta property="og:site_name" content="The Build Log" />
 
 			{/* Twitter / X */}
 			<meta name="twitter:card" content="summary_large_image" />

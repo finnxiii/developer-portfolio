@@ -17,13 +17,13 @@ export default function CareerDesk() {
 	return (
 		<div className="career-desk" ref={containerRef}>
 			<SEOHead
-				title="Career Desk"
+				title="Experience"
 				description="Education, roles, and engineering responsibilities — a readable timeline with a direct CV download."
 			/>
 			<div className="container">
 
 				<header className="career-desk__header rv">
-					<span className="career-desk__eyebrow label-text">Career Desk</span>
+					<span className="career-desk__eyebrow label-text">Experience</span>
 					<h1 className="career-desk__title">Where the work comes from.</h1>
 					<p className="career-desk__deck">
 						Education, roles, and responsibilities — in reverse-chronological order.
@@ -36,7 +36,8 @@ export default function CareerDesk() {
 						<a
 							href={cv}
 							className="career-desk__cv-link"
-							download
+							target="_blank"
+							rel="noopener noreferrer"
 						>
 							Download CV (PDF) ↓
 						</a>
@@ -60,7 +61,7 @@ export default function CareerDesk() {
 							<p className="career-desk__footer-note">
 								The CV contains the full picture, including grades, links, and details not listed here.
 							</p>
-							<a href={cv} className="career-desk__cv-link" download>
+							<a href={cv} className="career-desk__cv-link" target="_blank" rel="noopener noreferrer">
 								Download CV (PDF) ↓
 							</a>
 						</div>

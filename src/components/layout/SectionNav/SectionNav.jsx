@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 import "./SectionNav.scss";
 
 const NAV_ITEMS = [
-	{ to: "/",      label: "Front Page",    prefix: "§1", end: true },
+	{ to: "/",      label: "Home",          prefix: "§1", end: true },
 	{ to: "/work",  label: "Selected Work", prefix: "§2" },
-	{ to: "/about", label: "The Engineer",  prefix: "§3" },
+	{ to: "/about", label: "About",  prefix: "§3" },
 	{ to: "/notes", label: "Field Notes",   prefix: "§4" },
 	{ to: "/now",   label: "Now",           prefix: "§5" },
 ];
 
 export default function SectionNav() {
+	const location = useLocation();
+
 	// Lazy initializer: if there's no masthead on this page, show the wordmark immediately.
 	// IntersectionObserver then takes over for pages that do have one.
 	const [pastMasthead, setPastMasthead] = useState(
@@ -30,6 +32,12 @@ export default function SectionNav() {
 		return () => observer.disconnect();
 	}, []);
 
+	// Scroll active link into view on route change (mobile horizontal nav)
+	useEffect(() => {
+		const active = document.querySelector(".section-nav__link--active");
+		active?.scrollIntoView({ inline: "center", block: "nearest" });
+	}, [location.pathname]);
+
 	return (
 		<nav
 			className={`section-nav${pastMasthead ? " section-nav--stuck" : ""}`}
@@ -43,9 +51,9 @@ export default function SectionNav() {
 					className={`section-nav__compact-wordmark${pastMasthead ? " is-visible" : ""}`}
 					aria-hidden={pastMasthead ? undefined : "true"}
 					tabIndex={pastMasthead ? undefined : -1}
-					aria-label="FINNXIII.DEV — Home"
+					aria-label="The Build Log — Home"
 				>
-					FINNXIII.DEV
+					The Build Log
 				</Link>
 
 				{/* Column 2 — nav list, always centred */}

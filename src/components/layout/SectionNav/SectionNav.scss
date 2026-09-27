@@ -17,7 +17,7 @@
 	&__inner {
 		display: grid;
 		grid-template-areas: "wordmark list spacer";
-		grid-template-columns: 1fr auto 1fr;
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
 		align-items: center;
 		height: 52px;
 
@@ -27,6 +27,9 @@
 			height: 44px;
 			overflow-x: auto;
 			scrollbar-width: none;
+			// Right-edge fade hints that the list is scrollable
+			mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
+			-webkit-mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
 
 			&::-webkit-scrollbar { display: none; }
 		}
@@ -78,8 +81,8 @@
 			outline-offset: 3px;
 		}
 
-		// Hidden on mobile — list fills full width instead
-		@include mobile { display: none; }
+		// Hidden below desktop — list fills width on tablet/mobile
+		@media (max-width: 1023px) { display: none; }
 	}
 
 	// ── Nav list — column 2 ───────────────────────────────────────────
@@ -90,6 +93,12 @@
 		align-items: center;
 		gap: 0;
 		white-space: nowrap;
+
+		@include mobile {
+			justify-content: flex-start;
+			// Ensure padding at end so last item isn't clipped by the fade
+			padding-right: 48px;
+		}
 	}
 
 	// ── Spacer — column 3 (balances column 1 to keep list centred) ───
