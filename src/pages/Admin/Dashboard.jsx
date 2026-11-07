@@ -1,8 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAdmin } from "../../hooks/useAdmin";
-import { usePortfolioData } from "../../hooks/usePortfolioData";
-import "./Admin.scss";
+import { useState, useEffect, useCallback } from "react";
+import { validateContent } from "../../content/schema";
 
 // ── Helpers ─────────────────────────────────────────────────────
 
@@ -153,7 +150,7 @@ function ProfileTab({ data, onChange }) {
 				<Field label="GitHub URL" id="p-github" value={data.links?.github} onChange={setLink("github")} type="url" />
 				<Field label="LinkedIn URL" id="p-linkedin" value={data.links?.linkedin} onChange={setLink("linkedin")} type="url" />
 				<Field label="CV path" id="p-cv" value={data.links?.cv} onChange={setLink("cv")} placeholder="/NaingHtooLwin-CV.pdf" />
-</div>
+			</div>
 			<h3 className="adm-section__sub">Availability (masthead ear)</h3>
 			<p className="adm-help">Leave status blank to hide the availability ear and fall back to "Now Building".</p>
 			<div className="adm-grid-2">
@@ -253,10 +250,7 @@ function ProjectsTab({ data, onChange }) {
 											.map((s) => {
 												const pipe = s.indexOf("|");
 												if (pipe === -1) return { value: s.trim(), label: "" };
-												return {
-													value: s.slice(0, pipe).trim(),
-													label: s.slice(pipe + 1).trim(),
-												};
+												return { value: s.slice(0, pipe).trim(), label: s.slice(pipe + 1).trim() };
 											}),
 									}))
 								}
@@ -445,12 +439,67 @@ function MetaTab({ data, onChange }) {
 	return (
 		<div className="adm-section">
 			<h2 className="adm-section__title">Meta</h2>
-			<p className="adm-help">lastUpdated is automatically set to now on every save.</p>
+			<p className="adm-help">lastUpdated is set automatically to now on every save.</p>
 			<div className="adm-grid-2">
 				<Field label="Schema version" id="m-ver" value={data.version} onChange={set("version")} />
 				<Field label="Edition label" id="m-ed" value={data.editionLabel} onChange={set("editionLabel")} placeholder="Edition No. 02" />
 				<Field label="Last updated (ISO 8601)" id="m-upd" value={data.lastUpdated} onChange={set("lastUpdated")} />
 			</div>
+		</div>
+	);
+}
+
+function HistoryTab({ history, restoring, onRestore, deployStatus, lastCommitSha }) {
+	const deployState =
+		!deployStatus || !lastCommitSha
+			? null
+			: deployStatus.status === "completed"
+				? deployStatus.conclusion === "success"
+					? "ok"
+					: "fail"
+				: "pending";
+
+	return (
+		<div className="adm-section">
+			<h2 className="adm-section__title">Commit History</h2>
+			{deployState && (
+				<div className={`adm-deploy adm-deploy--${deployState}`}>
+					{deployState === "ok" && "Deploy succeeded ✓"}
+					{deployState === "fail" && `Deploy failed — ${deployStatus.conclusion}`}
+					{deployState === "pending" && "Deploy in progress…"}
+					{deployStatus.url && (
+						<> · <a href={deployStatus.url} target="_blank" rel="noopener noreferrer">View run ↗</a></>
+					)}
+				</div>
+			)}
+			{history.length === 0 ? (
+				<p className="adm-help">No history loaded.</p>
+			) : (
+				<ul className="adm-history">
+					{history.map((commit) => (
+						<li key={commit.sha} className="adm-history__item">
+							<div className="adm-history__meta">
+								<code className="adm-history__sha">
+									<a href={commit.url} target="_blank" rel="noopener noreferrer">
+										{commit.sha.slice(0, 7)}
+									</a>
+								</code>
+								<span className="adm-history__date">
+									{new Date(commit.date).toLocaleString()}
+								</span>
+							</div>
+							<div className="adm-history__msg">{commit.message}</div>
+							<button
+								className="adm-btn adm-btn--sm"
+								onClick={() => onRestore(commit.sha)}
+								disabled={Boolean(restoring)}
+							>
+								{restoring === commit.sha ? "Restoring…" : "Restore"}
+							</button>
+						</li>
+					))}
+				</ul>
+			)}
 		</div>
 	);
 }
@@ -465,54 +514,164 @@ const TABS = [
 	{ id: "fieldNotes", label: "Field Notes" },
 	{ id: "currentFocus", label: "Current Focus" },
 	{ id: "meta", label: "Meta" },
+	{ id: "history", label: "History" },
 ];
 
 export default function AdminDashboard() {
 	const [activeTab, setActiveTab] = useState("profile");
 	const [formData, setFormData] = useState(null);
+	const [sha, setSha] = useState(null);
+	const [loading, setLoading] = useState(true);
+	const [loadError, setLoadError] = useState(null);
 	const [saving, setSaving] = useState(false);
-	const [saveStatus, setSaveStatus] = useState(null); // 'ok' | 'error' | null
+	const [saveStatus, setSaveStatus] = useState(null); // 'ok' | 'error' | 'conflict' | 'invalid'
+	const [saveErrors, setSaveErrors] = useState([]);
+	const [commitMessage, setCommitMessage] = useState("");
+	const [history, setHistory] = useState([]);
+	const [restoring, setRestoring] = useState(null);
+	const [deployStatus, setDeployStatus] = useState(null);
+	const [lastCommitSha, setLastCommitSha] = useState(null);
 
-	const { data } = usePortfolioData();
-	const { isAuthenticated, logout, authHeaders } = useAdmin();
-	const navigate = useNavigate();
+	const loadContent = useCallback(async () => {
+		setLoading(true);
+		setLoadError(null);
+		try {
+			const res = await fetch("/api/admin/content", { headers: { "Cache-Control": "no-store" } });
+			if (!res.ok) throw new Error(`HTTP ${res.status}`);
+			const { content, sha: newSha } = await res.json();
+			setSha(newSha);
+			setFormData(JSON.parse(content));
+		} catch (err) {
+			setLoadError(`Failed to load content: ${err.message}`);
+		} finally {
+			setLoading(false);
+		}
+	}, []);
+
+	const loadHistory = useCallback(async () => {
+		try {
+			const res = await fetch("/api/admin/history");
+			if (!res.ok) return;
+			setHistory(await res.json());
+		} catch { /* non-fatal */ }
+	}, []);
 
 	useEffect(() => {
-		if (!isAuthenticated) navigate("/admin");
-	}, [isAuthenticated, navigate]);
-
-	// Seed form from portfolio data (once)
-	useEffect(() => {
-		if (data && !formData) setFormData(deepClone(data));
-	}, [data, formData]);
+		loadContent();
+		loadHistory();
+	}, [loadContent, loadHistory]);
 
 	const update = (key) => (val) => setFormData((prev) => ({ ...prev, [key]: val }));
 
+	const pollDeployStatus = async (commitSha) => {
+		setDeployStatus({ status: "queued", conclusion: null, url: null });
+		for (let i = 0; i < 8; i++) {
+			await new Promise((r) => setTimeout(r, 15000));
+			try {
+				const res = await fetch(`/api/admin/deploy-status?sha=${commitSha}`);
+				if (!res.ok) continue;
+				const data = await res.json();
+				setDeployStatus(data);
+				if (data.status === "completed") break;
+			} catch { break; }
+		}
+	};
+
 	const save = async () => {
-		setSaving(true);
-		setSaveStatus(null);
+		if (!commitMessage.trim()) {
+			setSaveStatus("error");
+			setSaveErrors([{ path: "", message: "A commit message is required." }]);
+			return;
+		}
+
 		const payload = {
 			...formData,
 			meta: { ...formData.meta, lastUpdated: new Date().toISOString() },
 		};
+
+		const validation = validateContent(payload);
+		if (!validation.ok) {
+			setSaveStatus("invalid");
+			setSaveErrors(validation.errors);
+			return;
+		}
+
+		setSaving(true);
+		setSaveStatus(null);
+		setSaveErrors([]);
+
 		try {
-			const res = await fetch("/api/admin/update", {
+			const res = await fetch("/api/admin/content", {
 				method: "POST",
-				headers: { "Content-Type": "application/json", ...authHeaders },
-				body: JSON.stringify(payload),
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					content: JSON.stringify(payload, null, "\t") + "\n",
+					sha,
+					message: commitMessage.trim(),
+				}),
 			});
-			setSaveStatus(res.ok ? "ok" : "error");
-			if (res.ok) setFormData(payload);
+
+			if (res.status === 409) {
+				setSaveStatus("conflict");
+				return;
+			}
+			if (res.status === 422) {
+				const data = await res.json();
+				setSaveStatus("invalid");
+				setSaveErrors(data.errors ?? []);
+				return;
+			}
+			if (!res.ok) {
+				setSaveStatus("error");
+				setSaveErrors([{ path: "", message: "Save failed. Try again." }]);
+				return;
+			}
+
+			const { commitSha } = await res.json();
+			setSaveStatus("ok");
+			setFormData(payload);
+			setCommitMessage("");
+			setLastCommitSha(commitSha);
+			loadHistory();
+			setTimeout(() => setSaveStatus((s) => (s === "ok" ? null : s)), 8000);
+			pollDeployStatus(commitSha);
 		} catch {
 			setSaveStatus("error");
+			setSaveErrors([{ path: "", message: "Network error. Try again." }]);
 		} finally {
 			setSaving(false);
-			setTimeout(() => setSaveStatus(null), 5000);
+		}
+	};
+
+	const restore = async (commitSha) => {
+		if (!window.confirm(`Restore content from ${commitSha.slice(0, 7)}? This will create a new commit.`)) return;
+		setRestoring(commitSha);
+		try {
+			const res = await fetch("/api/admin/restore", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ commitSha }),
+			});
+			if (!res.ok) { alert("Restore failed."); return; }
+			await loadContent();
+			await loadHistory();
+		} catch {
+			alert("Restore failed.");
+		} finally {
+			setRestoring(null);
 		}
 	};
 
 	const renderTab = () => {
-		if (!formData) return <p className="adm-loading">Loading content…</p>;
+		if (loading) return <p className="adm-loading">Loading content from GitHub…</p>;
+		if (loadError) return (
+			<div className="adm-load-error">
+				<p className="adm-error">{loadError}</p>
+				<button className="adm-btn" onClick={loadContent}>Retry</button>
+			</div>
+		);
+		if (!formData) return null;
+
 		switch (activeTab) {
 			case "profile":      return <ProfileTab      data={formData.profile}      onChange={update("profile")} />;
 			case "projects":     return <ProjectsTab     data={formData.projects}     onChange={update("projects")} />;
@@ -521,22 +680,13 @@ export default function AdminDashboard() {
 			case "fieldNotes":   return <FieldNotesTab   data={formData.fieldNotes}   onChange={update("fieldNotes")} />;
 			case "currentFocus": return <CurrentFocusTab data={formData.currentFocus} onChange={update("currentFocus")} />;
 			case "meta":         return <MetaTab         data={formData.meta}         onChange={update("meta")} />;
+			case "history":      return <HistoryTab      history={history} restoring={restoring} onRestore={restore} deployStatus={deployStatus} lastCommitSha={lastCommitSha} />;
 			default: return null;
 		}
 	};
 
 	return (
-		<div className="adm">
-			<header className="adm__header">
-				<span className="adm__brand">FINNXIII.DEV Admin</span>
-				<div className="adm__header-actions">
-					<a className="adm-btn" href="/" target="_blank" rel="noopener noreferrer">
-						View site ↗
-					</a>
-					<button className="adm-btn" onClick={logout}>Sign out</button>
-				</div>
-			</header>
-
+		<>
 			<div className="adm__tabs" role="tablist">
 				{TABS.map(({ id, label }) => (
 					<button
@@ -556,20 +706,45 @@ export default function AdminDashboard() {
 			</main>
 
 			<div className="adm__save-bar">
+				<input
+					className="adm-input adm-save-msg"
+					type="text"
+					placeholder="Describe the change (required for commit)"
+					value={commitMessage}
+					onChange={(e) => setCommitMessage(e.target.value)}
+					onKeyDown={(e) => { if (e.key === "Enter" && !saving && formData && commitMessage.trim()) save(); }}
+					disabled={saving || !formData}
+					aria-label="Commit message"
+				/>
 				<button
 					className="adm-btn adm-btn--primary adm-btn--lg"
 					onClick={save}
-					disabled={saving}
+					disabled={saving || !formData || !commitMessage.trim()}
 				>
-					{saving ? "Saving…" : "Save all changes"}
+					{saving ? "Saving…" : "Save & commit"}
 				</button>
 				{saveStatus === "ok" && (
-					<span className="adm-status adm-status--ok">Saved successfully ✓</span>
+					<span className="adm-status adm-status--ok">Saved ✓</span>
 				)}
 				{saveStatus === "error" && (
-					<span className="adm-status adm-status--error">Save failed — check authentication</span>
+					<span className="adm-status adm-status--error">
+						{saveErrors[0]?.message ?? "Save failed"}
+					</span>
+				)}
+				{saveStatus === "conflict" && (
+					<span className="adm-status adm-status--error">
+						Content changed —{" "}
+						<button className="adm-btn adm-btn--sm" onClick={loadContent}>
+							Reload from GitHub
+						</button>
+					</span>
+				)}
+				{saveStatus === "invalid" && (
+					<span className="adm-status adm-status--error">
+						{saveErrors.length} validation error{saveErrors.length !== 1 ? "s" : ""}
+					</span>
 				)}
 			</div>
-		</div>
+		</>
 	);
 }

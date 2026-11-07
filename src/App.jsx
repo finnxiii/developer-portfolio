@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,12 +13,10 @@ import TheEngineer from "./pages/TheEngineer/TheEngineer";
 import FieldNotes from "./pages/FieldNotes/FieldNotes";
 import FieldNote from "./pages/FieldNote/FieldNote";
 import CurrentFocusPage from "./pages/CurrentFocusPage/CurrentFocusPage";
-import AdminLogin from "./pages/Admin/Login";
-import AdminDashboard from "./pages/Admin/Dashboard";
+
+const Admin = lazy(() => import("./pages/Admin/AdminRouter"));
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
-
-const USE_KV = import.meta.env.VITE_USE_KV === "true";
 
 export default function App() {
 	const prefersReduced = useReducedMotion();
@@ -26,9 +25,15 @@ export default function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
-				{/* Admin — only registered when KV backend is enabled */}
-				{USE_KV && <Route path="/admin" element={<AdminLogin />} />}
-				{USE_KV && <Route path="/admin/dashboard" element={<AdminDashboard />} />}
+				{/* Admin — lazy-loaded so the public bundle never includes admin code */}
+				<Route
+					path="/admin/*"
+					element={
+						<Suspense fallback={null}>
+							<Admin />
+						</Suspense>
+					}
+				/>
 
 				{/* Public — all wrapped in PageLayout */}
 				<Route element={<PageLayout />}>

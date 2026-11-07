@@ -1,0 +1,13 @@
+# Cloudflare Access — set to your team's Access application values
+ACCESS_TEAM_DOMAIN=https://your-team.cloudflareaccess.com
+ACCESS_AUD=your-access-application-audience-tag
+
+# GitHub personal access token (needs repo write scope)
+GITHUB_TOKEN=ghp_your_token_here
+GITHUB_REPO=finnxiii/developer-portfolio
+GITHUB_BRANCH=main
+CONTENT_PATH=src/content/fallback.json
+
+# Local dev bypass — Cloudflare Access is not running locally, so set this to
+# skip JWT verification. NEVER set DEV_BYPASS_ACCESS=true in production.
+DEV_BYPASS_ACCESS=true
