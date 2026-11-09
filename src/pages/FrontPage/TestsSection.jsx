@@ -3,15 +3,7 @@ import { useStage } from "../../components/stage/StageContext";
 import { usePortfolioData } from "../../hooks/usePortfolioData";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import Footer from "../../components/layout/Footer/Footer";
-
-function deriveTestName(principle) {
-	let s = principle.replace(/\.$/, "").replace(/all of /g, "");
-	const words = s.split(/[\s,–-]+/).filter(Boolean);
-	if (!words.length) return "";
-	const firstWord = words[0].toLowerCase() + "s";
-	const rest = words.slice(1).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
-	return firstWord + rest.join("");
-}
+import { deriveTestName } from "../../lib/testName";
 
 function getReference(projectLink, projects) {
 	const workMatch = projectLink?.match(/^\/work\/([^/]+)$/);

@@ -16,8 +16,9 @@ export default function TabNav({ extraTab }) {
 	const activeTabRef = useRef(null);
 	const [fadeState, setFadeState] = useState({ left: false, right: false });
 
+	const insertPos = extraTab?.to?.startsWith("/notes/") ? 4 : 2;
 	const tabs = extraTab
-		? [...BASE_TABS.slice(0, 2), extraTab, ...BASE_TABS.slice(2)]
+		? [...BASE_TABS.slice(0, insertPos), extraTab, ...BASE_TABS.slice(insertPos)]
 		: BASE_TABS;
 
 	// Recompute which fade edges are needed

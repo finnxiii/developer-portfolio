@@ -1,215 +1,364 @@
-import { useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import { usePortfolioData } from "../../hooks/usePortfolioData";
-import { useScrollReveal } from "../../hooks/useScrollReveal";
-import PhilosophyItem from "../../components/editorial/PhilosophyItem/PhilosophyItem";
-import Timeline from "../../components/editorial/Timeline/Timeline";
-import Rule from "../../components/ui/Rule/Rule";
+import { useState, useEffect, useRef } from "react";
 import SEOHead from "../../components/ui/SEOHead/SEOHead";
+import StageSection from "../../components/stage/StageSection";
+import { usePortfolioData } from "../../hooks/usePortfolioData";
+import { useQuack } from "../../components/quack/QuackContext";
+import { usePointerParallax } from "../../components/stage/usePointerParallax";
+import { useSideArtFit } from "../../hooks/useSideArtFit";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
+import Footer from "../../components/layout/Footer/Footer";
+import { deriveTestName } from "../../lib/testName";
 import "./TheEngineer.scss";
 
-export default function TheEngineer() {
-	const containerRef = useRef(null);
-	useScrollReveal(containerRef);
+const ABOUT_QUIPS = [
+	"That stack trace is his CV. Click a frame.",
+	"Every principle has evidence. He made sure.",
+	"Hire him. I'll come too.",
+];
 
-	const { hash } = useLocation();
-	useEffect(() => {
-		if (!hash) return;
-		const id = hash.replace("#", "");
-		const el = document.getElementById(id);
-		if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
-	}, [hash]);
+function expFileName(exp) {
+	const { org, role } = exp;
+	if (role.includes("Demonstrator")) return "COM114.java";
+	if (org.includes("Project Echo")) return "ProjectEcho.kt";
+	if (org.includes("iForge")) return "IForge.java";
+	if (org.includes("Kith")) return "KithAILab.java";
+	if (role.toLowerCase().includes("meng") || role.toLowerCase().includes("computer science")) return "Sheffield.java";
+	return org.split(/\s+/).slice(0, 2).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join("") + ".java";
+}
 
-	const { data } = usePortfolioData();
-	const { profile, philosophy = [], experience = [], currentFocus } = data;
-	const {
-		name, role, university, graduation, location,
-		bio, interests = [], links = {},
-	} = profile;
 
-	const bioParagraphs = (bio || "").split(/\n\n+/).filter(Boolean);
+function refLabel(projectLink) {
+	if (!projectLink) return "—";
+	const seg = projectLink.split("/").pop();
+	if (!seg) return "—";
+	if (seg === "three-portfolio-designs") return "Field note";
+	return seg.split("-").map(w => w.toUpperCase() === w ? w : w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+}
+
+// ── Hello scene ───────────────────────────────────────────────────
+
+function HelloScene({ profile }) {
+	const sceneRef = useRef(null);
+	usePointerParallax(sceneRef);
+	const cardFits = useSideArtFit(430);
 
 	return (
-		<div className="the-engineer" ref={containerRef}>
-			<SEOHead title="About" description={bio} />
-
-			{/* ── Header ───────────────────────────────────────────────── */}
-			<div className="container">
-				<header className="te-header rv">
-					<span className="te-header__kicker label-text">§3 · About</span>
-					<h1 className="te-header__name">{name}</h1>
-					<p className="te-header__subtitle">{role} · {university}</p>
-				</header>
-			</div>
-
-			<Rule />
-
-			{/* ── Two-column body ───────────────────────────────────────── */}
-			<div className="container">
-				<div className="te-body">
-
-					{/* ── Main column ──────────────────────────────────── */}
-					<div className="te-main">
-
-						{/* Bio prose */}
-						{bioParagraphs.length > 0 && (
-							<section className="te-section rv" aria-label="Biography">
-								<span className="te-section__label">About</span>
-								<div className="te-section__body">
-									{bioParagraphs.map((p, i) => (
-										<p key={i} className="te-section__p">{p}</p>
-									))}
-								</div>
-							</section>
-						)}
-
-						{/* Background */}
-						<section className="te-section rv" data-reveal-delay="0.05" aria-label="Background">
-							<span className="te-section__label">Background</span>
-							<ul className="te-list" role="list">
-								{location && <li className="te-list__item"><span className="te-list__key">Location</span> — {location}</li>}
-								{university && <li className="te-list__item"><span className="te-list__key">University</span> — {university}</li>}
-								{graduation && <li className="te-list__item"><span className="te-list__key">Graduating</span> — {graduation}</li>}
-							</ul>
-						</section>
-
-						{/* Interests */}
-						{interests.length > 0 && (
-							<section className="te-section rv" data-reveal-delay="0.08" aria-label="Interests">
-								<span className="te-section__label">Interests</span>
-								<ul className="te-list" role="list">
-									{interests.map((item, i) => (
-										<li key={i} className="te-list__item">{item}</li>
-									))}
-								</ul>
-							</section>
-						)}
-
-						{/* Philosophy preview */}
-						{philosophy.length > 0 && (
-							<>
-								<Rule />
-								<section id="how-i-work" style={{ scrollMarginTop: "80px" }} className="te-philosophy rv" data-reveal-delay="0.05">
-									<span className="te-section__label">How I Work</span>
-									<div className="te-philosophy__list">
-										{philosophy.map((item, i) => (
-											<div key={i} className="rv" data-reveal-delay={i * 0.06}>
-												<PhilosophyItem {...item} showExample />
-											</div>
-										))}
-									</div>
-									<div className="te-philosophy__more">
-										<Link to="/about#how-i-work" className="te-philosophy__more">
-											How I work →
-										</Link>
-									</div>
-								</section>
-							</>
-						)}
+		<div className="about-hello-scene" ref={sceneRef}>
+			{cardFits && (
+				<div
+					className="about-hello-scene__card"
+					aria-hidden="true"
+					style={{ transform: "translate(var(--px2,0), var(--py2,0))" }}
+				>
+					<div className="term-bar term-bar--light">
+						<i className="term-bar__dot term-bar__dot--muted" />
+						<i className="term-bar__dot term-bar__dot--muted" />
+						<i className="term-bar__dot term-bar__dot--muted" />
+						<span>About.java</span>
 					</div>
+					<pre className="about-hello-scene__code">{`public class Finn {
+    String based   = "${profile.location}";
+    String studies = "MEng Computer Science";
+    int    since   = 2024;
 
-					{/* ── Sidebar ───────────────────────────────────────── */}
-					<aside className="te-sidebar rv" data-reveal-delay="0.1">
-
-						{/* Contact */}
-						<div className="te-sidebar__block">
-							<span className="te-sidebar__label">Contact</span>
-							<ul className="te-sidebar__list" role="list">
-								{links.email && (
-									<li>
-										<a href={`mailto:${links.email}`} className="te-sidebar__link">
-											Email ↗
-										</a>
-									</li>
-								)}
-								{links.github && (
-									<li>
-										<a href={links.github} className="te-sidebar__link" target="_blank" rel="noopener noreferrer">
-											GitHub ↗
-										</a>
-									</li>
-								)}
-								{links.linkedin && (
-									<li>
-										<a href={links.linkedin} className="te-sidebar__link" target="_blank" rel="noopener noreferrer">
-											LinkedIn ↗
-										</a>
-									</li>
-								)}
-								{links.cv && (
-									<li>
-										<a href={links.cv} className="te-sidebar__link te-sidebar__link--cta" target="_blank" rel="noopener noreferrer">
-											Download CV (PDF)
-										</a>
-									</li>
-								)}
-							</ul>
-						</div>
-
-						{/* Currently */}
-						{currentFocus && (
-							<div className="te-sidebar__block">
-								<span className="te-sidebar__label">Currently</span>
-								<ul className="te-sidebar__list" role="list">
-									{currentFocus.building && (
-										<li>
-											<span className="te-sidebar__sub">Building</span>
-											{currentFocus.buildingLink
-												? <Link to={currentFocus.buildingLink} className="te-sidebar__link">{currentFocus.buildingShort || currentFocus.building}</Link>
-												: <span className="te-sidebar__val">{currentFocus.buildingShort || currentFocus.building}</span>
-											}
-										</li>
-									)}
-									{currentFocus.learning && (
-										<li>
-											<span className="te-sidebar__sub">Learning</span>
-											<span className="te-sidebar__val">{currentFocus.learningShort || currentFocus.learning}</span>
-										</li>
-									)}
-									{currentFocus.exploring && (
-										<li>
-											<span className="te-sidebar__sub">Exploring</span>
-											<span className="te-sidebar__val">{currentFocus.exploringShort || currentFocus.exploring}</span>
-										</li>
-									)}
-								</ul>
-								<Link to="/now" className="te-sidebar__more">
-									View /now page →
-								</Link>
-							</div>
-						)}
-
-					</aside>
+    void work() {
+        understand();
+        build();
+        test();
+        breakIt();
+        fix();
+    }
+}`}</pre>
 				</div>
-			</div>
-
-			{/* ── Experience timeline ───────────────────────────────────── */}
-			{experience.length > 0 && (
-				<section id="experience" style={{ scrollMarginTop: "80px" }} aria-label="Experience">
-					<Timeline experience={experience} />
-				</section>
 			)}
+		</div>
+	);
+}
 
-			{/* ── CV CTA ───────────────────────────────────────────────── */}
-			<div className="container">
-				<Rule />
-				<div className="te-cta-row rv">
-					{links.cv && (
-						<a href={links.cv} className="btn btn--solid" target="_blank" rel="noopener noreferrer">
-							Download CV (PDF)
-						</a>
-					)}
-					{links.email && (
-						<a href={`mailto:${links.email}`} className="btn btn--outline">
-							Email me
-						</a>
-					)}
-					<Link to="/about#experience" className="btn btn--outline">
-						Full experience →
-					</Link>
+// ── Experience scene ──────────────────────────────────────────────
+
+function ExperienceScene({ experience }) {
+	const sceneRef = useRef(null);
+	usePointerParallax(sceneRef);
+	const traceFits = useSideArtFit(360);
+
+	const lines = experience.map((exp) => {
+		const fn = exp.role.split(/\s+/).slice(0, 2)
+			.map((w, i) => i === 0 ? w.charAt(0).toLowerCase() + w.slice(1).toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+			.join("") + "()";
+		const file = expFileName(exp);
+		return `  Finn.${fn.padEnd(28)}${file}`;
+	});
+
+	return (
+		<div className="about-stack-scene" ref={sceneRef}>
+			{traceFits && (
+				<pre
+					className="about-stack-scene__trace"
+					aria-hidden="true"
+					style={{ transform: "translate(var(--px2,0), var(--py2,0))" }}
+				>
+					{`Thread [main] (Suspended)\n${lines.join("\n")}\n  Finn.main(String[])`}
+				</pre>
+			)}
+		</div>
+	);
+}
+
+// ── Principles scene ──────────────────────────────────────────────
+
+function PrinciplesScene() {
+	const reduced = useReducedMotion();
+	const ticks = Array.from({ length: 80 }, (_, i) =>
+		"✓ " + ["passed", "green", "ok", "passed"][i % 4]
+	).join("\n");
+
+	return (
+		<div className="about-principles-scene">
+			<pre
+				className={"about-principles-scene__ticks" + (reduced ? "" : " about-principles-scene__ticks--rise")}
+				aria-hidden="true"
+			>
+				{ticks}
+			</pre>
+		</div>
+	);
+}
+
+// ── Contact scene ─────────────────────────────────────────────────
+
+function ContactScene() {
+	const reduced = useReducedMotion();
+	return (
+		<div className="about-contact-scene" aria-hidden="true">
+			<div className={"about-contact-scene__glow about-contact-scene__glow--1" + (reduced ? " about-contact-scene__glow--still" : "")} />
+			<div className={"about-contact-scene__glow about-contact-scene__glow--2" + (reduced ? " about-contact-scene__glow--still" : "")} />
+		</div>
+	);
+}
+
+// ── Sections ──────────────────────────────────────────────────────
+
+function HelloSection({ profile }) {
+	return (
+		<div className="about-hello">
+			<span className="about-hello__label">About.java</span>
+			<h1 className="about-hello__h1">Hi, I'm Finn.</h1>
+			<p className="about-hello__bio">{profile.bio}</p>
+			<div className="about-hello__facts">
+				<div className="about-hello__fact">
+					<span className="about-hello__fact-key">based</span>
+					<span>{profile.location}</span>
+				</div>
+				<div className="about-hello__fact">
+					<span className="about-hello__fact-key">studying</span>
+					<span>MEng Computer Science</span>
+				</div>
+				<div className="about-hello__fact">
+					<span className="about-hello__fact-key">graduating</span>
+					<span>{profile.graduation}</span>
 				</div>
 			</div>
 		</div>
+	);
+}
+
+function ExperienceSection({ experience }) {
+	const [openIdx, setOpenIdx] = useState(0);
+
+	return (
+		<div className="about-stack">
+			<div className="about-stack__header">
+				<h2 className="about-stack__h2">Experience</h2>
+				<span className="about-stack__hint">Thread [main] · click a frame to expand</span>
+			</div>
+			<div className="about-stack__list">
+				{experience.map((exp, i) => {
+					const open = openIdx === i;
+					const arrow = open ? "▾" : exp.current ? "▶" : "▸";
+					const file = expFileName(exp);
+					return (
+						<div
+							key={i}
+							className={"about-exp-item" + (open ? " about-exp-item--open" : "")}
+						>
+							<button
+								type="button"
+								className="about-exp-item__btn"
+								aria-expanded={open}
+								onClick={() => setOpenIdx(open ? -1 : i)}
+							>
+								<span className="about-exp-item__arrow">{arrow}</span>
+								<span className="about-exp-item__meta">
+									<span className="about-exp-item__role">{exp.role}</span>
+									<span className="about-exp-item__org">at {exp.org} ({file})</span>
+								</span>
+								<span
+									className="about-exp-item__date"
+									style={{ color: exp.current ? "var(--pass)" : "var(--muted)" }}
+								>
+									{exp.dateRange}
+								</span>
+							</button>
+							{open && (
+								<ul className="about-exp-item__bullets">
+									{(exp.bullets ?? []).map((b, j) => (
+										<li key={j}>{b}</li>
+									))}
+								</ul>
+							)}
+						</div>
+					);
+				})}
+			</div>
+		</div>
+	);
+}
+
+function PrinciplesSection({ philosophy }) {
+	const [openIdx, setOpenIdx] = useState(0);
+
+	return (
+		<div className="about-principles">
+			<div className="about-principles__header">
+				<h2 className="about-principles__h2">Principles</h2>
+				<span className="about-principles__hint">FinnTest.java · click a test to see the evidence</span>
+			</div>
+			<div className="about-principles__list">
+				{philosophy.map((item, i) => {
+					const open = openIdx === i;
+					const name = item.testName ?? deriveTestName(item.principle);
+					return (
+						<div key={i} className="about-prin-item">
+							<button
+								type="button"
+								className="about-prin-item__btn"
+								aria-expanded={open}
+								onClick={() => setOpenIdx(open ? -1 : i)}
+							>
+								<span className="about-prin-item__check">✓</span>
+								<span className="about-prin-item__name">{name}()</span>
+								<span className="about-prin-item__chevron" aria-hidden="true">
+									{open ? "▴" : "▾"}
+								</span>
+							</button>
+							{open && (
+								<div className="about-prin-item__body">
+									<p className="about-prin-item__principle">{item.principle}</p>
+									<p className="about-prin-item__position">{item.position}</p>
+									<p className="about-prin-item__example">{item.example}</p>
+									{item.projectLink && (
+										<a
+											href={item.projectLink}
+											className="about-prin-item__evidence"
+										>
+											evidence: {refLabel(item.projectLink)} →
+										</a>
+									)}
+								</div>
+							)}
+						</div>
+					);
+				})}
+			</div>
+		</div>
+	);
+}
+
+function ContactSection({ profile }) {
+	const { availability, links } = profile;
+	return (
+		<div className="about-contact">
+			<span className="about-contact__label">return finn;</span>
+			<h2 className="about-contact__h2">
+				{availability?.detail ?? "Open to a 12-month industrial placement."}
+			</h2>
+			<p className="about-contact__body">
+				If you're hiring, or just want to talk about testing and debugging, I'd like to hear from you.
+			</p>
+			<div className="about-contact__btns">
+				{links.cv && (
+					<a
+						href={links.cv}
+						className="btn btn--solid"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Download CV ↗
+					</a>
+				)}
+				{links.email && (
+					<a href={`mailto:${links.email}`} className="btn btn--outline">
+						Email me
+					</a>
+				)}
+			</div>
+			<Footer />
+		</div>
+	);
+}
+
+// ── Page ──────────────────────────────────────────────────────────
+
+export default function TheEngineer() {
+	const { data } = usePortfolioData();
+	const { profile = {}, experience = [], philosophy = [] } = data;
+	const { setQuips } = useQuack();
+
+	useEffect(() => {
+		setTimeout(() => setQuips(ABOUT_QUIPS), 0);
+	}, [setQuips]);
+
+	return (
+		<>
+			<SEOHead
+				title="About"
+				description={profile.bio ?? "Software engineering student at the University of Sheffield."}
+			/>
+
+			<StageSection
+				id="hello"
+				fn="hello()"
+				ln="01"
+				bg="var(--paper)"
+				dark={false}
+				scene={<HelloScene profile={profile} />}
+			>
+				<HelloSection profile={profile} />
+			</StageSection>
+
+			<StageSection
+				id="experience"
+				fn="experience()"
+				ln="12"
+				bg="var(--paper-2)"
+				dark={false}
+				scene={<ExperienceScene experience={experience} />}
+			>
+				<ExperienceSection experience={experience} />
+			</StageSection>
+
+			<StageSection
+				id="principles"
+				fn="principles()"
+				ln="30"
+				bg="var(--dark-scene)"
+				dark={true}
+				scene={<PrinciplesScene />}
+			>
+				<PrinciplesSection philosophy={philosophy} />
+			</StageSection>
+
+			<StageSection
+				id="contact"
+				fn="contact()"
+				ln="44"
+				bg="var(--warm-scene)"
+				dark={false}
+				scene={<ContactScene />}
+			>
+				<ContactSection profile={profile} />
+			</StageSection>
+		</>
 	);
 }
