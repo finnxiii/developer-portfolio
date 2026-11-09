@@ -1,17 +1,22 @@
 {
 	"meta": {
 		"version": "2.0",
-		"lastUpdated": "2026-09-25T00:00:00Z",
+		"lastUpdated": "2026-11-09",
 		"editionLabel": "Edition No. 02"
 	},
 	"profile": {
 		"name": "Naing Htoo Lwin",
 		"role": "Software Engineer",
 		"university": "University of Sheffield",
-		"graduation": "2028",
+		"graduation": "2029",
 		"location": "Sheffield, England",
 		"bio": "Software engineering student at the University of Sheffield with a focus on building useful, reliable systems and explaining how they work. Currently working on Android apps, full-stack web applications, and learning to think clearly about engineering trade-offs.",
-		"interests": ["Software Engineering", "Artificial Intelligence", "Mobile Development", "Cloud & DevOps"],
+		"interests": [
+			"Software Engineering",
+			"Artificial Intelligence",
+			"Mobile Development",
+			"Cloud & DevOps"
+		],
 		"heroHeadline": "I build software to understand how things work.",
 		"heroStandfirst": "I'm Finn, a software engineering student exploring the space between software, AI, and intelligent systems. I like taking ambiguous problems, turning them into working software, and learning from the decisions, failures, and trade-offs along the way.",
 		"links": {
@@ -37,16 +42,37 @@
 			"leadProject": true,
 			"pullQuote": "Losing a location is acceptable; losing the page view is not.",
 			"numbers": [
-				{ "value": "0–100", "label": "bot score per request" },
-				{ "value": "4", "label": "time buckets, 5 min to 1 day" },
-				{ "value": "£0", "label": "target hosting cost, one free-tier VM" },
-				{ "value": "0", "label": "cookies set on visitors" }
+				{
+					"value": "0–100",
+					"label": "bot score per request"
+				},
+				{
+					"value": "4",
+					"label": "time buckets, 5 min to 1 day"
+				},
+				{
+					"value": "£0",
+					"label": "target hosting cost, one free-tier VM"
+				},
+				{
+					"value": "0",
+					"label": "cookies set on visitors"
+				}
 			],
 			"role": "Software Developer",
 			"timeframe": "Jul 2025 - Present",
 			"team": "Personal project",
 			"status": "In development",
-			"stack": ["Python", "FastAPI", "TimescaleDB", "PostgreSQL", "React", "TypeScript", "Three.js", "Docker"],
+			"stack": [
+				"Python",
+				"FastAPI",
+				"TimescaleDB",
+				"PostgreSQL",
+				"React",
+				"TypeScript",
+				"Three.js",
+				"Docker"
+			],
 			"github": "https://github.com/finnxiii/vigil",
 			"live": null,
 			"screenshot": "",
@@ -70,14 +96,24 @@
 			"leadProject": false,
 			"pullQuote": "",
 			"numbers": [
-				{ "value": "6", "label": "engineers on the team" },
-				{ "value": "1st", "label": "class result" }
+				{
+					"value": "6",
+					"label": "engineers on the team"
+				},
+				{
+					"value": "1st",
+					"label": "class result"
+				}
 			],
 			"role": "Software Developer",
 			"timeframe": "Feb 2026 - May 2026",
 			"team": "Software Hut - Team of 6",
 			"status": "Completed",
-			"stack": ["Ruby on Rails", "PostgreSQL", "JavaScript"],
+			"stack": [
+				"Ruby on Rails",
+				"PostgreSQL",
+				"JavaScript"
+			],
 			"github": "",
 			"live": null,
 			"screenshot": "",
@@ -101,14 +137,26 @@
 			"leadProject": false,
 			"pullQuote": "",
 			"numbers": [
-				{ "value": "6 hrs", "label": "from idea to prototype" },
-				{ "value": "1", "label": "award: Most Adventurous Hack" }
+				{
+					"value": "6 hrs",
+					"label": "from idea to prototype"
+				},
+				{
+					"value": "1",
+					"label": "award: Most Adventurous Hack"
+				}
 			],
 			"role": "Developer",
 			"timeframe": "April 2025",
 			"team": "iForge Hack Day 2025",
 			"status": "Prototype",
-			"stack": ["Python", "Gemini API", "ESP32-CAM", "Arduino Uno R4", "C/C++"],
+			"stack": [
+				"Python",
+				"Gemini API",
+				"ESP32-CAM",
+				"Arduino Uno R4",
+				"C/C++"
+			],
 			"github": "https://github.com/finnxiii/sorts-embedded-ai",
 			"live": null,
 			"screenshot": "",
@@ -172,7 +220,9 @@
 			"dateRange": "Sep 2024 — Present",
 			"org": "University of Sheffield",
 			"role": "MEng Computer Science (Software Engineering)",
-			"bullets": ["Third year student, expected graduation 2028."],
+			"bullets": [
+				"Third year student, expected graduation 2028."
+			],
 			"current": true
 		}
 	],
@@ -253,10 +303,10 @@
 		"date": "September 2026",
 		"buildingShort": "Vigil",
 		"learningShort": "Mobile development",
-		"exploringShort": "VR & IoT",
+		"exploringShort": "Virtual Reality",
 		"buildingLink": "/work/vigil",
 		"building": "Vigil, a self-hosted, privacy-first web analytics and security monitoring platform. Next up: moving ingestion behind a Redis Streams worker and deploying to a free-tier VM.",
 		"learning": "Mobile development, building Android interfaces with Kotlin and Jetpack Compose on Project Echo.",
-		"exploring": "VR development and the IoT side of technology: where software meets headsets, sensors and physical devices."
+		"exploring": "Currently exploring Unity and VR app development for my dissertation."
 	}
 }
