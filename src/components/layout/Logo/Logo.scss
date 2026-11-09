@@ -1,0 +1,28 @@
+@use "../../../styles/mixins" as *;
+
+// ── Logo ─────────────────────────────────────────────────────────
+.logo {
+	position: fixed;
+	left: 26px;
+	top: 18px;
+	z-index: var(--z-chrome, 6);
+	font-family: var(--font-display);
+	font-size: 26px;
+	font-weight: 600;
+	letter-spacing: -0.04em;
+	text-decoration: none;
+	flex-shrink: 0;
+	transition: color var(--dur-bg) var(--ease);
+
+	&:focus-visible {
+		outline: 2px solid var(--duck);
+		outline-offset: 4px;
+		border-radius: 4px;
+	}
+
+	// Inside Chrome bar at mobile: static flow, bar padding-left handles offset
+	@include bp(below-tablet) {
+		position: static;
+		margin-left: 0;
+	}
+}

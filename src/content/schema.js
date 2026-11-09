@@ -18,6 +18,13 @@ const CaseStudySections = z.object({
 	learned: z.string(),
 });
 
+const SceneData = z.object({
+	reproduce: z.array(z.string()).optional(),
+	watches: z.array(z.tuple([z.string(), z.string()])).optional(),
+	diff: z.array(z.object({ sign: z.enum(["+", "-"]), text: z.string() })).optional(),
+	exceptions: z.array(z.string()).optional(),
+});
+
 const Project = z.object({
 	slug: kebabSlug,
 	category: z.string(),
@@ -38,6 +45,7 @@ const Project = z.object({
 	relatedNote: z.string().optional(),
 	figureCaption: z.string().optional().default(""),
 	sections: CaseStudySections,
+	scene: SceneData.optional(),
 });
 
 const Experience = z.object({
@@ -53,6 +61,14 @@ const PhilosophyItem = z.object({
 	position: z.string(),
 	example: z.string(),
 	projectLink: z.string().optional().default(""),
+	testName: z.string().optional(),
+});
+
+const TimelineItem = z.object({
+	date: z.string(),
+	type: z.string(),
+	lane: z.string(),
+	message: z.string(),
 });
 
 const FieldNote = z.object({
@@ -117,6 +133,7 @@ const ContentSchema = z.object({
 	philosophy: z.array(PhilosophyItem),
 	fieldNotes: z.array(FieldNote),
 	currentFocus: CurrentFocus,
+	timeline: z.array(TimelineItem).optional().default([]),
 });
 
 export function validateContent(content) {

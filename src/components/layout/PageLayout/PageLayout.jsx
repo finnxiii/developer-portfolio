@@ -1,80 +1,87 @@
-import { useRef, useLayoutEffect, useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useReducedMotion } from "../../../hooks/useReducedMotion";
-import { getLenis } from "../../../hooks/useSmoothScroll";
+import { Component, useEffect } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import { StageProvider } from "../../stage/StageContext";
+import Stage from "../../stage/Stage";
+import Chrome from "../Chrome/Chrome";
+import { ChromeProvider } from "../Chrome/ChromeContext";
+import SectionPill from "../SectionPill/SectionPill";
 import SkipToContent from "../SkipToContent/SkipToContent";
-import UtilityBar from "../UtilityBar/UtilityBar";
-import Masthead from "../Masthead/Masthead";
-import SectionNav from "../SectionNav/SectionNav";
-import Footer from "../Footer/Footer";
+import { QuackProvider } from "../../quack/QuackContext";
+import Quack from "../../quack/Quack";
 import "./PageLayout.scss";
 
-export default function PageLayout() {
-	const mainRef = useRef(null);
-	const location = useLocation();
-	const prefersReduced = useReducedMotion();
+class ErrorBoundary extends Component {
+	constructor(props) {
+		super(props);
+		this.state = { error: null };
+	}
 
-	// Before browser paint: scroll to top (or preserve position for hash nav) and hide incoming content
-	useLayoutEffect(() => {
-		const lenis = getLenis();
-		if (!location.hash) {
-			if (lenis) {
-				lenis.scrollTo(0, { immediate: true });
-			} else {
-				window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+	static getDerivedStateFromError(error) {
+		return { error };
+	}
+
+	componentDidCatch(error, info) {
+		console.error("Page error:", error, info);
+	}
+
+	render() {
+		if (this.state.error) {
+			return (
+				<div className="page-error">
+					<pre className="page-error__pre">
+						Exception in thread &quot;main&quot;{"\n"}{String(this.state.error)}
+					</pre>
+					<div className="page-error__actions">
+						<button
+							type="button"
+							className="btn btn--solid"
+							onClick={() => window.location.reload()}
+						>
+							Reload
+						</button>
+						<Link to="/" className="btn btn--outline">← Home</Link>
+					</div>
+				</div>
+			);
+		}
+		return this.props.children;
+	}
+}
+
+export default function PageLayout() {
+	const location = useLocation();
+
+	// Scroll to top (or to the hash section) on every route change
+	useEffect(() => {
+		const hash = location.hash;
+		if (hash) {
+			const target = document.getElementById(hash.slice(1));
+			if (target) {
+				target.scrollIntoView({ block: "start" });
+				return;
 			}
 		}
-		if (!prefersReduced) {
-			gsap.set(mainRef.current, { opacity: 0, y: 15 });
-		}
-	}, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
-
-	// After browser paint: animate content in then refresh ScrollTrigger positions
-	useEffect(() => {
-		if (prefersReduced) return;
-		const hash = location.hash;
-		const ctx = gsap.context(() => {
-			gsap.to(mainRef.current, {
-				opacity: 1,
-				y: 0,
-				duration: 0.4,
-				ease: "power2.out",
-				clearProps: "opacity,transform",
-				onComplete: () => {
-					ScrollTrigger.refresh();
-					if (hash) {
-						// Retry via rAF until the target element exists (data renders after mount)
-						const start = performance.now();
-						const tryScroll = () => {
-							const target = document.querySelector(hash);
-							if (target) {
-								const lenis = getLenis();
-								if (lenis) lenis.scrollTo(target, { offset: -72 });
-								else target.scrollIntoView({ behavior: "smooth", block: "start" });
-							} else if (performance.now() - start < 1000) {
-								requestAnimationFrame(tryScroll);
-							}
-						};
-						requestAnimationFrame(tryScroll);
-					}
-				},
-			});
-		});
-		return () => ctx.revert();
-	}, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+		window.scrollTo(0, 0);
+	}, [location.pathname, location.hash]);
 
 	return (
-		<div className="page-layout" id="top">
-			<SkipToContent />
-			<UtilityBar />
-			<Masthead />
-			<SectionNav />
-			<main ref={mainRef} id="main-content" className="page-layout__main">
-				<Outlet />
-			</main>
-			<Footer />
-		</div>
+		<QuackProvider>
+			<StageProvider>
+				<ChromeProvider>
+					<div className="page-layout" id="top">
+						<SkipToContent />
+						<Stage />
+						<Chrome />
+						<SectionPill />
+						<main id="main-content" className="page-layout__main">
+							<ErrorBoundary>
+								<Outlet />
+							</ErrorBoundary>
+						</main>
+						<Quack />
+					</div>
+				</ChromeProvider>
+			</StageProvider>
+		</QuackProvider>
 	);
 }

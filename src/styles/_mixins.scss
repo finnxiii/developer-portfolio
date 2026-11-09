@@ -1,28 +1,61 @@
-// ── FINNXIII.DEV V2 — SCSS Abstracts ────────────────────────────
+// ── FINNXIII.DEV V3 — SCSS Abstracts ─────────────────────────────
 // Pure SCSS: variables, breakpoints, mixins.
 // No CSS output — safe to @use in component files.
+//
+// Breakpoint ranges:
+//   phone   — max-width: 599px
+//   tablet  — 600px–899px
+//   laptop  — 900px–1199px
+//   desktop — 1200px–1599px
+//   wide    — min-width: 1600px
+//   short   — max-height: 559px   (any width)
 
-$bp-sm:  480px;
-$bp-md:  768px;
-$bp-lg:  1024px;
-$bp-xl:  1240px;
+// ── Breakpoint values (lower bounds) ─────────────────────────────
+$bp-phone:    600px;   // lower bound of tablet
+$bp-tablet:   900px;   // lower bound of laptop + chrome mobile breakpoint
+$bp-laptop:   1200px;  // lower bound of desktop
+$bp-wide:     1600px;  // lower bound of wide
 
-@mixin mobile {
-	@media (max-width: #{$bp-md - 1px}) { @content; }
+// ── Named range mixin ─────────────────────────────────────────────
+// Usage: @include bp(phone)   → max-width: 599px
+//        @include bp(tablet)  → 600–899px
+//        @include bp(laptop)  → 900–1199px
+//        @include bp(desktop) → 1200–1599px
+//        @include bp(wide)    → min-width: 1600px
+//
+// "below" / "above" helpers for mobile-first cascades:
+//   @include bp(below-tablet) → max-width: 899px   (phone + tablet)
+//   @include bp(below-laptop) → max-width: 1199px  (phone + tablet + laptop)
+//   @include bp(above-tablet) → min-width: 900px   (laptop + desktop + wide)
+//   @include bp(above-laptop) → min-width: 1200px  (desktop + wide)
+
+@mixin bp($size) {
+  @if      $size == phone         { @media (max-width: 599px)                          { @content; } }
+  @else if $size == tablet        { @media (min-width: 600px) and (max-width: 899px)   { @content; } }
+  @else if $size == laptop        { @media (min-width: 900px) and (max-width: 1199px)  { @content; } }
+  @else if $size == desktop       { @media (min-width: 1200px) and (max-width: 1599px) { @content; } }
+  @else if $size == wide          { @media (min-width: 1600px)                         { @content; } }
+  @else if $size == below-tablet  { @media (max-width: 899px)                          { @content; } }
+  @else if $size == below-laptop  { @media (max-width: 1199px)                         { @content; } }
+  @else if $size == above-tablet  { @media (min-width: 900px)                          { @content; } }
+  @else if $size == above-laptop  { @media (min-width: 1200px)                         { @content; } }
+  @else { @warn "bp(): unknown breakpoint '#{$size}'"; }
 }
 
-@mixin tablet {
-	@media (min-width: $bp-md) and (max-width: #{$bp-lg - 1px}) { @content; }
+// ── Short-height breakpoint ───────────────────────────────────────
+// Applies when device height is < 560px (landscape phone, etc.)
+@mixin short-height {
+  @media (max-height: 559px) { @content; }
 }
 
-@mixin desktop {
-	@media (min-width: $bp-lg) { @content; }
-}
-
-@mixin above-mobile {
-	@media (min-width: $bp-md) { @content; }
-}
-
+// ── Reduced-motion ────────────────────────────────────────────────
 @mixin reduced-motion {
-	@media (prefers-reduced-motion: reduce) { @content; }
+  @media (prefers-reduced-motion: reduce) { @content; }
 }
+
+// ── Deprecated aliases (legacy v2 component files) ────────────────
+// Do NOT use in new v3 code — use bp() instead.
+@mixin mobile       { @media (max-width: 767px)                         { @content; } }
+@mixin above-mobile { @media (min-width: 768px)                         { @content; } }
+@mixin tablet       { @media (min-width: 768px) and (max-width: 1023px) { @content; } }
+@mixin desktop      { @media (min-width: 1024px)                        { @content; } }

@@ -1,13 +1,43 @@
-@use "../../../styles/mixins" as *;
+// ── PageLayout ───────────────────────────────────────────────────
+//
+// Corner ownership — see Chrome.scss for the full table.
+// Quick reference:
+//   ≥900px  Top-left: Logo   Top-right: TabNav   Left-mid: SectionPill
+//   <900px  Top-full: Chrome bar (Logo + TabNav)  Bottom-left: SectionPill
+//   height<560: SectionPill always at bottom-left regardless of width
 
 .page-layout {
+	position: relative;
+}
+
+.page-layout__main {
+	position: relative;
+	z-index: var(--z-content, 2);
+}
+
+.page-error {
+	min-height: 100svh;
 	display: flex;
 	flex-direction: column;
-	min-height: 100vh;
-	background: var(--paper);
+	align-items: flex-start;
+	justify-content: center;
+	gap: 24px;
+	padding: 48px var(--content-pad, 48px);
+}
 
-	&__main {
-		flex: 1;
-		padding-top: var(--space-2xl);
-	}
+.page-error__pre {
+	font-family: var(--font-mono);
+	font-size: 14px;
+	line-height: 1.6;
+	color: var(--breakpoint);
+	white-space: pre-wrap;
+	word-break: break-word;
+	max-width: 72ch;
+	margin: 0;
+}
+
+.page-error__actions {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
 }

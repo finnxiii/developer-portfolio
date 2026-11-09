@@ -1,79 +1,90 @@
-// ── FINNXIII.DEV V2 — CSS Custom Properties ─────────────────────
-// This file outputs only the :root block — no SCSS abstracts.
+// ── FINNXIII.DEV V3 — CSS Custom Properties ──────────────────────
+// Fonts are self-hosted via @fontsource — no Google Fonts.
 // SCSS variables and breakpoint mixins live in _mixins.scss.
 
 :root {
-	// Palette — light (default)
-	--paper:          #EEEAE0;
-	--paper-deep:     #E4DFD3;
-	--ink:            #151412;
-	--ink-secondary:  #4A463F;
-	--ink-tertiary:   #8A8478;
-	--rule:           #151412;
-	--rule-light:     #CFC9BC;
-	--accent:         #B82B18;
-	--accent-hover:   #9B2013;
-	--surface:        #E4DFD3;
-	--surface-dark:   #D8D2C5;
-	--code-bg:        #E4DFD3;
+	// ── Fonts ────────────────────────────────────────────────────
+	--font-display: 'Fraunces', Georgia, serif;
+	--font-body:    'IBM Plex Sans', system-ui, sans-serif;
+	--font-mono:    'IBM Plex Mono', ui-monospace, monospace;
 
-	// Typography
-	--font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-	--font-serif:   'Source Serif 4', Georgia, 'Times New Roman', serif;
-	--font-mono:    'JetBrains Mono', 'Courier New', monospace;
+	// ── Palette ──────────────────────────────────────────────────
+	--paper:        #F4F1EA;
+	--paper-2:      #EFEBE2;
+	--paper-3:      #EEEAE1;
+	--graph:        #F7F4EC;
+	--ink:          #24221F;
+	--ink-2:        #4A463F;
+	--muted:        #6B655C;
+	--faint:        #8A847A;
+	--rule:         rgba(36,34,31,.14);
+	--line:         #CFC8BB;
+	--duck:         #F2C230;
+	--duck-deep:    #D9A21E;
+	--beak:         #E8862A;
+	--amber-text:   #8A6A1A;
+	--amber:        #C27A1E;
+	--pass:         #2F7D4F;
+	--pass-bg:      #E3F3E7;
+	--pass-on-dark: #8FD3A0;
+	--fail:         #B8432F;
+	--fail-bg:      #FBE7E2;
+	--breakpoint:   #C2412D;
+	--dark-scene:   #1F1D1A;
+	--dark-text:    #EAE5DB;
+	--dark-muted:   #A49D90;
+	--soft-red-scene: #F6E9E4;
+	--warm-scene:   #F7EFD6;
 
-	// Type scale
-	--text-masthead: clamp(64px, 12vw, 176px);
-	--text-display:  clamp(56px, 9vw, 128px);
-	--text-h1:       clamp(44px, 6vw, 88px);
-	--text-h2:       clamp(32px, 4vw, 56px);
-	--text-h3:       clamp(22px, 2.5vw, 32px);
-	--text-lead:     21px;
-	--text-body:     19px;
-	--text-small:    15px;
-	--text-meta:     13px;
-	--text-label:    11px;
+	// Git log lanes
+	--lane-degree:  #3F6FB0;
+	--lane-project: #B06C12;
+	--lane-work:    #3E8456;
 
-	// Line heights
-	--lh-display: 0.92;
+	// ── Type scale ───────────────────────────────────────────────
+	--text-h1:    clamp(46px, 5.6vw, 84px);
+	--text-h2:    clamp(36px, 4vw, 60px);
+	--text-body:  19px;
+	--text-small: 14px;
+	--text-label: 13px;
+	--text-micro: 11px;
+
+	--lh-display: 1;
+	--lh-h2:      1.05;
 	--lh-body:    1.7;
 
-	// Rule tokens (full border shorthand)
-	--rule-heavy: 4px solid var(--rule);
-	--rule-hair:  1px solid var(--rule-light);
+	// ── Shape ────────────────────────────────────────────────────
+	--radius-input: 10px;
+	--radius-panel: 14px;
+	--radius-card:  18px;
 
-	// Spacing
-	--space-xs:  4px;
-	--space-sm:  8px;
-	--space-md:  16px;
-	--space-lg:  24px;
-	--space-xl:  40px;
-	--space-2xl: 64px;
-	--space-3xl: 96px;
+	// ── Motion ───────────────────────────────────────────────────
+	--ease:               cubic-bezier(.2,.7,.2,1);
+	--dur-scene-opacity:  900ms;
+	--dur-scene-blur:     900ms;
+	--dur-scene-transform: 1100ms;
+	--dur-text:           800ms;
+	--dur-text-transform: 1000ms;
+	--dur-bg:             900ms;
+	--dur-ui:             200ms;
 
-	// Grid
-	--grid-max:    1240px;
-	--grid-gutter: 20px;
+	// ── Z-index scale ────────────────────────────────────────────
+	--z-stage:   0;
+	--z-content: 2;
+	--z-chrome:  6;
+	--z-duck:    20;
 
-	// Motion
-	--dur-ui:     150ms;
-	--dur-hover:  200ms;
-	--dur-reveal: 400ms;
-	--ease-out:   cubic-bezier(0.0, 0.0, 0.2, 1);
-}
+	// ── Grid ─────────────────────────────────────────────────────
+	--inner-max:        1080px;
+	--inner-max-wide:   1200px;   // at ≥1600px
+	--inner-pad-l:      clamp(90px, 8vw, 120px);  // min clears pill right edge (~66px)
+	--inner-pad-r:      clamp(16px, 4vw, 48px);
+	--inner-pad-mobile: 16px;
+	--sect-pad-y:       110px;
+	--sect-pad-b:       96px;
+	--sect-pad-y-sm:    88px;   // mobile <900px — clears chrome bar + breathing room
+	--sect-pad-b-sm:    80px;
 
-// ── Dark mode overrides ───────────────────────────────────────────
-:root[data-theme="dark"] {
-	--paper:         #121110;
-	--paper-deep:    #1C1A18;
-	--ink:           #ECE6DA;
-	--ink-secondary: #B3AC9F;
-	--ink-tertiary:  #7F786D;
-	--rule:          #ECE6DA;
-	--rule-light:    #34312C;
-	--accent:        #FF6A4D;
-	--accent-hover:  #FF8A70;
-	--surface:       #1C1A18;
-	--surface-dark:  #252320;
-	--code-bg:       #1C1A18;
+	// ── Fixed chrome ─────────────────────────────────────────────
+	--chrome-h: 48px;           // floating bar height (<900px)
 }

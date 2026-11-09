@@ -1,0 +1,129 @@
+@use "../../../styles/mixins" as *;
+
+// ── SectionPill ──────────────────────────────────────────────────
+.section-pill {
+	position: fixed;
+	left: 16px;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: var(--z-chrome, 6);
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 8px 6px;
+	border-radius: 26px;
+	background: rgba(244, 241, 234, 0.86);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	border: 1px solid rgba(36, 34, 31, 0.18);
+
+	// Horizontal row at bottom-left on mobile and tablet
+	@include bp(below-tablet) {
+		top: auto;
+		bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+		left: calc(16px + env(safe-area-inset-left, 0px));
+		transform: none;
+		flex-direction: row;
+		padding: 6px 8px;
+	}
+
+	// Also horizontal at short-height (landscape phone, any width)
+	@include short-height {
+		top: auto;
+		bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+		left: calc(16px + env(safe-area-inset-left, 0px));
+		transform: none;
+		flex-direction: row;
+		padding: 6px 8px;
+	}
+}
+
+.section-pill__item {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1px;
+	width: 38px;
+	padding: 6px 0;
+	border-radius: 14px;
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	color: var(--ink);
+
+	@media (hover: hover) {
+		&:hover {
+			background: rgba(36, 34, 31, 0.08);
+			outline: none;
+		}
+		&:hover .section-pill__tip {
+			opacity: 1;
+			transform: translate(0, -50%);
+		}
+	}
+
+	&:focus-visible {
+		background: rgba(36, 34, 31, 0.08);
+		outline: 2px solid var(--duck);
+		outline-offset: 2px;
+	}
+
+	&:focus-visible .section-pill__tip {
+		opacity: 1;
+		transform: translate(0, -50%);
+	}
+
+	// Narrower hit area at mobile
+	@include bp(below-tablet) {
+		width: 32px;
+		padding: 4px 0;
+	}
+}
+
+.section-pill__ln {
+	font-family: var(--font-mono);
+	font-size: 10px;
+	color: var(--faint);
+
+	// No line numbers at mobile/tablet
+	@include bp(below-tablet) { display: none; }
+	@include short-height      { display: none; }
+}
+
+.section-pill__dot {
+	width: 12px;
+	height: 12px;
+	border-radius: 6px;
+	box-sizing: border-box;
+	border: 2px solid var(--faint);
+	transition:
+		background var(--dur-ui) var(--ease),
+		border-color var(--dur-ui) var(--ease);
+
+	@include bp(below-tablet) {
+		width: 10px;
+		height: 10px;
+	}
+}
+
+.section-pill__tip {
+	position: absolute;
+	left: 48px;
+	top: 50%;
+	transform: translate(-4px, -50%);
+	opacity: 0;
+	pointer-events: none;
+	white-space: nowrap;
+	background: var(--ink);
+	color: var(--paper);
+	font-family: var(--font-mono);
+	font-size: 13px;
+	padding: 6px 10px;
+	border-radius: 8px;
+	transition: opacity 150ms var(--ease), transform 150ms var(--ease);
+
+	// No tooltips at mobile/tablet or short-height
+	@include bp(below-tablet) { display: none; }
+	@include short-height      { display: none; }
+}

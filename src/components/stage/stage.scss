@@ -1,0 +1,85 @@
+@use "../../styles/mixins" as *;
+
+// ── Stage system ─────────────────────────────────────────────────
+
+.stage {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-stage, 0);
+	overflow: hidden;
+	transition: background-color var(--dur-bg) var(--ease);
+
+	@include reduced-motion { transition: none; }
+}
+
+.scene {
+	position: absolute;
+	inset: 0;
+	will-change: opacity, transform, filter;
+	transition:
+		opacity var(--dur-scene-opacity) var(--ease),
+		transform var(--dur-scene-transform) var(--ease),
+		filter var(--dur-scene-blur) var(--ease);
+
+	@include reduced-motion { transition: none; }
+
+	// At mobile, dim scene art so text reads clearly
+	& > div {
+		@include bp(below-tablet) {
+			opacity: 0.3;
+			pointer-events: none;
+		}
+	}
+}
+
+// Centred art frame within a scene — max-width 1600px
+.scene__frame {
+	position: absolute;
+	inset: 0;
+	max-width: 1600px;
+	margin: 0 auto;
+	height: 100%;
+	pointer-events: none;
+	overflow: hidden;
+}
+
+// Side decorations hidden below 900px
+.scene-side {
+	@include bp(below-tablet) { display: none; }
+}
+
+.stage-section {
+	position: relative;
+	min-height: 100vh;
+	min-height: 100svh;
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	padding: var(--sect-pad-y, 110px) 0 var(--sect-pad-b, 96px);
+	background: transparent;
+	z-index: var(--z-content, 2);
+
+	// When inner content is taller than 80% viewport, top-align
+	&--top-align {
+		align-items: flex-start;
+	}
+
+	@include bp(below-tablet) {
+		// bar top: max(10px, safe-area-top) + bar height 48px + 20px gap = ~78px normally
+		padding-top: calc(max(10px, env(safe-area-inset-top, 0px)) + 68px);
+		padding-bottom: var(--sect-pad-b-sm, 80px);
+	}
+}
+
+.stage-section__inner {
+	width: 100%;
+	transition:
+		opacity var(--dur-text) var(--ease),
+		transform var(--dur-text-transform) var(--ease);
+
+	@include reduced-motion {
+		transition: none;
+		opacity: 1 !important;
+		transform: none !important;
+	}
+}

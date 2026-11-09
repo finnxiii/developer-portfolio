@@ -1,8 +1,7 @@
-// Shared SVG primitives
-function Box({ x, y, w, h = 32, label, label2, dashed = false, dim = false }) {
-	const stroke = dim ? "var(--ink-tertiary)" : "var(--ink)";
-	const fill = "var(--surface)";
-	const textFill = dim ? "var(--ink-tertiary)" : "var(--ink)";
+function Box({ x, y, w, h = 32, label, label2, dashed = false, dim = false, highlight = false }) {
+	const stroke = highlight ? "var(--amber)" : (dim ? "var(--faint)" : "var(--line)");
+	const fill = highlight ? "#FFF4CC" : "#FFFFFF";
+	const textFill = dim ? "var(--faint)" : "var(--muted)";
 	const cx = x + w / 2;
 	const cy = y + h / 2;
 	return (
@@ -11,9 +10,9 @@ function Box({ x, y, w, h = 32, label, label2, dashed = false, dim = false }) {
 				x={x} y={y} width={w} height={h}
 				fill={fill}
 				stroke={stroke}
-				strokeWidth="1"
+				strokeWidth={highlight ? "2" : "1.5"}
 				strokeDasharray={dashed ? "4 3" : undefined}
-				rx="1"
+				rx="6"
 			/>
 			{label2 ? (
 				<text
@@ -45,22 +44,22 @@ function Box({ x, y, w, h = 32, label, label2, dashed = false, dim = false }) {
 }
 
 function Arrow({ d, dashed = false, dim = false, markerId }) {
-	const stroke = dim ? "var(--ink-tertiary)" : "var(--ink-secondary)";
+	const stroke = dim ? "var(--faint)" : "var(--amber)";
+	const dasharray = dashed ? "4 5" : "6 4";
 	return (
 		<path
 			d={d}
 			fill="none"
 			stroke={stroke}
-			strokeWidth="1"
-			strokeDasharray={dashed ? "4 3" : undefined}
+			strokeWidth="1.5"
+			strokeDasharray={dasharray}
 			markerEnd={`url(#${markerId})`}
+			className={!dim ? "arrow-flow" : undefined}
 		/>
 	);
 }
 
 // ── Horizontal layout (≥ 640 px) ────────────────────────────────
-// viewBox 0 0 720 210
-// Main row y=90 h=32; branch row y=156 h=32; live tail y=14 h=32; ghost y=155 h=44
 function HorizontalDiagram() {
 	return (
 		<svg
@@ -71,19 +70,17 @@ function HorizontalDiagram() {
 			aria-label="Vigil request path: JS snippet sends a POST to /collect; each request is enriched with GeoIP data, scored 0–100 for bot likelihood, and stored in a TimescaleDB hypertable. Hourly continuous aggregates feed the dashboard; a WebSocket live-tail streams events in real time. A Redis Streams worker is planned between intake and enrichment."
 		>
 			<defs>
-				{/* Solid arrowhead */}
 				<marker id="vh-arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
-					<path d="M0,0 L5,3 L0,6 Z" fill="var(--ink-secondary)" />
+					<path d="M0,0 L5,3 L0,6 Z" fill="var(--amber)" />
 				</marker>
-				{/* Dim dashed arrowhead */}
 				<marker id="vh-arr-dim" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
-					<path d="M0,0 L5,3 L0,6 Z" fill="var(--ink-tertiary)" />
+					<path d="M0,0 L5,3 L0,6 Z" fill="var(--faint)" />
 				</marker>
 			</defs>
 
 			{/* ── Main flow boxes ── */}
 			<Box x={8}   y={90} w={84}  label="JS SNIPPET" />
-			<Box x={112} y={90} w={102} label="POST /COLLECT" />
+			<Box x={112} y={90} w={102} label="POST /COLLECT" highlight />
 			<Box x={234} y={90} w={102} label="ENRICH (GEOIP)" />
 			<Box x={356} y={90} w={92}  label="SCORE (0–100)" />
 			<Box x={468} y={90} w={158} label="TIMESCALEDB HYPERTABLE" />
@@ -119,8 +116,6 @@ function HorizontalDiagram() {
 }
 
 // ── Vertical layout (< 640 px) ───────────────────────────────────
-// viewBox 0 0 300 460
-// Main vertical stack; Live tail branches right of /collect; ghost box between /collect and Enrich
 function VerticalDiagram() {
 	return (
 		<svg
@@ -132,18 +127,18 @@ function VerticalDiagram() {
 		>
 			<defs>
 				<marker id="vv-arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
-					<path d="M0,0 L5,3 L0,6 Z" fill="var(--ink-secondary)" />
+					<path d="M0,0 L5,3 L0,6 Z" fill="var(--amber)" />
 				</marker>
 				<marker id="vv-arr-dim" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
-					<path d="M0,0 L5,3 L0,6 Z" fill="var(--ink-tertiary)" />
+					<path d="M0,0 L5,3 L0,6 Z" fill="var(--faint)" />
 				</marker>
 			</defs>
 
 			{/* Main stack */}
 			<Box x={75} y={14}  w={150} h={32} label="JS SNIPPET" />
-			<Box x={75} y={72}  w={150} h={32} label="POST /COLLECT" />
+			<Box x={75} y={72}  w={150} h={32} label="POST /COLLECT" highlight />
 
-			{/* Ghost: Redis Streams (planned), between /collect and Enrich */}
+			{/* Ghost: Redis Streams (planned) */}
 			<Box x={65} y={136} w={170} h={44} label="REDIS STREAMS WORKER" label2="(PLANNED)" dashed dim />
 
 			<Box x={75} y={202} w={150} h={32} label="ENRICH (GEOIP)" />
@@ -159,7 +154,7 @@ function VerticalDiagram() {
 
 			{/* Solid arrows: main flow */}
 			<Arrow d="M150,46 L150,72"           markerId="vv-arr" />
-			<Arrow d="M150,246 L150,258"          markerId="vv-arr" />
+			<Arrow d="M150,234 L150,258"          markerId="vv-arr" />
 			<Arrow d="M150,290 L150,314"          markerId="vv-arr" />
 			<Arrow d="M150,346 L150,365 L123,365 L123,380" markerId="vv-arr" />
 			<Arrow d="M188,396 L205,396"          markerId="vv-arr" />

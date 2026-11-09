@@ -27,10 +27,10 @@ function StationBox({ cx, cy, w, h, lines }) {
 		<g>
 			<rect
 				x={x} y={y} width={w} height={h}
-				fill="var(--surface)"
-				stroke="var(--ink)"
-				strokeWidth="1"
-				rx="1"
+				fill="#FFFFFF"
+				stroke="var(--line)"
+				strokeWidth="1.5"
+				rx="8"
 			/>
 			<text
 				x={cx}
@@ -38,7 +38,7 @@ function StationBox({ cx, cy, w, h, lines }) {
 				textAnchor="middle"
 				fontFamily="var(--font-mono)"
 				fontSize="9"
-				fill="var(--ink)"
+				fill="var(--muted)"
 				letterSpacing="0.07em"
 			>
 				<tspan x={cx} dy="0">{lines[0]}</tspan>
@@ -65,7 +65,7 @@ export default function SortsFigure() {
 					orient="auto"
 					markerUnits="userSpaceOnUse"
 				>
-					<path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-secondary)" />
+					<path d="M0,0 L6,3 L0,6 Z" fill="var(--amber)" />
 				</marker>
 			</defs>
 
@@ -83,7 +83,7 @@ export default function SortsFigure() {
 					key={i}
 					points="-7,-4 7,0 -7,4"
 					transform={`translate(${a.x.toFixed(1)},${a.y.toFixed(1)}) rotate(${a.angle})`}
-					fill="var(--ink-secondary)"
+					fill="var(--amber)"
 				/>
 			))}
 
@@ -97,10 +97,10 @@ export default function SortsFigure() {
 				x={CX} y={CY - 12}
 				textAnchor="middle"
 				dominantBaseline="auto"
-				fontFamily="var(--font-serif)"
+				fontFamily="var(--font-display)"
 				fontSize="30"
-				fontWeight="700"
-				fill="var(--accent)"
+				fontWeight="500"
+				fill="var(--amber-text)"
 			>
 				6 hrs
 			</text>
@@ -109,7 +109,7 @@ export default function SortsFigure() {
 				textAnchor="middle"
 				fontFamily="var(--font-mono)"
 				fontSize="8.5"
-				fill="var(--ink-tertiary)"
+				fill="var(--muted)"
 				letterSpacing="0.1em"
 			>
 				MOST ADVENTUROUS HACK

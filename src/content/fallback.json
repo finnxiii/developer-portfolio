@@ -13,7 +13,7 @@
 		"bio": "Software engineering student at the University of Sheffield with a focus on building useful, reliable systems and explaining how they work. Currently working on Android apps, full-stack web applications, and learning to think clearly about engineering trade-offs.",
 		"interests": ["Software Engineering", "Artificial Intelligence", "Mobile Development", "Cloud & DevOps"],
 		"heroHeadline": "I build software to understand how things work.",
-		"heroStandfirst": "I'm Finn, a software engineering student exploring the space between software, AI, and intelligent systems. I like taking ambiguous problems, turning them into working software, and learning from the decisions, failures, and trade-offs along the way.",
+		"heroStandfirst": "I'm Finn, a software engineering student at the University of Sheffield. I like testing, debugging, and systems you can see inside.",
 		"links": {
 			"email": "nainghtoolwin1385@gmail.com",
 			"github": "https://github.com/finnxiii",
@@ -59,6 +59,43 @@
 				"whatBroke": "Several of the hardest problems came from the database layer rather than the application code. TimescaleDB requires the time column in every unique constraint, so the requests table needed a composite primary key of id and timestamp. The asyncpg driver rejected bucket intervals passed as strings, so they are now passed as Python timedelta values. Refreshing a continuous aggregate cannot run inside a transaction, so it could not live in an Alembic migration and is handled by a refresh policy instead. The main trade-off still open is the pipeline itself: /collect currently writes to the database and broadcasts to the live tail within the same request. That keeps the system easy to reason about while it takes shape, but it couples intake to storage. Moving processing behind a Redis Streams worker, so traffic spikes cannot block collection, is the next architectural step. The bot score is also deliberately simple. It catches crawlers that identify themselves, but not bots that disguise their user agent, and request-rate scoring is not yet wired into live ingestion.",
 				"outcome": "The core flow works end to end in local development with Docker Compose: a site can be registered, the snippet embedded, and page views appear in the dashboard, live tail and globe as they arrive. The remaining roadmap covers the Redis Streams worker, server log forwarding for Nginx and Apache, threshold-based alerting with webhook delivery, production deployment on Oracle Cloud's free tier with the dashboard on Vercel, and a CI/CD pipeline.",
 				"learned": "Rebuilding a script as a system showed me how much of the work sits between components: schema design, migrations, data types crossing the driver boundary, and deciding where each piece of processing should happen. It also made me more careful about the claims a tool makes. A bot score is only as good as its signals, and writing tests for the heuristics made their blind spots far easier to see than looking at dashboard output."
+			},
+			"scene": {
+				"reproduce": [
+					"$ curl -s analytics.example/collect",
+					"> sends visitor data to a third party",
+					"> sets 3 cookies",
+					"> £ per month",
+					"",
+					"expected: private, free, self-hosted",
+					"actual:   none of the above"
+				],
+				"watches": [
+					["constraint", "\"one free-tier VM\""],
+					["cookies", "0"],
+					["thirdParties", "[]"],
+					["storage", "TimescaleDB  // inside Postgres"],
+					["queries", "time_bucket(...)"]
+				],
+				"diff": [
+					{ "sign": "-", "text": "PRIMARY KEY (id)" },
+					{ "sign": "+", "text": "PRIMARY KEY (id, timestamp)" },
+					{ "sign": "+", "text": "SELECT create_hypertable('requests', 'timestamp')" },
+					{ "sign": "-", "text": "bucket = '5 minutes'" },
+					{ "sign": "+", "text": "bucket = timedelta(minutes=5)" },
+					{ "sign": "+", "text": "score = bot_score(ua, rate, referrer)" },
+					{ "sign": "+", "text": "await broadcast(live_tail, event)" },
+					{ "sign": "-", "text": "refresh_continuous_aggregate()  # in migration" },
+					{ "sign": "+", "text": "add_continuous_aggregate_policy(...)" }
+				],
+				"exceptions": [
+					"UniqueViolation: unique index must include \"timestamp\"",
+					"    at requests.primary_key",
+					"DataError: interval expected timedelta, got str",
+					"    at metrics.time_bucket",
+					"ActiveSqlTransaction: cannot refresh aggregate in a transaction",
+					"    at alembic.upgrade"
+				]
 			}
 		},
 		{
@@ -248,6 +285,16 @@
 			"relatedProject": "meeting-cost-calculator",
 			"body": "On Software Hut, my team built a Meeting Cost Calculator for a client at the AMRC. The application works out what a meeting costs from who attends, their grade, and the charge-out rate for that grade. I worked mainly on the data import and management side, including CSV upload.\n\n## The obvious version\n\nThe simplest way to build an import is: upload a file, parse it, write every row to the database. It is quick to build and easy to demo.\n\nThe problem is what the data does. Grades and rates feed directly into every cost the application shows. A file with one wrong column, an old export or a changed rate could quietly shift figures across the whole system, and the person uploading it would have no way of knowing until someone noticed a strange number.\n\n## The version we shipped\n\nInstead of applying changes straight away, the import works in stages:\n\n1. **Upload.** The file is parsed and checked, but nothing is saved.\n2. **Preview.** The user sees what the file contains.\n3. **Difference view.** Rows are compared against existing data, so new, changed and unchanged records are shown separately.\n4. **Confirm.** Only then are changes written.\n\nThe same idea shaped the grades page. Edits are staged and saved together rather than saved instantly on every change, because accidental instant saves are a poor fit for data that affects money.\n\n## The trade-off\n\nThis took more work to build and test, and it adds a step for the user. For a file with no real changes it can feel slower than it needs to be. But the cost of the extra step is a few seconds, and the cost of a silent mistake is a figure nobody trusts afterwards.\n\n## What I took from it\n\nThe question I now ask about any feature that changes data is: *can the user see what is about to happen before it happens?* If the answer is no, and the data matters, that is usually worth fixing before anything else."
 		}
+	],
+	"timeline": [
+		{ "date": "2026-09", "type": "feat", "lane": "work", "message": "become undergraduate demonstrator, COM114" },
+		{ "date": "2026-05", "type": "feat", "lane": "projects", "message": "ship Meeting Cost Calculator for AMRC, first class" },
+		{ "date": "2026-01", "type": "feat", "lane": "work", "message": "join iForge Makerspace IT team" },
+		{ "date": "2025-11", "type": "test", "lane": "work", "message": "QA an LLM product at Kith AI Lab" },
+		{ "date": "2025-10", "type": "feat", "lane": "work", "message": "join Project Echo as Android engineer" },
+		{ "date": "2025-07", "type": "init", "lane": "projects", "message": "vigil starts as a log script at IEUK" },
+		{ "date": "2025-04", "type": "feat", "lane": "projects", "message": "SORTS wins Most Adventurous Hack" },
+		{ "date": "2024-09", "type": "init", "lane": "degree", "message": "start Computer Science (Software Engineering) at Sheffield" }
 	],
 	"currentFocus": {
 		"date": "September 2026",

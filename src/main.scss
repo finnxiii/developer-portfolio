@@ -1,14 +1,6 @@
-// 1. CSS custom properties — emitted first so :root lands at the top
+// Design system (fonts loaded in main.jsx via JS imports)
 @use "./styles/variables";
-
-// 2. Reset — uses var() defined above + literal fallbacks
 @use "./styles/reset";
-
-// 3. Typography
 @use "./styles/typography";
-
-// 4. Grid
 @use "./styles/grid";
-
-// 5. Utilities
 @use "./styles/utilities";

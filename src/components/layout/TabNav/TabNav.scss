@@ -1,0 +1,100 @@
+@use "../../../styles/mixins" as *;
+
+// ── TabNav ───────────────────────────────────────────────────────
+.tab-nav {
+	position: fixed;
+	top: 14px;
+	right: 20px;
+	z-index: var(--z-chrome, 6);
+	display: flex;
+	gap: 2px;
+	padding: 4px;
+	border-radius: 12px;
+	background: rgba(244, 241, 234, 0.86);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	border: 1px solid rgba(36, 34, 31, 0.18);
+	max-width: calc(100vw - 110px);
+	overflow-x: auto;
+	box-sizing: border-box;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar { display: none; }
+
+	// Inside Chrome bar at mobile: static, fills remaining space, scrollable strip
+	@include bp(below-tablet) {
+		position: static;
+		flex: 1;
+		min-width: 0;
+		max-width: none;
+		top: auto;
+		right: auto;
+		background: transparent;
+		backdrop-filter: none;
+		-webkit-backdrop-filter: none;
+		border: none;
+		border-radius: 0;
+		padding: 0 4px;
+		// Fade edges only when there is overflow to signal
+		// data-fade is set by TabNav.jsx via scroll + ResizeObserver tracking
+		&[data-fade="left"] {
+			mask-image: linear-gradient(to right, transparent, black 16px, black 100%);
+			-webkit-mask-image: linear-gradient(to right, transparent, black 16px, black 100%);
+		}
+		&[data-fade="right"] {
+			mask-image: linear-gradient(to right, black 0%, black calc(100% - 16px), transparent);
+			-webkit-mask-image: linear-gradient(to right, black 0%, black calc(100% - 16px), transparent);
+		}
+		&[data-fade="both"] {
+			mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
+			-webkit-mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
+		}
+		// data-fade="none": no mask (default, everything fits)
+	}
+}
+
+.tab-nav__tab {
+	font-family: var(--font-mono);
+	font-size: 13px;
+	padding: 7px 12px;
+	border-radius: 8px;
+	white-space: nowrap;
+	color: var(--muted);
+	text-decoration: none;
+	transition: background var(--dur-ui) var(--ease);
+
+	@media (hover: hover) {
+		&:hover { background: rgba(36, 34, 31, 0.07); }
+	}
+
+	&--active {
+		background: #FFFFFF;
+		color: var(--ink);
+		box-shadow: inset 0 2px 0 var(--duck);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--duck);
+		outline-offset: 2px;
+	}
+
+	// Inside Chrome bar at mobile
+	@include bp(below-tablet) {
+		padding: 6px 10px;
+		font-size: 12px;
+		// Transition colour over scene duration for smooth dark/light switch
+		transition: color var(--dur-bg) var(--ease), background var(--dur-bg) var(--ease);
+
+		// Dark scene: inactive tabs
+		.chrome[data-dark="true"] & {
+			color: var(--dark-muted);
+		}
+
+		// Dark scene: active tab
+		.chrome[data-dark="true"] &.tab-nav__tab--active {
+			background: rgba(255, 255, 255, 0.1);
+			color: var(--dark-text);
+			box-shadow: inset 0 2px 0 var(--duck);
+		}
+	}
+}
