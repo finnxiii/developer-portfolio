@@ -54,7 +54,7 @@ export default function TokenPage() {
 	};
 
 	if (!tokenStatus) {
-		return <main className="adm__content"><p className="adm-loading">Checking token…</p></main>;
+		return <main className="adm-wrap"><p className="adm-loading">Checking token…</p></main>;
 	}
 
 	const tokenName = `build-log-admin-${new Date().toISOString().slice(0, 7)}`;
@@ -82,7 +82,7 @@ export default function TokenPage() {
 	const isHighlighted = tokenStatus.state !== "ok";
 
 	return (
-		<main className="adm__content adm-token">
+		<main className="adm-wrap adm-token-page">
 
 			{/* ── Status ──────────────────────────────────────────── */}
 			<section>

@@ -1,8 +1,15 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Routes, Route, Navigate, NavLink, Link } from "react-router-dom";
+import { Routes, Route, Navigate, NavLink, Link, useLocation } from "react-router-dom";
 import { TokenStatusContext } from "./token-context";
-import Dashboard from "./Dashboard";
+import { DraftProvider } from "./DraftContext";
+import { useDraftCtx } from "./useDraftCtx";
+import { QuackProvider } from "../../components/quack/QuackContext";
+import Quack from "../../components/quack/Quack";
+import AdminOverview from "./AdminOverview";
+import ContentEditor from "./ContentEditor";
 import TokenPage from "./TokenPage";
+import AdminCV from "./AdminCV";
+import AdminPublish from "./AdminPublish";
 import "./Admin.scss";
 
 function bannerText(ts) {
@@ -17,6 +24,78 @@ function bannerText(ts) {
 	}
 }
 
+const TOP_TABS = [
+	{ label: "overview",    to: "/admin",         exact: true },
+	{ label: "content/",   to: "/admin/content" },
+	{ label: "cv.pdf",     to: "/admin/cv" },
+	{ label: "token.env",  to: "/admin/token" },
+];
+
+function AdminBar() {
+	const { stagedCount } = useDraftCtx();
+	const location = useLocation();
+	const [menuOpen, setMenuOpen] = useState(false);
+
+	const tabActive = (tab) =>
+		tab.exact
+			? location.pathname === "/admin"
+			: location.pathname.startsWith(tab.to);
+
+	return (
+		<header className="adm-bar">
+			<Link to="/admin" className="adm-bar__logo">
+				<span className="adm-bar__f">f.</span>
+				<span className="adm-bar__suffix">admin</span>
+			</Link>
+
+			<nav className="adm-bar__tabs" aria-label="Admin sections">
+				{TOP_TABS.map((tab) => (
+					<Link key={tab.to} to={tab.to}
+						className={"adm-bar__tab" + (tabActive(tab) ? " adm-bar__tab--on" : "")}
+						aria-current={tabActive(tab) ? "page" : undefined}>
+						{tab.label}
+					</Link>
+				))}
+			</nav>
+
+			<div className="adm-bar__right">
+				<span className="adm-bar__access">signed in via Cloudflare Access</span>
+				<a href="/" target="_blank" rel="noopener noreferrer" className="adm-bar__link">
+					View site ↗
+				</a>
+				<a href="/cdn-cgi/access/logout" className="adm-bar__link">Log out</a>
+				<Link to="/admin/publish"
+					className={"adm-bar__publish" + (stagedCount > 0 ? " adm-bar__publish--active" : "")}>
+					Review &amp; publish
+					<span className="adm-bar__count" aria-label={`${stagedCount} sections staged`}>
+						{stagedCount}
+					</span>
+				</Link>
+			</div>
+
+			<button type="button" className="adm-bar__menu"
+				aria-label={menuOpen ? "Close menu" : "Open menu"}
+				aria-expanded={menuOpen}
+				onClick={() => setMenuOpen((o) => !o)}>
+				☰
+			</button>
+
+			{menuOpen && (
+				<div className="adm-bar__dropdown" role="menu">
+					<a href="/" target="_blank" rel="noopener noreferrer" className="adm-bar__dd-item">
+						View site ↗
+					</a>
+					<a href="/cdn-cgi/access/logout" className="adm-bar__dd-item">Log out</a>
+					<Link to="/admin/publish" className="adm-bar__dd-item"
+						onClick={() => setMenuOpen(false)}>
+						Review &amp; publish ({stagedCount})
+					</Link>
+				</div>
+			)}
+		</header>
+	);
+}
+
 function AdminLayout({ children }) {
 	const [tokenStatus, setTokenStatus] = useState(null);
 
@@ -27,11 +106,12 @@ function AdminLayout({ children }) {
 		} catch { /* ignore */ }
 	}, []);
 
-	const checkTokenRef = useRef(checkToken);
+	const checkRef = useRef(checkToken);
+	useEffect(() => { checkRef.current = checkToken; }, [checkToken]);
 
 	useEffect(() => {
-		checkTokenRef.current();
-		const id = setInterval(() => checkTokenRef.current(), 5 * 60 * 1000);
+		checkRef.current();
+		const id = setInterval(() => checkRef.current(), 5 * 60 * 1000);
 		return () => clearInterval(id);
 	}, []);
 
@@ -41,42 +121,17 @@ function AdminLayout({ children }) {
 	return (
 		<TokenStatusContext.Provider value={{ tokenStatus, checkToken }}>
 			<div className="adm">
-				<header className="adm__header">
-					<span className="adm__brand">FINNXIII.DEV Admin</span>
-					<div className="adm__header-actions">
-						<a className="adm-btn" href="/" target="_blank" rel="noopener noreferrer">View site ↗</a>
-						<a className="adm-btn" href="/cdn-cgi/access/logout">Log out</a>
-					</div>
-				</header>
-
-				<nav className="adm__nav" aria-label="Admin navigation">
-					<NavLink
-						to="/admin"
-						end
-						className={({ isActive }) => `adm__nav-link${isActive ? " adm__nav-link--active" : ""}`}
-					>
-						Dashboard
-					</NavLink>
-					<NavLink
-						to="/admin/token"
-						className={({ isActive }) => `adm__nav-link${isActive ? " adm__nav-link--active" : ""}`}
-					>
-						Token
-						{isBad && <span className="adm__nav-dot" aria-label="Token issue" />}
-					</NavLink>
-				</nav>
-
+				<AdminBar />
 				{isBad && (
-					<div
-						className={`adm__banner adm__banner--${isCritical ? "critical" : "warning"}`}
-						role="alert"
-					>
-						{bannerText(tokenStatus)} —{" "}
-						<Link to="/admin/token">renew →</Link>
+					<div className={`adm-banner adm-banner--${isCritical ? "critical" : "warning"}`}
+						role="alert">
+						{bannerText(tokenStatus)} — <Link to="/admin/token">renew →</Link>
 					</div>
 				)}
-
-				{children}
+				<div className="adm-body">
+					{children}
+				</div>
+				<Quack />
 			</div>
 		</TokenStatusContext.Provider>
 	);
@@ -84,12 +139,20 @@ function AdminLayout({ children }) {
 
 export default function AdminRouter() {
 	return (
-		<AdminLayout>
-			<Routes>
-				<Route index element={<Dashboard />} />
-				<Route path="token" element={<TokenPage />} />
-				<Route path="*" element={<Navigate to="/admin" replace />} />
-			</Routes>
-		</AdminLayout>
+		<DraftProvider>
+			<QuackProvider>
+				<AdminLayout>
+					<Routes>
+						<Route index element={<AdminOverview />} />
+						<Route path="content" element={<Navigate to="/admin/content/profile" replace />} />
+						<Route path="content/:section" element={<ContentEditor />} />
+						<Route path="cv" element={<AdminCV />} />
+						<Route path="token" element={<TokenPage />} />
+						<Route path="publish" element={<AdminPublish />} />
+						<Route path="*" element={<Navigate to="/admin" replace />} />
+					</Routes>
+				</AdminLayout>
+			</QuackProvider>
+		</DraftProvider>
 	);
 }
