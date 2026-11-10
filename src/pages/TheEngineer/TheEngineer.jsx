@@ -80,27 +80,24 @@ function HelloScene({ profile }) {
 function ExperienceScene({ experience }) {
 	const sceneRef = useRef(null);
 	usePointerParallax(sceneRef);
-	const traceFits = useSideArtFit(360);
 
 	const lines = experience.map((exp) => {
 		const fn = exp.role.split(/\s+/).slice(0, 2)
 			.map((w, i) => i === 0 ? w.charAt(0).toLowerCase() + w.slice(1).toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
 			.join("") + "()";
 		const file = expFileName(exp);
-		return `  Finn.${fn.padEnd(28)}${file}`;
+		return `  Finn.${fn.padEnd(24)}${file}`;
 	});
 
 	return (
 		<div className="about-stack-scene" ref={sceneRef}>
-			{traceFits && (
-				<pre
-					className="about-stack-scene__trace"
-					aria-hidden="true"
-					style={{ transform: "translate(var(--px2,0), var(--py2,0))" }}
-				>
-					{`Thread [main] (Suspended)\n${lines.join("\n")}\n  Finn.main(String[])`}
-				</pre>
-			)}
+			<pre
+				className="about-stack-scene__trace"
+				aria-hidden="true"
+				style={{ transform: "translate(var(--px2,0), var(--py2,0))" }}
+			>
+				{`Thread [main] (Suspended)\n${lines.join("\n")}\n  Finn.main(String[])`}
+			</pre>
 		</div>
 	);
 }

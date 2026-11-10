@@ -10,6 +10,11 @@
 	position: relative;
 }
 
+// Pause CSS animations while tab is hidden to save CPU
+:root[data-tab-hidden="true"] .scene * {
+	animation-play-state: paused !important;
+}
+
 .page-layout__main {
 	position: relative;
 	z-index: var(--z-content, 2);

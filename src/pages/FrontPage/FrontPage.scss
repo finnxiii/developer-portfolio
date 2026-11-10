@@ -241,6 +241,40 @@
 	@include bp(above-laptop) { max-width: 560px; }
 }
 
+// ── Hero inline jshell (< 1200px) ─────────────────────────────────
+// Real content, not scene art. Shares typing state with the scene version.
+// Only one instance renders at a time — the scene version gates on !isMobile.
+
+.hero-inline-jshell {
+	width: 100%;
+	max-width: 520px;
+	border-radius: var(--radius-panel);
+	overflow: hidden;
+	box-shadow: 0 8px 24px rgba(36, 34, 31, 0.12);
+
+	// Hidden at ≥1200px — the scene version takes over
+	@include bp(above-laptop) { display: none; }
+}
+
+.hero-inline-jshell__body {
+	padding: 14px 16px;
+	font-family: var(--font-mono);
+	font-size: 13px;        // compact on phones
+	line-height: 1.7;
+	// Fixed height for 3 entries so the page doesn't jump while it types.
+	// 3 entries × (prompt + output + margin) ≈ 150px, plus typing row + padding + wrap buffer.
+	height: 280px;
+	overflow: hidden;
+	word-break: break-word;
+	white-space: pre-wrap;
+	background: var(--dark-scene);
+	color: var(--dark-text);
+
+	@media (min-width: 480px) {
+		font-size: var(--text-small); // 14px at wider phones and tablets
+	}
+}
+
 // ── Bug scene ─────────────────────────────────────────────────────
 
 .bug-scene {

@@ -131,26 +131,23 @@ function WireframeScene() {
 	const reduced = useReducedMotion();
 	const ref = useRef(null);
 	usePointerParallax(ref);
-	const fits = useSideArtFit(360);
 	return (
 		<div className="fn-scene" ref={ref}>
-			{fits && (
-				<svg
-					className={"fn-scene__wireframe" + (reduced ? "" : " fn-scene__wireframe--spin")}
-					width="360"
-					height="360"
-					viewBox="-180 -180 360 360"
-					aria-hidden="true"
-					style={{ transform: "translate(var(--px2,0), 0)" }}
-				>
-					<g fill="none" stroke="#B3AB9C" strokeWidth="1.5">
-						<polygon points="0,-120 104,-60 104,60 0,120 -104,60 -104,-60" />
-						<polyline points="-104,-60 0,0 104,-60" />
-						<line x1="0" y1="0" x2="0" y2="120" />
-						<polygon points="0,-60 52,-30 52,30 0,60 -52,30 -52,-30" stroke="#D9A21E" />
-					</g>
-				</svg>
-			)}
+			<svg
+				className={"fn-scene__wireframe" + (reduced ? "" : " fn-scene__wireframe--spin")}
+				width="300"
+				height="300"
+				viewBox="-180 -180 360 360"
+				aria-hidden="true"
+				style={{ transform: "translate(var(--px2,0), 0)" }}
+			>
+				<g fill="none" stroke="#B3AB9C" strokeWidth="1.5">
+					<polygon points="0,-120 104,-60 104,60 0,120 -104,60 -104,-60" />
+					<polyline points="-104,-60 0,0 104,-60" />
+					<line x1="0" y1="0" x2="0" y2="120" />
+					<polygon points="0,-60 52,-30 52,30 0,60 -52,30 -52,-30" stroke="#D9A21E" />
+				</g>
+			</svg>
 		</div>
 	);
 }

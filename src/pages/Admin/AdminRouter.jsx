@@ -1,16 +1,19 @@
-import { useState, useEffect, useCallback, useRef } from "react";
-import { Routes, Route, Navigate, NavLink, Link, useLocation } from "react-router-dom";
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from "react";
+import { Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
 import { TokenStatusContext } from "./token-context";
 import { DraftProvider } from "./DraftContext";
 import { useDraftCtx } from "./useDraftCtx";
+import { CvStagedProvider } from "./CvStagedContext";
+import { useCvStagedCtx } from "./useCvStagedCtx";
 import { QuackProvider } from "../../components/quack/QuackContext";
 import Quack from "../../components/quack/Quack";
 import AdminOverview from "./AdminOverview";
 import ContentEditor from "./ContentEditor";
 import TokenPage from "./TokenPage";
-import AdminCV from "./AdminCV";
 import AdminPublish from "./AdminPublish";
 import "./Admin.scss";
+
+const AdminCV = lazy(() => import("./AdminCV"));
 
 function bannerText(ts) {
 	const d = ts.daysLeft;
@@ -33,6 +36,8 @@ const TOP_TABS = [
 
 function AdminBar() {
 	const { stagedCount } = useDraftCtx();
+	const { cvStaged } = useCvStagedCtx();
+	const totalCount = stagedCount + (cvStaged ? 1 : 0);
 	const location = useLocation();
 	const [menuOpen, setMenuOpen] = useState(false);
 
@@ -65,10 +70,10 @@ function AdminBar() {
 				</a>
 				<a href="/cdn-cgi/access/logout" className="adm-bar__link">Log out</a>
 				<Link to="/admin/publish"
-					className={"adm-bar__publish" + (stagedCount > 0 ? " adm-bar__publish--active" : "")}>
+					className={"adm-bar__publish" + (totalCount > 0 ? " adm-bar__publish--active" : "")}>
 					Review &amp; publish
-					<span className="adm-bar__count" aria-label={`${stagedCount} sections staged`}>
-						{stagedCount}
+					<span className="adm-bar__count" aria-label={`${totalCount} items staged`}>
+						{totalCount}
 					</span>
 				</Link>
 			</div>
@@ -88,7 +93,7 @@ function AdminBar() {
 					<a href="/cdn-cgi/access/logout" className="adm-bar__dd-item">Log out</a>
 					<Link to="/admin/publish" className="adm-bar__dd-item"
 						onClick={() => setMenuOpen(false)}>
-						Review &amp; publish ({stagedCount})
+						Review &amp; publish ({totalCount})
 					</Link>
 				</div>
 			)}
@@ -140,19 +145,25 @@ function AdminLayout({ children }) {
 export default function AdminRouter() {
 	return (
 		<DraftProvider>
-			<QuackProvider>
-				<AdminLayout>
-					<Routes>
-						<Route index element={<AdminOverview />} />
-						<Route path="content" element={<Navigate to="/admin/content/profile" replace />} />
-						<Route path="content/:section" element={<ContentEditor />} />
-						<Route path="cv" element={<AdminCV />} />
-						<Route path="token" element={<TokenPage />} />
-						<Route path="publish" element={<AdminPublish />} />
-						<Route path="*" element={<Navigate to="/admin" replace />} />
-					</Routes>
-				</AdminLayout>
-			</QuackProvider>
+			<CvStagedProvider>
+				<QuackProvider>
+					<AdminLayout>
+						<Routes>
+							<Route index element={<AdminOverview />} />
+							<Route path="content" element={<Navigate to="/admin/content/profile" replace />} />
+							<Route path="content/:section" element={<ContentEditor />} />
+							<Route path="cv" element={
+								<Suspense fallback={<div className="ae-loading">Loading…</div>}>
+									<AdminCV />
+								</Suspense>
+							} />
+							<Route path="token" element={<TokenPage />} />
+							<Route path="publish" element={<AdminPublish />} />
+							<Route path="*" element={<Navigate to="/admin" replace />} />
+						</Routes>
+					</AdminLayout>
+				</QuackProvider>
+			</CvStagedProvider>
 		</DraftProvider>
 	);
 }

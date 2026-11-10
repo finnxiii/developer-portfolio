@@ -21,6 +21,13 @@
 		transform var(--dur-scene-transform) var(--ease),
 		filter var(--dur-scene-blur) var(--ease);
 
+	// Skip blur on touch devices and when user prefers reduced transparency
+	@media (hover: none), (prefers-reduced-transparency: reduce) {
+		transition:
+			opacity var(--dur-scene-opacity) var(--ease),
+			transform var(--dur-scene-transform) var(--ease);
+	}
+
 	@include reduced-motion { transition: none; }
 
 	// At mobile, dim scene art so text reads clearly

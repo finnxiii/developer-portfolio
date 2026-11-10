@@ -2,19 +2,20 @@
 import { useLocation } from "react-router-dom";
 
 const AUTHOR = "Naing Htoo Lwin";
-const SITE_NAME = "The Build Log";
+const SITE_NAME = "finnxiii.dev";
 const SITE_URL = "https://finnxiii.dev";
 const DEFAULT_OG_IMAGE = "/images/og/default.png";
 
-export default function SEOHead({ title, raw = false, description, ogImage = DEFAULT_OG_IMAGE }) {
+export default function SEOHead({ title, raw = false, description, ogImage = DEFAULT_OG_IMAGE, noindex = false }) {
 	const { pathname } = useLocation();
-	const fullTitle = raw ? title : (title ? `${title} | ${SITE_NAME}` : `${AUTHOR} | ${SITE_NAME}`);
+	const fullTitle = raw ? title : (title ? `${title} — ${SITE_NAME}` : `${AUTHOR} — ${SITE_NAME}`);
 	const canonical = `${SITE_URL}${pathname}`;
 	const ogImageAbsolute = ogImage.startsWith("http") ? ogImage : `${SITE_URL}${ogImage}`;
 
 	return (
 		<>
 			<title>{fullTitle}</title>
+			{noindex && <meta name="robots" content="noindex, nofollow" />}
 			{description && <meta name="description" content={description} />}
 			<link rel="canonical" href={canonical} />
 
@@ -24,7 +25,7 @@ export default function SEOHead({ title, raw = false, description, ogImage = DEF
 			<meta property="og:image" content={ogImageAbsolute} />
 			<meta property="og:type" content="website" />
 			<meta property="og:url" content={canonical} />
-			<meta property="og:site_name" content="The Build Log" />
+			<meta property="og:site_name" content={SITE_NAME} />
 
 			{/* Twitter / X */}
 			<meta name="twitter:card" content="summary_large_image" />

@@ -52,15 +52,19 @@
 
 .about-stack-scene__trace {
 	position: absolute;
-	right: 5%;
-	bottom: 9%;
+	right: 3%;
+	top: 50%;
+	transform: translateY(-50%);
 	margin: 0;
 	font-family: var(--font-mono);
-	font-size: 13px;
-	line-height: 1.8;
+	font-size: 11.5px;
+	line-height: 1.9;
 	color: #B3AB9C;
 	pointer-events: none;
 	user-select: none;
+	white-space: pre;
+
+	@include bp(below-tablet) { display: none; }
 }
 
 // ── Principles scene ──────────────────────────────────────────────

@@ -17,7 +17,7 @@ export async function onRequestGet(context) {
 		const github = makeGitHubClient(env);
 		const status = await github.getActionsRunForSha(sha);
 		if (!status) {
-			return new Response(JSON.stringify({ status: "not_found", conclusion: null, url: null }), {
+			return new Response(JSON.stringify({ status: "no_workflow", conclusion: null, url: null }), {
 				headers: JSON_HEADERS,
 			});
 		}

@@ -24,9 +24,18 @@ function NowTopScene({ currentFocus }) {
 	const fits = useSideArtFit(280);
 
 	const { date, buildingShort, learningShort, exploringShort } = currentFocus ?? {};
-	const dateTag = date
-		? date.replace(/\s+/, "-").toLowerCase().slice(0, 7)
-		: "";
+	const dateTag = (() => {
+		if (!date) return "";
+		const isoMatch = date.match(/^(\d{4})-(\d{2})/);
+		if (isoMatch) return isoMatch[0];
+		const months = ["january","february","march","april","may","june","july","august","september","october","november","december"];
+		const parts = date.trim().split(/\s+/);
+		if (parts.length === 2) {
+			const mi = months.indexOf(parts[0].toLowerCase());
+			if (mi !== -1 && /^\d{4}$/.test(parts[1])) return `${parts[1]}-${String(mi + 1).padStart(2, "0")}`;
+		}
+		return date.slice(0, 7);
+	})();
 
 	return (
 		<div className="now-top-scene" ref={ref}>

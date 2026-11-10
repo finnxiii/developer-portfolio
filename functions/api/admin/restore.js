@@ -54,42 +54,5 @@ export async function onRequestPost(context) {
 		});
 	}
 
-	let currentSha;
-	try {
-		({ sha: currentSha } = await github.getFile());
-	} catch {
-		return new Response(JSON.stringify({ error: "Failed to fetch current file sha" }), {
-			status: 502,
-			headers: JSON_HEADERS,
-		});
-	}
-
-	const finalContent = JSON.stringify(parsed, null, "\t") + "\n";
-	const shortSha = commitSha.slice(0, 7);
-
-	let result;
-	try {
-		result = await github.putFile({
-			content: finalContent,
-			sha: currentSha,
-			message: `restore from ${shortSha}`,
-		});
-	} catch {
-		return new Response(JSON.stringify({ error: "Failed to write to GitHub" }), {
-			status: 502,
-			headers: JSON_HEADERS,
-		});
-	}
-
-	if (result.conflict) {
-		return new Response(JSON.stringify({ error: "Content changed since you loaded it" }), {
-			status: 409,
-			headers: JSON_HEADERS,
-		});
-	}
-
-	return new Response(
-		JSON.stringify({ commitSha: result.commitSha, commitUrl: result.commitUrl }),
-		{ headers: JSON_HEADERS },
-	);
+	return new Response(JSON.stringify({ content: parsed }), { headers: JSON_HEADERS });
 }

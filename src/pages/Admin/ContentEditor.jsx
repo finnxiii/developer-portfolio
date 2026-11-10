@@ -795,9 +795,9 @@ export default function ContentEditor() {
 							<span className="ae-main__path">content/{meta.path}</span>
 							<h1 className="ae-main__h1">{meta.name}</h1>
 						</div>
-						<a href={meta.previewPath} target="_blank" rel="noopener noreferrer"
+						<a href={meta.previewPath + "?preview=draft"} target="_blank" rel="noopener noreferrer"
 							className="ae-btn">
-							Preview ↗
+							Preview draft ↗
 						</a>
 					</div>
 					{renderForm()}

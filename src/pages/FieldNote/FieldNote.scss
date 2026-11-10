@@ -33,9 +33,11 @@
 
 .fn-scene__wireframe {
 	position: absolute;
-	right: 9%;
+	right: 7%;
 	top: 50%;
-	margin-top: -180px;
+	margin-top: -150px;
+
+	@include bp(below-tablet) { display: none; }
 
 	&--spin {
 		animation: fn-spin 24s linear infinite;

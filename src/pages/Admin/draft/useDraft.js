@@ -91,6 +91,13 @@ export function useDraft() {
 		doLoad();
 	}, [doLoad]);
 
+	const restoreDraft = useCallback((restoredContent) => {
+		const allKeys = Object.keys(restoredContent);
+		setDraft(restoredContent);
+		setStaged(new Set(allKeys));
+		setConflict(false);
+	}, []);
+
 	const isSectionDirty = useCallback(
 		(key) => {
 			if (!base || !draft) return false;
@@ -114,6 +121,7 @@ export function useDraft() {
 		discardSection,
 		keepDraft,
 		discardAndReload,
+		restoreDraft,
 		reload: doLoad,
 		isSectionDirty,
 	};

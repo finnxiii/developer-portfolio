@@ -92,5 +92,98 @@ export function makeGitHubClient(env) {
 		return { status: run.status, conclusion: run.conclusion, url: run.html_url };
 	}
 
-	return { getFile, getFileAtCommit, putFile, getHistory, getActionsRunForSha };
+	async function getBranchHead() {
+		const refRes = await fetch(`${repoBase}/git/ref/heads/${env.GITHUB_BRANCH}`, { headers: baseHeaders });
+		if (!refRes.ok) throw Object.assign(new Error("GitHub API error"), { status: refRes.status });
+		const commitSha = (await refRes.json()).object.sha;
+
+		const commitRes = await fetch(`${repoBase}/git/commits/${commitSha}`, { headers: baseHeaders });
+		if (!commitRes.ok) throw Object.assign(new Error("GitHub API error"), { status: commitRes.status });
+		const treeSha = (await commitRes.json()).tree.sha;
+
+		return { commitSha, treeSha };
+	}
+
+	async function getBlobShaAtHead(path) {
+		const { treeSha } = await getBranchHead();
+		const res = await fetch(`${repoBase}/git/trees/${treeSha}?recursive=1`, { headers: baseHeaders });
+		if (!res.ok) throw Object.assign(new Error("GitHub API error"), { status: res.status });
+		const { tree } = await res.json();
+		return tree.find((f) => f.path === path)?.sha ?? null;
+	}
+
+	async function createBlob({ content, encoding = "utf-8" }) {
+		const res = await fetch(`${repoBase}/git/blobs`, {
+			method: "POST",
+			headers: baseHeaders,
+			body: JSON.stringify({ content, encoding }),
+		});
+		if (!res.ok) throw Object.assign(new Error("GitHub API error"), { status: res.status });
+		return (await res.json()).sha;
+	}
+
+	async function createTree({ baseTree, entries }) {
+		const res = await fetch(`${repoBase}/git/trees`, {
+			method: "POST",
+			headers: baseHeaders,
+			body: JSON.stringify({
+				base_tree: baseTree,
+				tree: entries.map((e) => ({ path: e.path, mode: "100644", type: "blob", sha: e.sha })),
+			}),
+		});
+		if (!res.ok) throw Object.assign(new Error("GitHub API error"), { status: res.status });
+		return (await res.json()).sha;
+	}
+
+	async function createCommit({ message, tree, parents }) {
+		const author = { name: "Naing Htoo Lwin", email: "nainghtoolwin1385@gmail.com" };
+		const res = await fetch(`${repoBase}/git/commits`, {
+			method: "POST",
+			headers: baseHeaders,
+			body: JSON.stringify({ message, tree, parents, author, committer: author }),
+		});
+		if (!res.ok) throw Object.assign(new Error("GitHub API error"), { status: res.status });
+		const json = await res.json();
+		return { sha: json.sha, url: `https://github.com/${env.GITHUB_REPO}/commit/${json.sha}` };
+	}
+
+	async function updateRef(commitSha) {
+		const res = await fetch(`${repoBase}/git/refs/heads/${env.GITHUB_BRANCH}`, {
+			method: "PATCH",
+			headers: baseHeaders,
+			body: JSON.stringify({ sha: commitSha, force: false }),
+		});
+		if (res.status === 422) return { nonFastForward: true };
+		if (!res.ok) throw Object.assign(new Error("GitHub API error"), { status: res.status });
+		return { nonFastForward: false };
+	}
+
+	async function getFileRaw(path, ref) {
+		const res = await fetch(
+			`${repoBase}/contents/${path}?ref=${encodeURIComponent(ref)}`,
+			{ headers: { ...baseHeaders, Accept: "application/vnd.github.raw" } },
+		);
+		if (!res.ok) throw Object.assign(new Error("GitHub API error"), { status: res.status });
+		return res.arrayBuffer();
+	}
+
+	async function getPathHistory(path, perPage = 20) {
+		const res = await fetch(
+			`${repoBase}/commits?path=${encodeURIComponent(path)}&sha=${env.GITHUB_BRANCH}&per_page=${perPage}`,
+			{ headers: baseHeaders },
+		);
+		if (!res.ok) throw Object.assign(new Error("GitHub API error"), { status: res.status });
+		return (await res.json()).map((c) => ({
+			sha: c.sha,
+			date: c.commit.author.date,
+			message: c.commit.message,
+			url: c.html_url,
+		}));
+	}
+
+	return {
+		getFile, getFileAtCommit, putFile, getHistory, getActionsRunForSha,
+		getBranchHead, getBlobShaAtHead, createBlob, createTree, createCommit,
+		updateRef, getFileRaw, getPathHistory,
+	};
 }
