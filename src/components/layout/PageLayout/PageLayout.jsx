@@ -3,8 +3,8 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { StageProvider } from "../../stage/StageContext";
 import Stage from "../../stage/Stage";
 import Chrome from "../Chrome/Chrome";
-import { ChromeProvider } from "../Chrome/ChromeContext";
 import SectionPill from "../SectionPill/SectionPill";
+import PhoneNav from "../PhoneNav/PhoneNav";
 import SkipToContent from "../SkipToContent/SkipToContent";
 import { QuackProvider } from "../../quack/QuackContext";
 import Quack from "../../quack/Quack";
@@ -83,21 +83,20 @@ export default function PageLayout() {
 	return (
 		<QuackProvider>
 			<StageProvider>
-				<ChromeProvider>
-					<div className="page-layout" id="top">
-						<SkipToContent />
-						<Stage />
-						<Chrome />
-						<PreviewBanner />
-						<SectionPill />
-						<main id="main-content" className="page-layout__main">
-							<ErrorBoundary>
-								<Outlet />
-							</ErrorBoundary>
-						</main>
-						<Quack />
-					</div>
-				</ChromeProvider>
+				<div className="page-layout" id="top">
+					<SkipToContent />
+					<Stage />
+					<Chrome />
+					<PhoneNav />
+					<PreviewBanner />
+					<SectionPill />
+					<main id="main-content" className="page-layout__main">
+						<ErrorBoundary>
+							<Outlet />
+						</ErrorBoundary>
+					</main>
+					<Quack />
+				</div>
 			</StageProvider>
 		</QuackProvider>
 	);

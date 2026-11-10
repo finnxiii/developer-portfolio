@@ -4,15 +4,9 @@ import PageLayout from "./components/layout/PageLayout/PageLayout";
 import FrontPage from "./pages/FrontPage/FrontPage";
 import SEOHead from "./components/ui/SEOHead/SEOHead";
 import StageSection from "./components/stage/StageSection";
-
-// These pages exist but are not fully wired to the stage system yet — they
-// still render without it and will be rebuilt in later phases.
-import SelectedWork from "./pages/SelectedWork/SelectedWork";
 import CaseStudy from "./pages/CaseStudy/CaseStudy";
-import TheEngineer from "./pages/TheEngineer/TheEngineer";
 import FieldNotes from "./pages/FieldNotes/FieldNotes";
 import FieldNote from "./pages/FieldNote/FieldNote";
-import CurrentFocusPage from "./pages/CurrentFocusPage/CurrentFocusPage";
 
 const Admin = lazy(() => import("./pages/Admin/AdminRouter"));
 
@@ -44,8 +38,7 @@ function NotFound() {
 						There&apos;s no page at <code style={{ fontFamily: "var(--font-mono)", fontSize: "16px" }}>{window.location.pathname}</code>.
 					</p>
 					<div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-						<Link to="/" className="btn btn--solid">Finn.java</Link>
-						<Link to="/work" className="btn btn--outline">Work.java</Link>
+						<Link to="/" className="btn btn--solid">← Finn.java</Link>
 					</div>
 				</div>
 			</StageSection>
@@ -68,15 +61,20 @@ export default function App() {
 
 				<Route element={<PageLayout />}>
 					<Route path="/" element={<FrontPage />} />
-					<Route path="/work" element={<SelectedWork />} />
-					<Route path="/work/:slug" element={<CaseStudy />} />
-					<Route path="/about" element={<TheEngineer />} />
-					<Route path="/philosophy" element={<Navigate to="/about" replace />} />
-					<Route path="/career" element={<Navigate to="/about" replace />} />
-					<Route path="/notes" element={<FieldNotes />} />
+
+					{/* Redirects for removed pages */}
+					<Route path="/work"       element={<Navigate to="/#work"  replace />} />
+					<Route path="/about"      element={<Navigate to="/#log"   replace />} />
+					<Route path="/philosophy" element={<Navigate to="/#tests" replace />} />
+					<Route path="/career"     element={<Navigate to="/#log"   replace />} />
+					<Route path="/now"        element={<Navigate to="/#now"   replace />} />
+
+					{/* Sub-pages that remain */}
+					<Route path="/work/:slug"  element={<CaseStudy />} />
+					<Route path="/notes"       element={<FieldNotes />} />
 					<Route path="/notes/:slug" element={<FieldNote />} />
-					<Route path="/now" element={<CurrentFocusPage />} />
-				<Route path="*" element={<NotFound />} />
+
+					<Route path="*" element={<NotFound />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

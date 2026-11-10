@@ -2,9 +2,9 @@
 //
 // Corner ownership — see Chrome.scss for the full table.
 // Quick reference:
-//   ≥900px  Top-left: Logo   Top-right: TabNav   Left-mid: SectionPill
-//   <900px  Top-full: Chrome bar (Logo + TabNav)  Bottom-left: SectionPill
-//   height<560: SectionPill always at bottom-left regardless of width
+//   ≥1200:    Logo top-left   SectionPill left-centre
+//   600-1199: Logo top-left   TabletIndicator top-right   SectionPill left-centre
+//   <600:     PhoneNav fixed top bar (56px)
 
 .page-layout {
 	position: relative;
@@ -13,6 +13,12 @@
 // Pause CSS animations while tab is hidden to save CPU
 :root[data-tab-hidden="true"] .scene * {
 	animation-play-state: paused !important;
+}
+
+// Programmatic focus (route change, h1.focus()) — suppress outline entirely;
+// interactive elements never carry tabindex="-1" so keyboard rings are unaffected.
+[tabindex="-1"]:focus {
+	outline: none;
 }
 
 .page-layout__main {

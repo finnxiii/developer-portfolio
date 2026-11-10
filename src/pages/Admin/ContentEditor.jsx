@@ -120,6 +120,65 @@ function NumbersField({ numbers, onChange }) {
 	);
 }
 
+function PreviewNumsField({ nums, onChange }) {
+	const list = Array.isArray(nums) ? nums : [];
+	return (
+		<div className="ae-field">
+			<div className="ae-field-hd">
+				<span className="ae-label">Preview numbers</span>
+				<button type="button" className="ae-btn ae-btn--sm"
+					onClick={() => onChange([...list, { v: "", l: "" }])}>+ Add</button>
+			</div>
+			{list.map((n, i) => (
+				<div key={i} className="ae-nums-row">
+					<input className="ae-input ae-input--num" placeholder="value" value={n.v ?? ""}
+						aria-label={`Preview number ${i + 1} value`}
+						onChange={(e) => onChange(list.map((x, j) => j === i ? { ...x, v: e.target.value } : x))} />
+					<input className="ae-input" placeholder="label" value={n.l ?? ""}
+						aria-label={`Preview number ${i + 1} label`}
+						onChange={(e) => onChange(list.map((x, j) => j === i ? { ...x, l: e.target.value } : x))} />
+					<button type="button" className="ae-xbtn" aria-label={`Remove preview number ${i + 1}`}
+						onClick={() => onChange(list.filter((_, j) => j !== i))}>×</button>
+				</div>
+			))}
+		</div>
+	);
+}
+
+const PREVIEW_KINDS = ["none", "pipeline", "diff", "loop"];
+
+function PreviewForm({ preview, onChange }) {
+	const kind = preview?.kind ?? "none";
+	const setKind = (k) => {
+		if (k === "none") { onChange(undefined); return; }
+		onChange({ kind: k, items: preview?.items ?? [], highlight: preview?.highlight ?? "", nums: preview?.nums ?? [] });
+	};
+	const set = (k) => (v) => onChange({ ...preview, [k]: v });
+
+	return (
+		<div className="ae-card">
+			<h3 className="ae-card__h3">preview (home section)</h3>
+			<Seg label="Kind" options={PREVIEW_KINDS} value={kind} onChange={setKind} />
+			{kind !== "none" && (
+				<>
+					{(kind === "pipeline" || kind === "loop") && (
+						<>
+							<ChipField id={`pv-items-${preview?.kind}`} label="Items"
+								chips={preview?.items ?? []}
+								onAdd={(v) => set("items")([...(preview?.items ?? []), v])}
+								onRemove={(i) => set("items")((preview?.items ?? []).filter((_, j) => j !== i))}
+								placeholder="e.g. collect" />
+							<Field id="pv-highlight" label="Highlight" value={preview?.highlight ?? ""}
+								onChange={set("highlight")} placeholder="e.g. score" />
+						</>
+					)}
+					<PreviewNumsField nums={preview?.nums ?? []} onChange={set("nums")} />
+				</>
+			)}
+		</div>
+	);
+}
+
 // ── Helpers ───────────────────────────────────────────────────────
 
 const slugify = (s) =>
@@ -254,6 +313,7 @@ function ProjectItem({ project, onChange, onDelete, isOpen, onToggle }) {
 							placeholder="Add a technology"
 						/>
 						<NumbersField numbers={project.numbers} onChange={set("numbers")} />
+						<PreviewForm preview={project.preview} onChange={set("preview")} />
 					</div>
 					<div className="ae-card">
 						<h3 className="ae-card__h3">case study</h3>

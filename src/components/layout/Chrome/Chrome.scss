@@ -1,58 +1,12 @@
-@use "../../../styles/mixins" as *;
-
 // ── Chrome — fixed chrome layout ─────────────────────────────────
 //
-// Corner ownership (all at z-index: var(--z-chrome, 6)):
+// Corner ownership:
+//   ≥1200px:  Logo top-left · SectionPill left-centre
+//   600–1199: Logo top-left · TabletIndicator top-right · SectionPill left-centre
+//   <600:     PhoneNav fixed top bar (Chrome hidden, Logo hidden)
 //
-//   ≥900px (laptop / desktop / wide):
-//     Top-left:    .logo        — Fraunces "f." wordmark
-//     Top-right:   .tab-nav     — editor-tab frosted pill
-//     Left-centre: .section-pill — vertical dot nav
-//
-//   <900px (tablet / phone):
-//     Top-floating: .chrome     — frosted floating pill, 12px inset from each edge
-//                               top: max(10px, safe-area-inset-top)
-//                   left:   .logo (bar padding-left: 14px)
-//                   gap:    10px
-//                   right:  .tab-nav (scrollable, faded edges when overflowing)
-//     Bottom-left: .section-pill — horizontal dot row (clears safe-area-inset-bottom)
-//
-//   height < 560px (short-height, any width):
-//     .section-pill forced to horizontal bottom-left row
-//
-// z-index scale:
-//   --z-stage: 0  · --z-content: 2  · --z-chrome: 6  · --z-duck: 20
+// Chrome itself is always display:contents — children self-position via fixed.
 
 .chrome {
-	// ≥900: transparent wrapper; children self-position via position:fixed
 	display: contents;
-
-	@include bp(below-tablet) {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		position: fixed;
-		top: max(10px, env(safe-area-inset-top, 0px));
-		left: calc(12px + env(safe-area-inset-left, 0px));
-		right: calc(12px + env(safe-area-inset-right, 0px));
-		height: var(--chrome-h, 48px);
-		padding: 0 6px 0 14px;
-		border-radius: 14px;
-		background: rgba(244, 241, 234, 0.88);
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-		border: 1px solid rgba(36, 34, 31, 0.18);
-		box-shadow: 0 6px 20px rgba(36, 34, 31, 0.08);
-		z-index: var(--z-chrome, 6);
-		// Transition colours over scene duration
-		transition:
-			background var(--dur-bg) var(--ease),
-			border-color var(--dur-bg) var(--ease);
-
-		// Dark scenes
-		&[data-dark="true"] {
-			background: rgba(31, 29, 26, 0.82);
-			border-color: rgba(234, 229, 219, 0.14);
-		}
-	}
 }

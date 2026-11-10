@@ -35,8 +35,8 @@
 		max-width: var(--inner-max-wide);
 	}
 
-	@include bp(below-tablet) {
-		padding-left: var(--inner-pad-mobile);
-		padding-right: var(--inner-pad-mobile);
+	// Tablet+laptop: no max-width cap (padding vars handle the inset)
+	@media (min-width: 600px) and (max-width: 1199px) {
+		max-width: none;
 	}
 }

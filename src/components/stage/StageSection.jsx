@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useStage } from "./StageContext";
-import { useReducedMotion } from "../../hooks/useReducedMotion";
 import Scene from "./Scene";
 import "./stage.scss";
 
@@ -9,7 +8,6 @@ export default function StageSection({ id, fn, ln, bg, dark = false, scene, chil
 	const { registerScene, unregisterScene, activateScene, activeId, scenes, stageNode } = useStage();
 	const sectionRef = useRef(null);
 	const innerRef = useRef(null);
-	const prefersReduced = useReducedMotion();
 	const [alignTop, setAlignTop] = useState(false);
 
 	// Register metadata only (no scene JSX) on mount/unmount
@@ -57,12 +55,7 @@ export default function StageSection({ id, fn, ln, bg, dark = false, scene, chil
 	const activeIdx = scenes.findIndex((s) => s.id === activeId);
 	const isAbove = sceneIdx < activeIdx;
 
-	const revealStyle = prefersReduced
-		? {}
-		: {
-			opacity: isActive ? 1 : 0.12,
-			transform: isActive ? "none" : `translateY(${isAbove ? "-28px" : "36px"})`,
-		};
+	const revealClass = isActive ? "reveal--on" : isAbove ? "reveal--above" : "reveal--below";
 
 	return (
 		<section
@@ -75,7 +68,7 @@ export default function StageSection({ id, fn, ln, bg, dark = false, scene, chil
 				<Scene id={id}>{scene}</Scene>,
 				stageNode
 			)}
-			<div ref={innerRef} className="stage-section__inner inner" style={revealStyle}>
+			<div ref={innerRef} className={`stage-section__inner inner ${revealClass}`}>
 				{children}
 			</div>
 		</section>

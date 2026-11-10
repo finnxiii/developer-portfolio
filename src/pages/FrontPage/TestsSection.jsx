@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useStage } from "../../components/stage/StageContext";
 import { usePortfolioData } from "../../hooks/usePortfolioData";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
-import Footer from "../../components/layout/Footer/Footer";
 import { deriveTestName } from "../../lib/testName";
+import Cmd from "../../components/ui/Cmd/Cmd";
 
 function getReference(projectLink, projects) {
 	const workMatch = projectLink?.match(/^\/work\/([^/]+)$/);
@@ -41,13 +41,7 @@ export default function TestsSection() {
 		<div className="tests-section">
 			<div className="tests-section__header">
 				<h2 className="fp-h2 fp-h2--dark">How I work</h2>
-				<button
-					type="button"
-					onClick={() => setRunKey(k => k + 1)}
-					className="tests-section__rerun"
-				>
-					▶ Run tests again
-				</button>
+				<Cmd glyph="▶" onClick={() => setRunKey(k => k + 1)}>./gradlew test</Cmd>
 			</div>
 			<div className="tests-code">
 				<div className="tests-code__line tests-code__line--muted">$ ./gradlew test</div>
@@ -86,7 +80,6 @@ export default function TestsSection() {
 					<span className="tests-code__cursor" aria-hidden="true">▌</span>
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 }

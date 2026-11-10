@@ -72,6 +72,7 @@ function NotesListScene({ notes }) {
 function NotesTopSection() {
 	return (
 		<div className="notes-top">
+			<Link to="/" className="notes-top__back">← Finn.java</Link>
 			<span className="notes-top__label">notes/</span>
 			<h1 className="notes-top__h1">Field Notes</h1>
 			<p className="notes-top__deck">

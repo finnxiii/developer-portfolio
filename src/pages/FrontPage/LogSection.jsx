@@ -1,7 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useStage } from "../../components/stage/StageContext";
+import { useState } from "react";
 import { usePortfolioData } from "../../hooks/usePortfolioData";
-import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 const LANE_COLOR = {
 	degree: "var(--lane-degree)",
@@ -9,36 +7,41 @@ const LANE_COLOR = {
 	work: "var(--lane-work)",
 };
 
+const MONTH_MAP = {
+	Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6,
+	Jul: 7, Aug: 8, Sep: 9, Sept: 9, Oct: 10, Nov: 11, Dec: 12,
+};
+
+function parseDateStart(dateRange) {
+	const match = dateRange.match(/([A-Za-z]+)\s+(\d{4})/);
+	if (!match) return null;
+	const m = MONTH_MAP[match[1]];
+	if (!m) return null;
+	return `${match[2]}-${String(m).padStart(2, "0")}`;
+}
+
 function formatDate(dateStr) {
 	const [year, month] = dateStr.split("-");
 	const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 	return `${months[parseInt(month, 10) - 1]} ${year}`;
 }
 
-function formatType(type, lane) {
-	if (lane === "degree") return `${type}:`;
-	return `${type}(${lane}):`;
-}
-
 export default function LogSection() {
-	const { activeId } = useStage();
 	const { data } = usePortfolioData();
-	const reducedMotion = useReducedMotion();
-	const [runKey, setRunKey] = useState(0);
-	const prevActive = useRef(false);
-
-	useEffect(() => {
-		const isActive = activeId === "log";
-		if (isActive && !prevActive.current) {
-			const t = setTimeout(() => setRunKey(k => k + 1), 0);
-			prevActive.current = isActive;
-			return () => clearTimeout(t);
-		}
-		prevActive.current = isActive;
-	}, [activeId]);
-
 	const timeline = data.timeline ?? [];
-	const animName = runKey % 2 === 0 ? "revA" : "revB";
+	const experience = data.experience ?? [];
+
+	const entries = timeline.map((entry) => {
+		const match = experience.find((exp) => parseDateStart(exp.dateRange) === entry.date);
+		return { ...entry, match: match ?? null };
+	});
+
+	const firstExpandable = entries.findIndex((e) => e.match !== null);
+	const [openIdx, setOpenIdx] = useState(firstExpandable);
+
+	function toggle(i) {
+		setOpenIdx((prev) => (prev === i ? -1 : i));
+	}
 
 	return (
 		<div className="log-section">
@@ -52,26 +55,64 @@ export default function LogSection() {
 					<span style={{ color: "var(--lane-work)" }}>● work</span>
 				</span>
 			</div>
+
 			<div className="log-section__list" role="list">
-				{timeline.map((entry, i) => {
+				{entries.map((entry, i) => {
 					const col = LANE_COLOR[entry.lane] ?? "var(--muted)";
-					const typeStr = formatType(entry.type, entry.lane);
-					const delay = reducedMotion ? 0 : 0.5 + i * 0.08;
+					const isOpen = openIdx === i;
+					const hasMatch = entry.match !== null;
+					const typeStr = entry.lane === "degree"
+						? `${entry.type}:`
+						: `${entry.type}(${entry.lane}):`;
+
 					return (
 						<div
-							key={`${runKey}-${i}`}
+							key={i}
 							role="listitem"
-							className="log-row"
-							style={reducedMotion ? {} : {
-								animation: `${animName} 350ms ease-out ${delay}s both`,
-							}}
+							className={"log-entry" + (isOpen ? " log-entry--open" : "")}
 						>
-							<span className="log-row__dot" style={{ background: col }} aria-hidden="true" />
-							<span className="log-row__text">
-								<span className="log-row__type" style={{ color: col }}>{typeStr}</span>{" "}
-								{entry.message}
-							</span>
-							<span className="log-row__date">{formatDate(entry.date)}</span>
+							{hasMatch ? (
+								<button
+									type="button"
+									className="log-row"
+									onClick={() => toggle(i)}
+									aria-expanded={isOpen}
+								>
+									<span className="log-row__dot" style={{ background: col }} aria-hidden="true" />
+									<span className="log-row__msg">
+										<span className="log-row__type" style={{ color: col }}>{typeStr}</span>
+										{" "}
+										<span className="log-row__text">{entry.message}</span>
+									</span>
+									<span className="log-row__date">{formatDate(entry.date)}</span>
+									<span className="log-row__arrow" aria-hidden="true" style={{ color: "var(--amber)" }}>
+										{isOpen ? "↓" : "›"}
+									</span>
+								</button>
+							) : (
+								<div className="log-row log-row--static">
+									<span className="log-row__dot" style={{ background: col }} aria-hidden="true" />
+									<span className="log-row__msg">
+										<span className="log-row__type" style={{ color: col }}>{typeStr}</span>
+										{" "}
+										<span className="log-row__text">{entry.message}</span>
+									</span>
+									<span className="log-row__date">{formatDate(entry.date)}</span>
+									<span className="log-row__arrow" aria-hidden="true" />
+								</div>
+							)}
+
+							{hasMatch && (
+								<div className={"log-bullets-wrap" + (isOpen ? " log-bullets-wrap--open" : "")}>
+									<div className="log-bullets-inner">
+										<ul className="log-bullets">
+											{(entry.match.bullets ?? []).map((b, j) => (
+												<li key={j}>{b}</li>
+											))}
+										</ul>
+									</div>
+								</div>
+							)}
 						</div>
 					);
 				})}

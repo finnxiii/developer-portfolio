@@ -7,465 +7,479 @@
 	to   { transform: translateY(100vh); }
 }
 
-@keyframes rise {
-	from { transform: translateY(0); }
-	to   { transform: translateY(-50%); }
-}
-
 @keyframes pulse {
 	0%, 100% { scale: 1; opacity: 0.5; }
 	50%       { scale: 1.12; opacity: 0.8; }
 }
 
-// ── Scene base ────────────────────────────────────────────────────
+// ── Scenes ────────────────────────────────────────────────────────
 
-.cs-scene {
+.cs2-intro-scene {
 	position: absolute;
 	inset: 0;
 }
 
-.cs-scene--problem {
+.cs2-gutter-nums {
+	position: absolute;
+	left: 92px;
+	top: 0;
+	margin: 0;
+	font-family: var(--font-mono);
+	font-size: 12px;
+	line-height: 28px;
+	color: #D3CCBF;
+	text-align: right;
+	pointer-events: none;
+	user-select: none;
+
+	@include bp(below-tablet) { display: none; }
+}
+
+.cs2-session-scene {
+	position: absolute;
+	inset: 0;
 	background-image:
 		linear-gradient(#E6E0D3 1px, transparent 1px),
 		linear-gradient(90deg, #E6E0D3 1px, transparent 1px);
 	background-size: 28px 28px;
 }
 
-.cs-scene__scanline {
+.cs2-scanline {
 	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
+	left: 0; right: 0; top: 0;
 	height: 160px;
-	background: linear-gradient(
-		to bottom,
-		transparent,
-		rgba(242, 194, 48, 0.16) 85%,
-		rgba(194, 122, 30, 0.5) 100%
-	);
+	background: linear-gradient(to bottom, transparent, rgba(242,194,48,0.16) 85%, rgba(194,122,30,0.5) 100%);
 	animation: scan 8s linear infinite;
 
 	@include reduced-motion { animation: none; }
 }
 
-.cs-scene--inspect {
-	background-image: radial-gradient(#D2CABB 1.3px, transparent 1.3px);
-	background-size: 24px 24px;
-}
-
-.cs-scene--outcome {
-	background: var(--dark-scene);
-}
-
-.cs-scene--learned {
-	background: var(--warm-scene);
-}
-
-// ── Intro scene figure ────────────────────────────────────────────
-
-.cs-intro-figure {
+.cs2-results-scene {
 	position: absolute;
-	right: 7%;
-	top: 50%;
-	transform: translateY(-50%);
-	width: 300px;
-	pointer-events: none;
+	inset: 0;
 }
 
-// ── Problem scene terminal ────────────────────────────────────────
-
-.cs-problem-term {
-	position: absolute;
-	right: 6%;
-	top: 28%;
-	width: 400px;
-	border-radius: var(--radius-panel);
-	overflow: hidden;
-	box-shadow: 0 18px 40px rgba(36, 34, 31, 0.16);
-	background: rgba(255, 255, 255, 0.75);
-	border: 1px solid #DDD6C9;
-}
-
-.cs-problem-term__body {
-	margin: 0;
-	padding: 14px 16px;
-	font-family: var(--font-mono);
-	font-size: 13px;
-	line-height: 1.75;
-	color: var(--muted);
-}
-
-// ── Inspect scene watches ─────────────────────────────────────────
-
-.cs-watches-panel {
-	position: absolute;
-	right: 6%;
-	top: 30%;
-	width: 430px;
-	border-radius: var(--radius-panel);
-	overflow: hidden;
-	box-shadow: 0 18px 40px rgba(36, 34, 31, 0.16);
-	background: rgba(255, 255, 255, 0.75);
-	border: 1px solid #DDD6C9;
-}
-
-.cs-watches-panel__body {
-	margin: 0;
-	padding: 14px 16px;
-	font-family: var(--font-mono);
-	font-size: 13px;
-	line-height: 1.75;
-	color: var(--muted);
-}
-
-// ── Fix scene diff ────────────────────────────────────────────────
-
-.cs-diff {
-	position: absolute;
-	right: 5%;
-	top: 24%;
-	width: 470px;
-	font-family: var(--font-mono);
-	font-size: 13px;
-	line-height: 2;
-	opacity: 0.8;
-}
-
-.cs-diff__line {
-	padding: 0 12px;
-	border-radius: 4px;
-
-	&--add {
-		background: rgba(47, 125, 79, 0.12);
-		color: var(--pass);
-	}
-
-	&--del {
-		background: rgba(184, 67, 47, 0.1);
-		color: var(--fail);
-	}
-}
-
-// ── Broke scene exceptions ────────────────────────────────────────
-
-.cs-exceptions {
-	position: absolute;
-	right: 5%;
-	top: 30%;
-	margin: 0;
-	font-family: var(--font-mono);
-	font-size: 13px;
-	line-height: 1.8;
-	color: #C9A49A;
-}
-
-// ── Outcome scene rising ticks ────────────────────────────────────
-
-.cs-ticks {
+.cs2-exceptions {
 	position: absolute;
 	right: 4%;
-	top: 0;
+	bottom: 8%;
 	margin: 0;
 	font-family: var(--font-mono);
-	font-size: 14px;
-	line-height: 2.2;
-	color: rgba(143, 211, 160, 0.16);
-	animation: rise 40s linear infinite;
+	font-size: 12px;
+	line-height: 1.8;
+	color: #D4B3A9;
 	pointer-events: none;
 	user-select: none;
 
-	@include reduced-motion { animation: none; }
+	@include bp(below-tablet) { display: none; }
 }
 
-// ── Learned scene glow ────────────────────────────────────────────
+.cs2-retro-scene {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+}
 
-.cs-glow {
+.cs2-glow {
 	position: absolute;
 	border-radius: 50%;
 	animation: pulse 6s ease-in-out infinite;
 
 	@include reduced-motion { animation: none; }
 
+	&--still { animation: none !important; }
+
 	&--a {
-		right: 8%;
-		top: 18%;
-		width: 520px;
-		height: 520px;
-		background: radial-gradient(circle, rgba(242, 194, 48, 0.55), rgba(242, 194, 48, 0) 70%);
+		right: 8%; top: 18%;
+		width: 520px; height: 520px;
+		background: radial-gradient(circle, rgba(242,194,48,.55), rgba(242,194,48,0) 70%);
 	}
 
 	&--b {
-		left: 30%;
-		bottom: -12%;
-		width: 420px;
-		height: 420px;
-		background: radial-gradient(circle, rgba(232, 134, 42, 0.28), rgba(232, 134, 42, 0) 70%);
+		left: 30%; bottom: -12%;
+		width: 420px; height: 420px;
+		background: radial-gradient(circle, rgba(232,134,42,.28), rgba(232,134,42,0) 70%);
 		animation-delay: -3s;
 	}
 }
 
-// ── Not found ─────────────────────────────────────────────────────
+// ── Content windows ───────────────────────────────────────────────
 
-.cs-not-found {
-	display: flex;
-	flex-direction: column;
-	gap: 24px;
+.cwin {
+	border-radius: 14px;
+	overflow: hidden;
+	background: #FFFFFF;
+	border: 1px solid #DDD6C9;
+	box-shadow: 0 16px 36px rgba(36,34,31,0.1);
+	margin-bottom: 20px;
+
+	&--err {
+		.cwin-tbar {
+			background: #FBE7E2;
+			color: #8E2F1F;
+			border-bottom-color: #EED6CF;
+		}
+	}
+
+	&--dark {
+		background: var(--dark-scene);
+		border-color: var(--dark-scene);
+
+		.cwin-tbar {
+			background: #2A2824;
+			color: var(--dark-muted);
+			border-bottom-color: rgba(234,229,219,0.08);
+		}
+		.cwin-title { color: var(--dark-text); }
+		.cwin-lead  { color: var(--dark-text); }
+		.cwin-rest p { color: #C9C2B6; }
+		.cwin-label { color: var(--pass-on-dark); }
+		.cwin-more  { color: var(--duck); }
+	}
 }
 
-.cs-not-found__h1 {
+.cwin-tbar {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 10px 14px;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	color: var(--muted);
+	border-bottom: 1px solid #EEE9DF;
+
+	i {
+		width: 8px;
+		height: 8px;
+		border-radius: 4px;
+		background: #E2DDD3;
+		display: inline-block;
+		flex-shrink: 0;
+	}
+
+	span { margin-left: 4px; }
+}
+
+.cwin-body {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 18px 22px 16px;
+
+	@include bp(phone) { padding: 14px 16px; }
+}
+
+.cwin-label {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--amber-text);
+}
+
+.cwin-title {
 	margin: 0;
 	font-family: var(--font-display);
-	font-size: clamp(48px, 6vw, 96px);
+	font-size: clamp(24px, 2.4vw, 30px);
 	font-weight: 500;
-	letter-spacing: -0.04em;
-	line-height: 0.95;
+	letter-spacing: -0.02em;
+	line-height: 1.1;
 	color: var(--ink);
 }
 
-.cs-not-found__body {
+.cwin-lead {
 	margin: 0;
-	font-size: 19px;
-	line-height: 1.6;
-	color: var(--ink-2);
+	font-family: var(--font-display);
+	font-size: clamp(18px, 1.8vw, 21px);
+	line-height: 1.45;
+	color: var(--ink);
+	max-width: 58ch;
 }
 
-.cs-not-found__code {
+// Animated height expand via grid trick
+.cwin-rest-wrap {
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows 300ms var(--ease);
+
+	&--open { grid-template-rows: 1fr; }
+
+	@include reduced-motion { transition: none; }
+}
+
+.cwin-rest-inner { overflow: hidden; }
+
+.cwin-rest {
+	p {
+		margin: 0 0 10px;
+		font-size: 15px;
+		line-height: 1.7;
+		color: var(--ink-2);
+		max-width: 64ch;
+
+		&:last-child { margin-bottom: 0; }
+	}
+}
+
+.cwin-more {
+	align-self: flex-start;
+	border: 0;
+	background: transparent;
+	padding: 2px 0;
 	font-family: var(--font-mono);
-	font-size: 17px;
+	font-size: 12px;
+	font-weight: 600;
 	color: var(--amber-text);
-	background: rgba(194, 122, 30, 0.1);
-	padding: 1px 6px;
-	border-radius: 4px;
-}
-
-// ── Intro section ─────────────────────────────────────────────────
-
-.cs-intro {
-	max-width: 640px;
-	display: flex;
-	flex-direction: column;
-	gap: 22px;
-}
-
-.cs-breadcrumb {
-	font-family: var(--font-mono);
-	font-size: 13px;
-	color: var(--muted);
-	text-decoration: none;
+	cursor: pointer;
+	transition: color var(--dur-ui);
 
 	&:hover { color: var(--ink); }
 	&:focus-visible { outline: 2px solid var(--duck); border-radius: 2px; }
 }
 
-.cs-breadcrumb__current {
-	color: var(--ink);
+// ── Intro section ─────────────────────────────────────────────────
+
+.cs2-intro {
+	display: grid;
+	grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
+	gap: 44px;
+	align-items: center;
+
+	@include bp(below-laptop) { grid-template-columns: 1fr; }
 }
 
-.cs-kicker {
+.cs2-intro-l {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.cs2-back {
+	align-self: flex-start;
+	height: 36px !important;
+	font-size: 13px !important;
+}
+
+.cs2-label {
 	font-family: var(--font-mono);
 	font-size: var(--text-label);
 	color: var(--amber-text);
 	letter-spacing: 0.02em;
 }
 
-.cs-title {
+.cs2-status {
+	font-weight: 600;
+
+	&--running   { color: var(--amber-text); }
+	&--passed    { color: var(--pass); }
+	&--prototype { color: var(--lane-degree); }
+}
+
+.cs2-h1 {
 	margin: 0;
 	font-family: var(--font-display);
-	font-size: clamp(64px, 8vw, 120px);
+	font-size: clamp(64px, 7vw, 108px);
 	font-weight: 500;
 	letter-spacing: -0.04em;
 	line-height: 0.95;
 	color: var(--ink);
-
-	@include bp(phone) { font-size: clamp(44px, 11vw, 72px); }
 }
 
-.cs-deck {
+.cs2-deck {
 	margin: 0;
-	font-size: 21px;
-	line-height: 1.6;
+	font-size: 19px;
+	line-height: 1.55;
 	color: var(--ink-2);
-	max-width: 54ch;
-
-	@include bp(phone) { font-size: 18px; }
+	max-width: 44ch;
 }
 
-.cs-numbers {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-	gap: 18px;
-	padding: 18px 0;
-	border-top: 1px solid var(--rule);
-	border-bottom: 1px solid var(--rule);
-}
-
-.cs-number {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-}
-
-.cs-number__val {
-	font-family: var(--font-display);
-	font-size: 34px;
-	font-weight: 500;
-	letter-spacing: -0.02em;
-	color: var(--ink);
-}
-
-.cs-number__label {
-	font-size: var(--text-label);
-	color: var(--muted);
-	line-height: 1.35;
-}
-
-.cs-meta {
-	font-family: var(--font-mono);
+.cs2-meta {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 6px 18px;
-	font-size: 13px;
+	font-family: var(--font-mono);
+	font-size: 12px;
 	color: var(--ink-2);
 }
 
-.cs-stack {
+.cs2-chips {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 6px;
+
+	span {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		padding: 4px 8px;
+		border-radius: 6px;
+		background: rgba(36,34,31,0.07);
+		color: var(--ink);
+	}
 }
 
-.cs-stack__tag {
-	font-family: var(--font-mono);
-	font-size: 12px;
-	padding: 4px 8px;
-	border-radius: 6px;
-	background: rgba(36, 34, 31, 0.07);
-	color: var(--ink-2);
-}
-
-.cs-intro-ctas {
+.cs2-ctas {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 12px;
+	padding-top: 4px;
 }
 
-.cs-read-meta {
-	font-family: var(--font-mono);
-	font-size: var(--text-label);
-	color: var(--muted);
-	margin: 0;
+.cs2-arch-win {
+	rotate: 0.5deg;
+
+	@include bp(below-laptop) { rotate: 0deg; }
 }
 
-// ── Case study section content ────────────────────────────────────
+// Stats row
+.cs2-stats {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+	gap: 14px;
+	margin-top: 28px;
+}
 
-.cs-section-content {
-	max-width: 760px;
+.cs2-stat { margin-bottom: 0 !important; }
+
+.cs2-stat-body {
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
+	gap: 6px;
+	padding: 14px 16px 16px;
 }
 
-.cs-mono-label {
-	font-family: var(--font-mono);
-	font-size: var(--text-label);
-	color: var(--amber-text);
-	letter-spacing: 0.02em;
+.cs2-stat-val {
+	font-family: var(--font-display);
+	font-size: 38px;
+	font-weight: 500;
+	letter-spacing: -0.02em;
+	line-height: 1;
 
-	&--dark { color: var(--pass-on-dark); }
+	@include bp(phone) { font-size: 30px; }
 }
 
-.cs-h2 {
+.cs2-stat-label {
+	font-size: 13px;
+	line-height: 1.4;
+	color: var(--muted);
+}
+
+// ── Session section ───────────────────────────────────────────────
+
+.cs2-session-hd {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 8px;
+	margin-bottom: 22px;
+}
+
+.cs2-h2 {
 	margin: 0;
 	font-family: var(--font-display);
-	font-size: clamp(36px, 4vw, 60px);
+	font-size: clamp(36px, 4vw, 56px);
 	font-weight: 500;
 	letter-spacing: -0.03em;
 	line-height: 1.05;
 	color: var(--ink);
-
-	&--dark { color: var(--dark-text); }
 }
 
-.cs-body {
-	font-size: 19px;
-	line-height: 1.7;
-	color: var(--ink-2);
-	max-width: 62ch;
-	display: flex;
-	flex-direction: column;
-	gap: 20px;
-
-	p { margin: 0; }
-
-	&--dark { color: #D8D2C6; }
-
-	@include bp(phone) { font-size: 17px; }
-}
-
-// ── Pull quote ────────────────────────────────────────────────────
-
-.cs-pullquote {
-	margin: 12px 0 0;
-	padding-left: 22px;
-	border-left: 4px solid var(--duck);
-	font-family: var(--font-display);
-	font-size: clamp(26px, 2.6vw, 36px);
-	line-height: 1.2;
-	font-style: italic;
-	letter-spacing: -0.01em;
-	max-width: 26ch;
-	color: var(--ink);
-}
-
-// ── Next project row ──────────────────────────────────────────────
-
-.cs-next-row {
-	display: grid;
-	grid-template-columns: 20px 50px minmax(0, 1fr) auto;
-	gap: 8px 14px;
-	align-items: center;
-	padding: 22px 12px 22px 0;
-	margin-top: 28px;
-	border-top: 1px solid var(--rule);
-	text-decoration: none;
-	color: inherit;
-	border-radius: 10px;
-	transition: background var(--dur-ui) var(--ease);
-
-	&:hover, &:focus-visible {
-		background: rgba(242, 194, 48, 0.18);
-		outline: none;
-
-		.cs-next-row__bp { opacity: 1; }
-	}
-
-	&:focus-visible { box-shadow: 0 0 0 2px var(--duck) inset; }
-}
-
-.cs-next-row__bp {
-	width: 12px;
-	height: 12px;
-	border-radius: 6px;
-	background: var(--breakpoint);
-	opacity: 0;
-	transition: opacity 150ms;
-}
-
-.cs-next-row__label {
+.cs2-session-hint {
 	font-family: var(--font-mono);
 	font-size: 13px;
 	color: var(--muted);
 }
 
-.cs-next-row__title {
-	font-family: var(--font-display);
-	font-size: clamp(28px, 3vw, 40px);
-	font-weight: 500;
-	letter-spacing: -0.02em;
-	line-height: 1;
+.cs2-session {
+	display: grid;
+	grid-template-columns: 28px minmax(0, 1fr);
+	gap: 0 20px;
+
+	@include bp(phone) {
+		grid-template-columns: 18px minmax(0, 1fr);
+		gap: 0 12px;
+	}
 }
 
-.cs-next-row__arrow {
-	font-size: 26px;
+.cs2-rail {
+	position: relative;
+
+	&::before {
+		content: "";
+		position: absolute;
+		left: 13px;
+		top: 10px;
+		bottom: 10px;
+		width: 2px;
+		background: repeating-linear-gradient(to bottom, var(--amber) 0 6px, transparent 6px 12px);
+
+		@include bp(phone) { left: 7px; }
+	}
+}
+
+.cs2-sdot {
+	position: relative;
+	width: 14px;
+	height: 14px;
+	border-radius: 7px;
+	background: var(--paper);
+	border: 2px solid var(--amber);
+	margin: 22px 0 0 6px;
+
+	@include bp(phone) {
+		margin-left: 1px;
+		width: 12px;
+		height: 12px;
+	}
+}
+
+// ── Results section ───────────────────────────────────────────────
+
+.cs2-fails {
+	display: grid;
+	grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+	gap: 20px;
+	align-items: start;
+
+	@include bp(below-laptop) { grid-template-columns: 1fr; }
+}
+
+.cs2-pullquote {
+	margin: 26px 0 0;
+	padding-left: 22px;
+	border-left: 4px solid var(--duck);
+	font-family: var(--font-display);
+	font-style: italic;
+	font-size: clamp(24px, 2.6vw, 36px);
+	line-height: 1.2;
+	max-width: 28ch;
+	color: var(--ink);
+}
+
+// ── Retro section ─────────────────────────────────────────────────
+
+.cs2-cnav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px;
+	margin-top: 28px;
+}
+
+// ── 404 ───────────────────────────────────────────────────────────
+
+.cs2-notfound {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	max-width: 500px;
+}
+
+.cs2-notfound__h1 {
+	margin: 0;
+	font-family: var(--font-display);
+	font-size: clamp(40px, 5vw, 72px);
+	font-weight: 500;
+	letter-spacing: -0.03em;
+	line-height: 1;
 	color: var(--ink);
 }

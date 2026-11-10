@@ -13,14 +13,17 @@ import LogScene from "./LogScene";
 import LogSection from "./LogSection";
 import TestsScene from "./TestsScene";
 import TestsSection from "./TestsSection";
+import NowScene from "./NowScene";
+import NowSection from "./NowSection";
+import ContactScene from "./ContactScene";
+import ContactSection from "./ContactSection";
 import "./FrontPage.scss";
 
 const FRONT_QUIPS = [
 	"Quack! Drag me anywhere.",
-	"Stuck? Explain it to me, line by line.",
+	"Use the dots to jump around. I just walk.",
 	"Try the bug. I believe in you.",
-	"I've reviewed zero pull requests. Proudly.",
-	"Scroll slowly. The background is showing off.",
+	"The contact section has the best hover.",
 ];
 
 function FrontPageInner() {
@@ -39,7 +42,7 @@ function FrontPageInner() {
 			<StageSection id="bug" fn="findTheBug()" ln="12" bg="#F7F4EC" dark={false} scene={<BugScene />}>
 				<BugSection />
 			</StageSection>
-			<StageSection id="work" fn="work()" ln="24" bg="#F4F1EA" dark={false} scene={<WorkScene />}>
+			<StageSection id="work" fn="caseStudies()" ln="24" bg="#F4F1EA" dark={false} scene={<WorkScene />}>
 				<WorkSection />
 			</StageSection>
 			<StageSection id="log" fn="gitLog()" ln="36" bg="#EEEAE1" dark={false} scene={<LogScene />}>
@@ -47,6 +50,12 @@ function FrontPageInner() {
 			</StageSection>
 			<StageSection id="tests" fn="howIWork()" ln="48" bg="#1F1D1A" dark={true} scene={<TestsScene />}>
 				<TestsSection />
+			</StageSection>
+			<StageSection id="now" fn="now()" ln="60" bg="#EEEAE1" dark={false} scene={<NowScene />}>
+				<NowSection />
+			</StageSection>
+			<StageSection id="contact" fn="contact()" ln="72" bg="#1A1917" dark={true} scene={<ContactScene />}>
+				<ContactSection />
 			</StageSection>
 		</>
 	);

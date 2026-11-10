@@ -25,6 +25,14 @@ const SceneData = z.object({
 	exceptions: z.array(z.string()).optional(),
 });
 
+const PreviewNum = z.object({ v: z.string(), l: z.string() });
+const Preview = z.object({
+	kind: z.enum(["pipeline", "diff", "loop"]),
+	items: z.array(z.string()).optional().default([]),
+	highlight: z.string().optional(),
+	nums: z.array(PreviewNum),
+});
+
 const Project = z.object({
 	slug: kebabSlug,
 	category: z.string(),
@@ -46,6 +54,7 @@ const Project = z.object({
 	figureCaption: z.string().optional().default(""),
 	sections: CaseStudySections,
 	scene: SceneData.optional(),
+	preview: Preview.optional(),
 });
 
 const Experience = z.object({
@@ -102,6 +111,7 @@ const Meta = z.object({
 const Availability = z.object({
 	status: z.string().optional().default(""),
 	detail: z.string().optional().default(""),
+	headline: z.string().optional().default(""),
 	cta: z.string().optional().default(""),
 	href: z.string().optional().default(""),
 });

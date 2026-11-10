@@ -1,179 +1,42 @@
-function Box({ x, y, w, h = 32, label, label2, dashed = false, dim = false, highlight = false }) {
-	const stroke = highlight ? "var(--amber)" : (dim ? "var(--faint)" : "var(--line)");
-	const fill = highlight ? "#FFF4CC" : "#FFFFFF";
-	const textFill = dim ? "var(--faint)" : "var(--muted)";
-	const cx = x + w / 2;
-	const cy = y + h / 2;
-	return (
-		<g>
-			<rect
-				x={x} y={y} width={w} height={h}
-				fill={fill}
-				stroke={stroke}
-				strokeWidth={highlight ? "2" : "1.5"}
-				strokeDasharray={dashed ? "4 3" : undefined}
-				rx="6"
-			/>
-			{label2 ? (
-				<text
-					x={cx} y={cy - 6}
-					textAnchor="middle"
-					fontFamily="var(--font-mono)"
-					fontSize="9"
-					fill={textFill}
-					letterSpacing="0.07em"
-				>
-					<tspan x={cx} dy="0">{label}</tspan>
-					<tspan x={cx} dy="12">{label2}</tspan>
-				</text>
-			) : (
-				<text
-					x={cx} y={cy}
-					textAnchor="middle"
-					dominantBaseline="middle"
-					fontFamily="var(--font-mono)"
-					fontSize="9"
-					fill={textFill}
-					letterSpacing="0.07em"
-				>
-					{label}
-				</text>
-			)}
-		</g>
-	);
-}
-
-function Arrow({ d, dashed = false, dim = false, markerId }) {
-	const stroke = dim ? "var(--faint)" : "var(--amber)";
-	const dasharray = dashed ? "4 5" : "6 4";
-	return (
-		<path
-			d={d}
-			fill="none"
-			stroke={stroke}
-			strokeWidth="1.5"
-			strokeDasharray={dasharray}
-			markerEnd={`url(#${markerId})`}
-			className={!dim ? "arrow-flow" : undefined}
-		/>
-	);
-}
-
-// ── Horizontal layout (≥ 640 px) ────────────────────────────────
-function HorizontalDiagram() {
-	return (
-		<svg
-			className="vigil-figure__h"
-			viewBox="0 0 720 210"
-			width="100%"
-			role="img"
-			aria-label="Vigil request path: JS snippet sends a POST to /collect; each request is enriched with GeoIP data, scored 0–100 for bot likelihood, and stored in a TimescaleDB hypertable. Hourly continuous aggregates feed the dashboard; a WebSocket live-tail streams events in real time. A Redis Streams worker is planned between intake and enrichment."
-		>
-			<defs>
-				<marker id="vh-arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
-					<path d="M0,0 L5,3 L0,6 Z" fill="var(--amber)" />
-				</marker>
-				<marker id="vh-arr-dim" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
-					<path d="M0,0 L5,3 L0,6 Z" fill="var(--faint)" />
-				</marker>
-			</defs>
-
-			{/* ── Main flow boxes ── */}
-			<Box x={8}   y={90} w={84}  label="JS SNIPPET" />
-			<Box x={112} y={90} w={102} label="POST /COLLECT" highlight />
-			<Box x={234} y={90} w={102} label="ENRICH (GEOIP)" />
-			<Box x={356} y={90} w={92}  label="SCORE (0–100)" />
-			<Box x={468} y={90} w={158} label="TIMESCALEDB HYPERTABLE" />
-
-			{/* ── Branch boxes ── */}
-			<Box x={468} y={156} w={128} label="HOURLY AGGREGATE" />
-			<Box x={608} y={156} w={90}  label="DASHBOARD" />
-
-			{/* ── Live tail (dashed, above /collect) ── */}
-			<Box x={88}  y={14}  w={140} label="LIVE TAIL (WEBSOCKET)" dashed />
-
-			{/* ── Ghost: Redis Streams worker (planned) ── */}
-			<Box x={148} y={155} w={168} h={44} label="REDIS STREAMS WORKER" label2="(PLANNED)" dashed dim />
-
-			{/* ── Solid arrows: main flow ── */}
-			<Arrow d="M92,106 L112,106"     markerId="vh-arr" />
-			<Arrow d="M214,106 L234,106"    markerId="vh-arr" />
-			<Arrow d="M336,106 L356,106"    markerId="vh-arr" />
-			<Arrow d="M448,106 L468,106"    markerId="vh-arr" />
-			{/* B5 → B6 elbow */}
-			<Arrow d="M547,122 L547,140 L532,140 L532,156" markerId="vh-arr" />
-			{/* B6 → B7 */}
-			<Arrow d="M596,172 L608,172" markerId="vh-arr" />
-
-			{/* ── Dashed arrow: /collect → live tail (upward) ── */}
-			<Arrow d="M163,90 L163,46" dashed markerId="vh-arr" />
-
-			{/* ── Dashed arrows: planned Redis Streams path ── */}
-			<Arrow d="M163,122 L163,139 L175,139 L175,155" dashed dim markerId="vh-arr-dim" />
-			<Arrow d="M293,155 L293,139 L285,139 L285,122" dashed dim markerId="vh-arr-dim" />
-		</svg>
-	);
-}
-
-// ── Vertical layout (< 640 px) ───────────────────────────────────
-function VerticalDiagram() {
-	return (
-		<svg
-			className="vigil-figure__v"
-			viewBox="0 0 300 460"
-			width="100%"
-			role="img"
-			aria-label="Vigil request path (vertical): JS snippet, POST /collect, Enrich (GeoIP), Score (0–100), TimescaleDB hypertable, Hourly aggregate, Dashboard. Live tail branches from /collect. Redis Streams worker is planned between /collect and Enrich."
-		>
-			<defs>
-				<marker id="vv-arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
-					<path d="M0,0 L5,3 L0,6 Z" fill="var(--amber)" />
-				</marker>
-				<marker id="vv-arr-dim" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
-					<path d="M0,0 L5,3 L0,6 Z" fill="var(--faint)" />
-				</marker>
-			</defs>
-
-			{/* Main stack */}
-			<Box x={75} y={14}  w={150} h={32} label="JS SNIPPET" />
-			<Box x={75} y={72}  w={150} h={32} label="POST /COLLECT" highlight />
-
-			{/* Ghost: Redis Streams (planned) */}
-			<Box x={65} y={136} w={170} h={44} label="REDIS STREAMS WORKER" label2="(PLANNED)" dashed dim />
-
-			<Box x={75} y={202} w={150} h={32} label="ENRICH (GEOIP)" />
-			<Box x={75} y={258} w={150} h={32} label="SCORE (0–100)" />
-			<Box x={58} y={314} w={184} h={32} label="TIMESCALEDB HYPERTABLE" />
-
-			{/* Branch row */}
-			<Box x={58}  y={380} w={130} h={32} label="HOURLY AGGREGATE" />
-			<Box x={205} y={380} w={90}  h={32} label="DASHBOARD" />
-
-			{/* Live tail — right of /collect */}
-			<Box x={238} y={72} w={58} h={32} label="LIVE TAIL" label2="(WS)" dashed />
-
-			{/* Solid arrows: main flow */}
-			<Arrow d="M150,46 L150,72"           markerId="vv-arr" />
-			<Arrow d="M150,234 L150,258"          markerId="vv-arr" />
-			<Arrow d="M150,290 L150,314"          markerId="vv-arr" />
-			<Arrow d="M150,346 L150,365 L123,365 L123,380" markerId="vv-arr" />
-			<Arrow d="M188,396 L205,396"          markerId="vv-arr" />
-
-			{/* Dashed: /collect → ghost, ghost → Enrich */}
-			<Arrow d="M150,104 L150,136"  dashed dim markerId="vv-arr-dim" />
-			<Arrow d="M150,180 L150,202"  dashed dim markerId="vv-arr-dim" />
-
-			{/* Dashed: /collect → live tail */}
-			<Arrow d="M225,88 L238,88" dashed markerId="vv-arr" />
-		</svg>
-	);
-}
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 export default function VigilFigure() {
+	const reduced = useReducedMotion();
+	const dash = reduced ? undefined : "6 6";
+	const anim = reduced ? "none" : "dash 0.9s linear infinite";
+
 	return (
-		<>
-			<HorizontalDiagram />
-			<VerticalDiagram />
-		</>
+		<svg
+			viewBox="0 0 760 300"
+			className="arch-svg"
+			role="img"
+			aria-label="Vigil: request path from snippet through enrichment to dashboard"
+			style={{ width: "100%", height: "auto", display: "block" }}
+		>
+			{/* Row 1 */}
+			<rect x="20" y="40" width="210" height="60" rx="10" fill="#FFFFFF" stroke="#CFC8BB" strokeWidth="1.5"/>
+			<text x="125" y="76" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="15" fill="#4A463F">&lt;script&gt; snippet</text>
+			<rect x="270" y="40" width="210" height="60" rx="10" fill="#FFFFFF" stroke="#CFC8BB" strokeWidth="1.5"/>
+			<text x="375" y="76" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="15" fill="#4A463F">POST /collect</text>
+			<rect x="520" y="40" width="210" height="60" rx="10" fill="#FFFFFF" stroke="#CFC8BB" strokeWidth="1.5"/>
+			<text x="625" y="76" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="15" fill="#4A463F">GeoLite2 enrich</text>
+
+			{/* Row 2 (highlighted: bot score) */}
+			<rect x="520" y="190" width="210" height="60" rx="10" fill="#FFF4CC" stroke="#C27A1E" strokeWidth="1.5"/>
+			<text x="625" y="226" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="15" fill="#4A463F">bot score 0–100</text>
+			<rect x="270" y="190" width="210" height="60" rx="10" fill="#FFFFFF" stroke="#CFC8BB" strokeWidth="1.5"/>
+			<text x="375" y="226" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="15" fill="#4A463F">TimescaleDB</text>
+			<rect x="20" y="190" width="210" height="60" rx="10" fill="#FFFFFF" stroke="#CFC8BB" strokeWidth="1.5"/>
+			<text x="125" y="226" textAnchor="middle" fontFamily="IBM Plex Mono, monospace" fontSize="15" fill="#4A463F">dashboard · live</text>
+
+			{/* Connectors */}
+			<line x1="230" y1="70" x2="270" y2="70" stroke="#C27A1E" strokeWidth="2" strokeDasharray={dash} style={{ animation: anim }}/>
+			<line x1="480" y1="70" x2="520" y2="70" stroke="#C27A1E" strokeWidth="2" strokeDasharray={dash} style={{ animation: anim }}/>
+			<line x1="625" y1="100" x2="625" y2="190" stroke="#C27A1E" strokeWidth="2" strokeDasharray={dash} style={{ animation: anim }}/>
+			<line x1="520" y1="220" x2="480" y2="220" stroke="#C27A1E" strokeWidth="2" strokeDasharray={dash} style={{ animation: anim }}/>
+			<line x1="270" y1="220" x2="230" y2="220" stroke="#C27A1E" strokeWidth="2" strokeDasharray={dash} style={{ animation: anim }}/>
+
+			<text x="20" y="288" fontFamily="IBM Plex Mono, monospace" fontSize="12" fill="#8A847A">fig. 1 — intake, enrichment and scoring happen before storage</text>
+		</svg>
 	);
 }

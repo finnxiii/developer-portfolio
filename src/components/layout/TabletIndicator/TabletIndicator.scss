@@ -1,0 +1,35 @@
+@use "../../../styles/mixins" as *;
+
+// ── TabletIndicator — passive current-section hint, 600–1199px ────
+.tablet-indicator {
+	position: fixed;
+	top: 20px;
+	right: 26px;
+	z-index: var(--z-chrome, 6);
+	font-family: var(--font-mono);
+	font-size: 13px;
+	line-height: 1;
+	pointer-events: none;
+	user-select: none;
+
+	// Only visible on tablet + laptop
+	display: none;
+
+	@media (min-width: 600px) and (max-width: 1199px) {
+		display: block;
+	}
+}
+
+.tablet-indicator__ln {
+	color: var(--breakpoint);
+	font-weight: 600;
+}
+
+.tablet-indicator__fn {
+	color: var(--muted);
+}
+
+// Dark scene adaptation
+[data-dark="true"] .tablet-indicator__fn {
+	color: var(--dark-muted);
+}

@@ -1,62 +1,60 @@
-export default function MccFigure({ compact = false }) {
+import { useReducedMotion } from "../../hooks/useReducedMotion";
+
+export default function MccFigure() {
+	const reduced = useReducedMotion();
+	const dash = reduced ? undefined : "6 6";
+	const anim = reduced ? "none" : "dash 0.9s linear infinite";
+
+	const boxes = [
+		{ x: 20,  label: "upload.csv" },
+		{ x: 180, label: "parse & validate" },
+		{ x: 340, label: "diff preview" },
+		{ x: 500, label: "confirm()" },
+		{ x: 660, label: "save()" },
+	];
+	const hl = 2;
+
 	return (
-		<div className="mcc-figure">
-			{!compact && (
-				<div className="mcc-figure__toolbar">
-					<span className="mcc-figure__filename">
-						import_grades.csv · 5 rows · 2 changed · 1 new · 2 unchanged
-					</span>
-					<button className="mcc-figure__confirm-btn" tabIndex={-1} aria-hidden="true">
-						Confirm import
-					</button>
-				</div>
-			)}
-			<div className="mcc-figure__scroll">
-				<table className="mcc-figure__table" aria-label="Grade import difference view — illustrative data">
-					<thead>
-						<tr>
-							<th scope="col">Status</th>
-							<th scope="col">Grade</th>
-							<th scope="col">Charge-out rate (£/hr)</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><span className="mcc-figure__status mcc-figure__status--new">New</span></td>
-							<td>Graduate</td>
-							<td>£38</td>
-						</tr>
-						<tr>
-							<td><span className="mcc-figure__status mcc-figure__status--changed">Changed</span></td>
-							<td>Senior</td>
-							<td>
-								<span className="mcc-figure__old">£105</span>
-								{' → '}
-								<span className="mcc-figure__new">£110</span>
-							</td>
-						</tr>
-						<tr>
-							<td><span className="mcc-figure__status mcc-figure__status--unchanged">Unchanged</span></td>
-							<td>Junior</td>
-							<td>£45</td>
-						</tr>
-						<tr>
-							<td><span className="mcc-figure__status mcc-figure__status--unchanged">Unchanged</span></td>
-							<td>Principal</td>
-							<td>£150</td>
-						</tr>
-						<tr>
-							<td><span className="mcc-figure__status mcc-figure__status--changed">Changed</span></td>
-							<td>Mid</td>
-							<td>
-								<span className="mcc-figure__old">£72</span>
-								{' → '}
-								<span className="mcc-figure__new">£75</span>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
+		<svg
+			viewBox="0 0 760 160"
+			className="arch-svg"
+			role="img"
+			aria-label="Meeting Cost Calculator: CSV upload, parse, diff preview, confirm and save"
+			style={{ width: "100%", height: "auto", display: "block" }}
+		>
+			{boxes.map((b, i) => (
+				<g key={i}>
+					<rect
+						x={b.x} y="40" width="120" height="56" rx="10"
+						fill={i === hl ? "#FFF4CC" : "#FFFFFF"}
+						stroke={i === hl ? "#C27A1E" : "#CFC8BB"}
+						strokeWidth="1.5"
+					/>
+					<text
+						x={b.x + 60} y="72"
+						textAnchor="middle"
+						fontFamily="IBM Plex Mono, monospace"
+						fontSize="12"
+						fill="#4A463F"
+					>
+						{b.label}
+					</text>
+				</g>
+			))}
+			{boxes.slice(0, -1).map((b, i) => (
+				<line
+					key={i}
+					x1={b.x + 120} y1="68"
+					x2={boxes[i + 1].x} y2="68"
+					stroke="#C27A1E"
+					strokeWidth="2"
+					strokeDasharray={dash}
+					style={{ animation: anim }}
+				/>
+			))}
+			<text x="20" y="145" fontFamily="IBM Plex Mono, monospace" fontSize="12" fill="#8A847A">
+				fig. 1 — the diff step shows changes before anything is written
+			</text>
+		</svg>
 	);
 }

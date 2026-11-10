@@ -72,7 +72,7 @@ export function FrontPageProvider({ children }) {
 			if (t >= L) { jDone.push(e); t -= L; }
 			else { jTyping = e.cmd.slice(0, Math.min(t, e.cmd.length)); break; }
 		}
-		jDone = jDone.slice(-3);
+		// All lines are kept; fixed-height body handles visual overflow via scroll
 	}
 
 	return (

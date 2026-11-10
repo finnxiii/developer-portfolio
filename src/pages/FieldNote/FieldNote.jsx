@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
+import Cmd from "../../components/ui/Cmd/Cmd";
 import SEOHead from "../../components/ui/SEOHead/SEOHead";
 import StageSection from "../../components/stage/StageSection";
 import { usePortfolioData } from "../../hooks/usePortfolioData";
 import { useQuack } from "../../components/quack/QuackContext";
-import { useChrome } from "../../components/layout/Chrome/ChromeContext";
 import { usePointerParallax } from "../../components/stage/usePointerParallax";
 import { useSideArtFit } from "../../hooks/useSideArtFit";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
@@ -251,7 +251,6 @@ export default function FieldNote() {
 	const { data } = usePortfolioData();
 	const { fieldNotes = [] } = data;
 	const { setQuips } = useQuack();
-	const { registerTab, unregisterTab } = useChrome();
 
 	const note = fieldNotes.find(n => n.slug === slug) ?? null;
 
@@ -259,20 +258,12 @@ export default function FieldNote() {
 		setTimeout(() => setQuips(note ? NOTE_QUIPS : []), 0);
 	}, [note, setQuips]);
 
-	useEffect(() => {
-		if (!note) return;
-		const label = `${slug}.md`;
-		registerTab({ label, to: `/notes/${slug}`, current: true });
-		return () => unregisterTab();
-	}, [slug, note, registerTab, unregisterTab]);
-
 	const sections = useMemo(() => parseSections(note?.body ?? ""), [note]);
 
 	if (!note) return <NoteNotFound slug={slug} />;
 
 	const { title, date, topic, readTime, deck } = note;
 	const noteIdx = fieldNotes.findIndex(n => n.slug === slug);
-	const prev = noteIdx > 0 ? fieldNotes[noteIdx - 1] : null;
 	const next = noteIdx < fieldNotes.length - 1 ? fieldNotes[noteIdx + 1] : null;
 
 	return (
@@ -301,6 +292,8 @@ export default function FieldNote() {
 							{i === 0 && (
 								<header className="fn-note__header">
 									<nav className="fn-note__crumb" aria-label="Breadcrumb">
+										<Link to="/" className="fn-note__crumb-link">← Finn.java</Link>
+										<span aria-hidden="true"> / </span>
 										<Link to="/notes" className="fn-note__crumb-link">notes/</Link>
 										<span aria-hidden="true"> › </span>
 										<span className="fn-note__crumb-current">{slug}.md</span>
@@ -332,18 +325,11 @@ export default function FieldNote() {
 
 							{isLast && (
 								<nav className="fn-note__pager" aria-label="Notes navigation">
-									{prev && (
-										<Link to={`/notes/${prev.slug}`} className="fn-note__pager-btn fn-note__pager-btn--prev">
-											<span className="fn-note__pager-dir">← previous</span>
-											<span className="fn-note__pager-title">{prev.title}</span>
-										</Link>
-									)}
+									<Cmd glyph="←" href="/#now" variant="dark">cd ../notes</Cmd>
 									{next && (
-										<Link to={`/notes/${next.slug}`} className="fn-note__pager-btn fn-note__pager-btn--next">
-											<span className="fn-note__pager-dir">next →</span>
-											<span className="fn-note__pager-title">{next.title}</span>
-										</Link>
+										<Cmd glyph="→" href={`/notes/${next.slug}`}>open {next.slug}.md</Cmd>
 									)}
+									<Cmd glyph="⌂" href="/" variant="ghost">Finn.java</Cmd>
 								</nav>
 							)}
 

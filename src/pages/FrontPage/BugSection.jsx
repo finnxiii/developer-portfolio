@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useFrontPage } from "./FrontPageContext";
 import { useQuack } from "../../components/quack/QuackContext";
+import Cmd from "../../components/ui/Cmd/Cmd";
 
 const BUG_LINE = 3;
 const LINES = [
@@ -116,12 +117,8 @@ export default function BugSection() {
 						<span>total = <strong>{cur ? cur.t : "–"}</strong></span>
 					</div>
 					<div className="bug-controls">
-						<button type="button" onClick={step} className="bug-btn bug-btn--solid">
-							Step ▸
-						</button>
-						<button type="button" onClick={reset} className="bug-btn bug-btn--outline">
-							Reset
-						</button>
+						<Cmd glyph="▸" onClick={step}>step F8</Cmd>
+						<Cmd glyph="↺" onClick={reset} variant="ghost">reset</Cmd>
 					</div>
 					<p className="bug-hint" aria-live="polite">{getHint()}</p>
 				</div>

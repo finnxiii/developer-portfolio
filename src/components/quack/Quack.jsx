@@ -11,25 +11,69 @@ const GREETING =
 const IDLE_MS = 2600;
 const BUBBLE_MS = 3500;
 const ENTER_DELAY_MS = 1200;
+const MARGIN = 8;
+
+function duckSize() { return window.innerWidth < 600 ? 52 : 64; }
+function topClear() { return window.innerWidth < 600 ? 56 : 0; }
+
+function clampBounds() {
+	const vw = window.innerWidth;
+	const vh = window.innerHeight;
+	const duck = duckSize();
+	const top = topClear();
+	return {
+		minX: MARGIN,
+		maxX: vw - duck - MARGIN,
+		minY: top + MARGIN,
+		maxY: vh - duck - MARGIN,
+	};
+}
+
+// Returns { fx, fy } clamped to viewport, or null if position is invalid / viewport too small.
+function clampFraction(fx, fy) {
+	if (!Number.isFinite(fx) || !Number.isFinite(fy)) return null;
+	const vw = window.innerWidth;
+	const vh = window.innerHeight;
+	const { minX, maxX, minY, maxY } = clampBounds();
+	if (maxX < minX || maxY < minY) return null;
+	const x = Math.max(minX, Math.min(maxX, fx * vw));
+	const y = Math.max(minY, Math.min(maxY, fy * vh));
+	return { fx: x / vw, fy: y / vh };
+}
+
+function loadSavedPos() {
+	try {
+		const saved = sessionStorage.getItem("quack-pos");
+		if (!saved) return null;
+		const p = JSON.parse(saved);
+		let fx, fy;
+		if (typeof p.fx === "number" && typeof p.fy === "number") {
+			fx = p.fx; fy = p.fy;
+		} else if (typeof p.x === "number" && typeof p.y === "number") {
+			// Migrate old pixel format
+			fx = p.x / window.innerWidth;
+			fy = p.y / window.innerHeight;
+		} else {
+			return null;
+		}
+		const clamped = clampFraction(fx, fy);
+		if (clamped) {
+			try { sessionStorage.setItem("quack-pos", JSON.stringify(clamped)); } catch { /**/ }
+			return clamped;
+		}
+	} catch { /**/ }
+	return null;
+}
 
 export default function Quack() {
 	const reducedMotion = useReducedMotion();
-	const { quips, pending, chatWanted, clearPending, clearChatWanted } =
-		useQuack();
+	const {
+		quips, pending, chatWanted, resetPosReq,
+		clearPending, clearChatWanted, clearResetPos,
+	} = useQuack();
 
-	// Position: null = default bottom-right via CSS; initialized lazily from sessionStorage
-	const [pos, setPosState] = useState(() => {
-		try {
-			const saved = sessionStorage.getItem("quack-pos");
-			if (saved) {
-				const p = JSON.parse(saved);
-				if (typeof p.x === "number" && typeof p.y === "number") return p;
-			}
-		} catch {
-			// sessionStorage unavailable
-		}
-		return null;
-	});
+	// Position: null = default bottom-right via CSS; stored as { fx, fy } fractions.
+	const [pos, setPosState] = useState(() => loadSavedPos());
 	const posRef = useRef(pos);
 	const setPos = useCallback((p) => {
 		posRef.current = p;
@@ -52,6 +96,7 @@ export default function Quack() {
 	const bubbleTimerRef = useRef(null);
 	const idleTimerRef = useRef(null);
 	const rafRef = useRef(null);
+	const resizeRafRef = useRef(null);
 	const mxRef = useRef(0.5);
 	const myRef = useRef(0.5);
 	const wrapRef = useRef(null);
@@ -79,6 +124,33 @@ export default function Quack() {
 			if (rafRef.current) cancelAnimationFrame(rafRef.current);
 		};
 	}, [reducedMotion]);
+
+	// Clamp position on viewport resize and orientationchange (rAF-throttled)
+	useEffect(() => {
+		const handle = () => {
+			if (resizeRafRef.current) return;
+			resizeRafRef.current = requestAnimationFrame(() => {
+				resizeRafRef.current = null;
+				const p = posRef.current;
+				if (!p) return;
+				const clamped = clampFraction(p.fx, p.fy);
+				if (!clamped) {
+					setPos(null);
+					try { sessionStorage.removeItem("quack-pos"); } catch { /**/ }
+				} else {
+					// Always call setPos (new object) so posStyle pixels update
+					setPos({ fx: clamped.fx, fy: clamped.fy });
+				}
+			});
+		};
+		window.addEventListener("resize", handle, { passive: true });
+		window.addEventListener("orientationchange", handle, { passive: true });
+		return () => {
+			window.removeEventListener("resize", handle);
+			window.removeEventListener("orientationchange", handle);
+			if (resizeRafRef.current) cancelAnimationFrame(resizeRafRef.current);
+		};
+	}, [setPos]);
 
 	// Pause idle timer when tab is hidden
 	useEffect(() => {
@@ -111,14 +183,12 @@ export default function Quack() {
 				const vw = window.innerWidth;
 				const vh = window.innerHeight;
 				const p = posRef.current;
-				const dcx = p ? p.x + 32 : vw - 52;
-				const dcy = p ? p.y + 32 : vh - 52;
+				const dcx = p ? p.fx * vw + 32 : vw - 52;
+				const dcy = p ? p.fy * vh + 32 : vh - 52;
 
-				// Facing: re-render only on direction change
 				const newFacing = mxRef.current * vw < dcx ? -1 : 1;
 				setFacing((prev) => (prev !== newFacing ? newFacing : prev));
 
-				// Tilt via CSS var — no re-render
 				const tiltRaw = (myRef.current * vh - dcy) / 30;
 				const tilt = Math.max(-14, Math.min(10, tiltRaw));
 				wrapRef.current?.style.setProperty(
@@ -143,7 +213,6 @@ export default function Quack() {
 		const text = pending;
 		clearPending();
 		clearTimeout(bubbleTimerRef.current);
-		// Use a timer so the setState calls happen outside the effect body
 		const t = setTimeout(() => {
 			setQuipOverride(text);
 			setBubble(true);
@@ -163,6 +232,24 @@ export default function Quack() {
 		return () => clearTimeout(t);
 	}, [chatWanted, clearChatWanted]);
 
+	// React to requestResetPos() from Logo double-click
+	useEffect(() => {
+		if (!resetPosReq) return;
+		clearResetPos();
+		try { sessionStorage.removeItem("quack-pos"); } catch { /**/ }
+		const t = setTimeout(() => {
+			setPos(null);
+			// Restart entrance animation via reflow trick
+			const el = wrapRef.current;
+			if (el && !reducedMotion) {
+				el.style.animation = "none";
+				void el.getBoundingClientRect();
+				el.style.animation = "";
+			}
+		}, 0);
+		return () => clearTimeout(t);
+	}, [resetPosReq, clearResetPos, setPos, reducedMotion]);
+
 	// Scroll chat to bottom when new message arrives
 	useEffect(() => {
 		if (chatScrollRef.current) {
@@ -178,8 +265,8 @@ export default function Quack() {
 			const wrap = wrapRef.current;
 			let startX, startY;
 			if (posRef.current) {
-				startX = posRef.current.x;
-				startY = posRef.current.y;
+				startX = posRef.current.fx * window.innerWidth;
+				startY = posRef.current.fy * window.innerHeight;
 			} else {
 				const rect = wrap?.getBoundingClientRect() ?? {
 					left: window.innerWidth - 92,
@@ -187,8 +274,10 @@ export default function Quack() {
 				};
 				startX = rect.left;
 				startY = rect.top;
-				posRef.current = { x: startX, y: startY };
-				setPosState({ x: startX, y: startY });
+				const vw = window.innerWidth;
+				const vh = window.innerHeight;
+				posRef.current = { fx: startX / vw, fy: startY / vh };
+				setPosState({ fx: startX / vw, fy: startY / vh });
 			}
 			dragRef.current = {
 				ox: e.clientX - startX,
@@ -212,10 +301,12 @@ export default function Quack() {
 			if (moved) setIsDragging(true);
 			const vw = window.innerWidth;
 			const vh = window.innerHeight;
-			const x = Math.max(8, Math.min(vw - 72, e.clientX - d.ox));
-			const y = Math.max(8, Math.min(vh - 72, e.clientY - d.oy));
-			posRef.current = { x, y };
-			setPosState({ x, y });
+			const { minX, maxX, minY, maxY } = clampBounds();
+			const x = Math.max(minX, Math.min(maxX, e.clientX - d.ox));
+			const y = Math.max(minY, Math.min(maxY, e.clientY - d.oy));
+			const newPos = { fx: x / vw, fy: y / vh };
+			posRef.current = newPos;
+			setPosState(newPos);
 		},
 		[]
 	);
@@ -238,13 +329,9 @@ export default function Quack() {
 				bubbleTimerRef.current = setTimeout(() => setBubble(false), BUBBLE_MS);
 			} else {
 				try {
-					sessionStorage.setItem(
-						"quack-pos",
-						JSON.stringify(posRef.current)
-					);
-				} catch {
-					// sessionStorage unavailable
-				}
+					const p = posRef.current;
+					if (p) sessionStorage.setItem("quack-pos", JSON.stringify({ fx: p.fx, fy: p.fy }));
+				} catch { /**/ }
 			}
 		},
 		[]
@@ -253,32 +340,31 @@ export default function Quack() {
 	const handleKeyDown = useCallback(
 		(e) => {
 			const STEP = 24;
-			let dx = 0,
-				dy = 0;
+			let dx = 0, dy = 0;
 			if (e.key === "ArrowLeft") dx = -STEP;
 			else if (e.key === "ArrowRight") dx = STEP;
 			else if (e.key === "ArrowUp") dy = -STEP;
 			else if (e.key === "ArrowDown") dy = STEP;
 			else return;
 			e.preventDefault();
+			const vw = window.innerWidth;
+			const vh = window.innerHeight;
 			const p = posRef.current ?? (() => {
 				const rect = wrapRef.current?.getBoundingClientRect();
 				return rect
-					? { x: rect.left, y: rect.top }
-					: { x: window.innerWidth - 92, y: window.innerHeight - 72 };
+					? { fx: rect.left / vw, fy: rect.top / vh }
+					: { fx: (vw - 92) / vw, fy: (vh - 72) / vh };
 			})();
-			const vw = window.innerWidth;
-			const vh = window.innerHeight;
-			const newPos = {
-				x: Math.max(8, Math.min(vw - 72, p.x + dx)),
-				y: Math.max(8, Math.min(vh - 72, p.y + dy)),
-			};
+			const { minX, maxX, minY, maxY } = clampBounds();
+			const curX = p.fx * vw;
+			const curY = p.fy * vh;
+			const newX = Math.max(minX, Math.min(maxX, curX + dx));
+			const newY = Math.max(minY, Math.min(maxY, curY + dy));
+			const newPos = { fx: newX / vw, fy: newY / vh };
 			setPos(newPos);
 			try {
 				sessionStorage.setItem("quack-pos", JSON.stringify(newPos));
-			} catch {
-				// sessionStorage unavailable
-			}
+			} catch { /**/ }
 		},
 		[setPos]
 	);
@@ -306,24 +392,24 @@ export default function Quack() {
 	const k = actN % 2 ? "A" : "B";
 	const hopAnim =
 		hopN && !reducedMotion
-			? `${hopN % 2 ? "hopA" : "hopB"} 520ms ease-out`
+			? `quack-${hopN % 2 ? "hopA" : "hopB"} 520ms ease-out`
 			: "none";
 	const bodyAnim =
 		!reducedMotion && act === "waddle"
-			? `waddle${k} 900ms ease-in-out`
+			? `quack-waddle${k} 900ms ease-in-out`
 			: "none";
 	const wingAnim = !reducedMotion
 		? isDragging
-			? "flapA 420ms ease-in-out infinite"
+			? "quack-flapA 420ms ease-in-out infinite"
 			: act === "flap"
-				? `flap${k} 750ms ease-in-out`
+				? `quack-flap${k} 750ms ease-in-out`
 				: "none"
 		: "none";
 	const headAnim = !reducedMotion
 		? act === "peck"
-			? `peck${k} 900ms ease-in-out`
+			? `quack-peck${k} 900ms ease-in-out`
 			: act === "look"
-				? `look${k} 1700ms ease-in-out`
+				? `quack-look${k} 1700ms ease-in-out`
 				: "none"
 		: "none";
 
@@ -332,7 +418,9 @@ export default function Quack() {
 	const currentQuip =
 		quipOverride ?? quips[quipN % Math.max(1, quips.length)] ?? "";
 
-	const posStyle = pos ? { left: `${pos.x}px`, top: `${pos.y}px` } : {};
+	const posStyle = pos
+		? { left: `${pos.fx * window.innerWidth}px`, top: `${pos.fy * window.innerHeight}px` }
+		: {};
 
 	return (
 		<div ref={wrapRef} className="quack" style={posStyle}>

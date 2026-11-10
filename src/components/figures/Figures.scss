@@ -6,6 +6,19 @@
 	to { stroke-dashoffset: -20; }
 }
 
+@keyframes dash {
+	to { stroke-dashoffset: -12; }
+}
+
+// ── Shared arch diagram ───────────────────────────────────────────
+
+.arch-svg {
+	display: block;
+	width: 100%;
+	padding: 16px;
+	box-sizing: border-box;
+}
+
 // ── VigilFigure ──────────────────────────────────────────────────
 
 .vigil-figure {

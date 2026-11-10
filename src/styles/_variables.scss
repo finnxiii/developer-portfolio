@@ -60,11 +60,12 @@
 
 	// ── Motion ───────────────────────────────────────────────────
 	--ease:               cubic-bezier(.2,.7,.2,1);
-	--dur-scene-opacity:  900ms;
-	--dur-scene-blur:     900ms;
-	--dur-scene-transform: 1100ms;
-	--dur-text:           800ms;
-	--dur-text-transform: 1000ms;
+	--ease-spring:        cubic-bezier(.16,1,.3,1);
+	--dur-scene-opacity:  1200ms;
+	--dur-scene-blur:     1200ms;
+	--dur-scene-transform: 1500ms;
+	--dur-text:           900ms;
+	--dur-text-transform: 1200ms;
 	--dur-bg:             900ms;
 	--dur-ui:             200ms;
 
@@ -82,9 +83,29 @@
 	--inner-pad-mobile: 16px;
 	--sect-pad-y:       110px;
 	--sect-pad-b:       96px;
-	--sect-pad-y-sm:    88px;   // mobile <900px — clears chrome bar + breathing room
+	--sect-pad-y-sm:    88px;
 	--sect-pad-b-sm:    80px;
 
 	// ── Fixed chrome ─────────────────────────────────────────────
-	--chrome-h: 48px;           // floating bar height (<900px)
+	--phone-bar-h: 56px;        // phone fixed top bar height
+}
+
+// Tablet + laptop (600–1199px): wider inner content, section spacing
+@media (min-width: 600px) and (max-width: 1199px) {
+	:root {
+		--inner-pad-l: 112px;   // clears pill + breathing room
+		--inner-pad-r: 56px;
+		--sect-pad-y:  120px;
+		--sect-pad-b:  104px;
+	}
+}
+
+// Phone (<600px): full-width with minimal inset, compact sections
+@media (max-width: 599px) {
+	:root {
+		--inner-pad-l: 20px;
+		--inner-pad-r: 20px;
+		--sect-pad-y:  96px;    // clears 56px bar + breathing room
+		--sect-pad-b:  80px;
+	}
 }

@@ -1,0 +1,111 @@
+@use "../../../styles/mixins" as *;
+
+.cmd {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	height: 46px;
+	padding: 0 18px;
+	border: 2px solid var(--ink);
+	border-radius: 8px;
+	font-family: var(--font-mono);
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	color: var(--ink);
+	background: #FBFAF7;
+	box-shadow: 4px 4px 0 var(--ink);
+	transition:
+		transform 140ms cubic-bezier(.16, 1, .3, 1),
+		box-shadow 140ms cubic-bezier(.16, 1, .3, 1),
+		background 200ms;
+	cursor: pointer;
+	white-space: nowrap;
+	text-decoration: none;
+
+	.cmd__glyph { color: var(--amber); }
+
+	@media (hover: hover) {
+		&:hover {
+			transform: translate(-1px, -1px);
+			box-shadow: 5px 5px 0 var(--ink);
+			background: #FFF4CC;
+		}
+	}
+
+	&:active {
+		transform: translate(4px, 4px);
+		box-shadow: 0 0 0 var(--ink);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--duck);
+		outline-offset: 3px;
+	}
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	@include bp(phone) {
+		height: 44px;
+		padding: 0 14px;
+		font-size: 13px;
+	}
+}
+
+.cmd--dark {
+	background: var(--ink);
+	color: var(--paper);
+	box-shadow: 4px 4px 0 var(--duck);
+
+	.cmd__glyph { color: var(--duck); }
+
+	@media (hover: hover) {
+		&:hover {
+			background: #2F2C28;
+			box-shadow: 5px 5px 0 var(--duck);
+		}
+	}
+
+	&:active { box-shadow: 0 0 0 var(--duck); }
+}
+
+.cmd--ghost {
+	border-style: dashed;
+	box-shadow: none;
+	background: transparent;
+
+	@media (hover: hover) {
+		&:hover {
+			background: rgba(242, 194, 48, 0.18);
+			box-shadow: none;
+			transform: none;
+		}
+	}
+
+	&:active {
+		transform: none;
+		box-shadow: none;
+	}
+}
+
+.cmd--duck {
+	background: var(--duck);
+	border-color: var(--duck-deep);
+	box-shadow: 4px 4px 0 var(--ink);
+	color: var(--ink);
+
+	.cmd__glyph { color: var(--ink); }
+
+	@media (hover: hover) {
+		&:hover {
+			background: var(--duck-deep);
+			box-shadow: 5px 5px 0 var(--ink);
+		}
+	}
+
+	&:active { box-shadow: 0 0 0 var(--ink); }
+}

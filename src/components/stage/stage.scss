@@ -17,15 +17,15 @@
 	inset: 0;
 	will-change: opacity, transform, filter;
 	transition:
-		opacity var(--dur-scene-opacity) var(--ease),
-		transform var(--dur-scene-transform) var(--ease),
-		filter var(--dur-scene-blur) var(--ease);
+		opacity var(--dur-scene-opacity) var(--ease-spring),
+		transform var(--dur-scene-transform) var(--ease-spring),
+		filter var(--dur-scene-blur) var(--ease-spring);
 
 	// Skip blur on touch devices and when user prefers reduced transparency
 	@media (hover: none), (prefers-reduced-transparency: reduce) {
 		transition:
-			opacity var(--dur-scene-opacity) var(--ease),
-			transform var(--dur-scene-transform) var(--ease);
+			opacity var(--dur-scene-opacity) var(--ease-spring),
+			transform var(--dur-scene-transform) var(--ease-spring);
 	}
 
 	@include reduced-motion { transition: none; }
@@ -71,22 +71,87 @@
 		align-items: flex-start;
 	}
 
-	@include bp(below-tablet) {
-		// bar top: max(10px, safe-area-top) + bar height 48px + 20px gap = ~78px normally
-		padding-top: calc(max(10px, env(safe-area-inset-top, 0px)) + 68px);
-		padding-bottom: var(--sect-pad-b-sm, 80px);
+	// Tablet + laptop (600–1199px): no forced full-height, padding via CSS vars
+	@media (min-width: 600px) and (max-width: 1199px) {
+		min-height: 0;
+		align-items: flex-start;
+	}
+
+	// Phone (<600px): compact, no forced height
+	@include bp(phone) {
+		min-height: 0;
+		align-items: flex-start;
 	}
 }
 
+// Hero keeps min-height at all sizes
+.stage-section[data-scene="home"] {
+	min-height: 100vh;
+	min-height: 100svh;
+	align-items: center;
+
+	&.stage-section--top-align { align-items: flex-start; }
+}
+
+// ── Section content reveal ─────────────────────────────────────────
+// Class-based stagger: children animate individually 70ms apart.
+// .st descendants with explicit --i override nth-child auto-index.
+
 .stage-section__inner {
 	width: 100%;
-	transition:
-		opacity var(--dur-text) var(--ease),
-		transform var(--dur-text-transform) var(--ease);
 
+	// Transitions on direct children (not hero-grid wrapper) and .st items
+	> *:not(.hero-grid),
+	.st {
+		transition:
+			opacity 900ms var(--ease-spring),
+			transform 1200ms var(--ease-spring),
+			filter 900ms var(--ease-spring);
+		transition-delay: calc(var(--i, 0) * 70ms);
+	}
+
+	// Auto nth-child stagger index for direct children
+	> *:nth-child(1) { --i: 0; }
+	> *:nth-child(2) { --i: 1; }
+	> *:nth-child(3) { --i: 2; }
+	> *:nth-child(4) { --i: 3; }
+	> *:nth-child(5) { --i: 4; }
+	> *:nth-child(6) { --i: 5; }
+
+	// Active section: everything fully visible
+	&.reveal--on > *:not(.hero-grid),
+	&.reveal--on .st {
+		opacity: 1;
+		transform: none;
+		filter: none;
+	}
+
+	// Below active: pushed down, blurred
+	&.reveal--below > *:not(.hero-grid),
+	&.reveal--below .st {
+		opacity: 0.06;
+		transform: translateY(44px) scale(0.985);
+		filter: blur(8px);
+	}
+
+	// Above active: pushed up, blurred, no stagger delay (instant on scroll back)
+	&.reveal--above > *:not(.hero-grid),
+	&.reveal--above .st {
+		opacity: 0.06;
+		transform: translateY(-36px) scale(0.985);
+		filter: blur(8px);
+		transition-delay: 0ms;
+	}
+
+	// Reduced motion: everything visible, no transitions
 	@include reduced-motion {
-		transition: none;
-		opacity: 1 !important;
-		transform: none !important;
+		> *,
+		.st {
+			transition: none !important;
+			opacity: 1 !important;
+			transform: none !important;
+			filter: none !important;
+			transition-delay: 0ms !important;
+		}
 	}
 }

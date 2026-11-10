@@ -20,9 +20,8 @@
 		border-radius: 4px;
 	}
 
-	// Inside Chrome bar at mobile: static flow, bar padding-left handles offset
-	@include bp(below-tablet) {
-		position: static;
-		margin-left: 0;
+	// Hidden at phone — PhoneNav shows its own logo
+	@include bp(phone) {
+		display: none;
 	}
 }

@@ -23,6 +23,7 @@
 		"availability": {
 			"status": "Open to placements",
 			"detail": "Seeking a 12-month industrial placement.",
+			"headline": "Open to a 12-month placement.",
 			"cta": "Download CV",
 			"href": "/NaingHtooLwin-CV.pdf"
 		}
@@ -96,6 +97,16 @@
 					"ActiveSqlTransaction: cannot refresh aggregate in a transaction",
 					"    at alembic.upgrade"
 				]
+			},
+			"preview": {
+				"kind": "pipeline",
+				"items": ["snippet", "/collect", "enrich", "score", "TimescaleDB", "dashboard"],
+				"highlight": "score",
+				"nums": [
+					{"v": "0–100", "l": "bot score per request"},
+					{"v": "£0", "l": "target hosting cost"},
+					{"v": "0", "l": "cookies set"}
+				]
 			}
 		},
 		{
@@ -127,6 +138,14 @@
 				"whatBroke": "One of the recurring challenges was making data-management workflow safe enought for users to understand before commiting changes. Importing a CSV should not simply overwrite existing information without showing what is going to change. This led to the inclusion of a preview and difference workflow so users could inspect changes first.",
 				"outcome": "The team delivered a working web application for the AMRC client and achieved a first class result. My contribution focused on several of the application's data-management and client-facing workflows.",
 				"learned": "The project taught me how mch software engineering happens outside of writing individual features. Working with a real client made requirements, communication, data integrity, and usability feel much more concrete. It also gave me experience contributing to a larger codebase where my work had to fit into decisions made by the rest of the team."
+			},
+			"preview": {
+				"kind": "diff",
+				"nums": [
+					{"v": "6", "l": "people on the team"},
+					{"v": "1st", "l": "class result"},
+					{"v": "AMRC", "l": "real client"}
+				]
 			}
 		},
 		{
@@ -157,6 +176,15 @@
 				"whatBroke": "The biggest challenge was connecting an AI model to a physical system. A classification result that looks reasonable on a screen still needs to be translated into a reliable action by hardware. Camera positioning, real-world objects, communication between components, and the limitations of a short hackthon all affected the system.",
 				"outcome": "We delivered a functional embedded waste-sorting prototype within six hours and received the Most Adventurous Hack award at iForge Hack Day 2025.",
 				"learned": "SORTS was one of my first experiences working across software, AI, and physical hardware. It taught me to think about intelligent systems as complete pipelines rather than isolated models and showed me how quickly real-world constraints appear once software has to control something physical."
+			},
+			"preview": {
+				"kind": "loop",
+				"items": ["capture", "classify", "actuate"],
+				"nums": [
+					{"v": "6 hrs", "l": "idea to prototype"},
+					{"v": "1", "l": "award: Most Adventurous Hack"},
+					{"v": "3", "l": "steps in one loop"}
+				]
 			}
 		}
 	],

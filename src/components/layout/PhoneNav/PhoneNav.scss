@@ -1,0 +1,260 @@
+@use "../../../styles/mixins" as *;
+
+// ── PhoneNav — fixed 56px top bar, <600px only ────────────────────
+
+.phone-nav {
+	display: none;
+
+	@include bp(phone) {
+		display: flex;
+		align-items: center;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: var(--phone-bar-h, 56px);
+		padding: 0 16px;
+		padding-top: env(safe-area-inset-top, 0px);
+		z-index: var(--z-chrome, 6);
+		background: rgba(244, 241, 234, 0.9);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border-bottom: 1px solid rgba(36, 34, 31, 0.12);
+		transition:
+			background var(--dur-bg) var(--ease),
+			border-color var(--dur-bg) var(--ease);
+
+		&[data-dark="true"] {
+			background: rgba(31, 29, 26, 0.88);
+			border-bottom-color: rgba(234, 229, 219, 0.12);
+		}
+	}
+}
+
+.phone-nav__logo {
+	font-family: var(--font-display);
+	font-size: 24px;
+	font-weight: 600;
+	letter-spacing: -0.04em;
+	text-decoration: none;
+	color: var(--ink);
+	flex-shrink: 0;
+	margin-right: auto;
+	transition: color var(--dur-bg) var(--ease);
+
+	&:focus-visible {
+		outline: 2px solid var(--duck);
+		outline-offset: 4px;
+		border-radius: 4px;
+	}
+
+	[data-dark="true"] & {
+		color: var(--dark-text);
+	}
+}
+
+.phone-nav__btn {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	height: 36px;
+	padding: 0 12px;
+	border: 1px solid rgba(36, 34, 31, 0.18);
+	border-radius: 18px;
+	background: rgba(244, 241, 234, 0.6);
+	font-family: var(--font-mono);
+	font-size: 12px;
+	cursor: pointer;
+	color: var(--ink);
+	transition:
+		background var(--dur-ui) var(--ease),
+		border-color var(--dur-ui) var(--ease);
+
+	&:focus-visible { outline: 2px solid var(--duck); }
+
+	[data-dark="true"] & {
+		border-color: rgba(234, 229, 219, 0.2);
+		background: rgba(31, 29, 26, 0.6);
+		color: var(--dark-text);
+	}
+}
+
+.phone-nav__btn-ln {
+	color: var(--breakpoint);
+	font-weight: 600;
+}
+
+.phone-nav__btn-fn {
+	color: inherit;
+}
+
+.phone-nav__btn-caret {
+	color: var(--muted);
+	font-size: 10px;
+	line-height: 1;
+}
+
+// Scroll progress line — 2px amber strip on bar's bottom edge
+.phone-nav__progress {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: calc(var(--phone-bar-h, 56px) + env(safe-area-inset-top, 0px) - 2px);
+	height: 2px;
+	background: var(--beak);
+	transform-origin: left center;
+	transform: scaleX(0);
+	pointer-events: none;
+	z-index: calc(var(--z-chrome, 6) + 1);
+	display: none;
+
+	@include bp(phone) { display: block; }
+}
+
+// ── Index sheet ───────────────────────────────────────────────────
+
+.phone-nav__scrim {
+	position: fixed;
+	inset: 0;
+	z-index: calc(var(--z-chrome, 6) + 1);
+	background: rgba(36, 34, 31, 0.35);
+	backdrop-filter: blur(3px);
+	-webkit-backdrop-filter: blur(3px);
+}
+
+.phone-nav__sheet {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: calc(var(--z-chrome, 6) + 2);
+	background: #1F1D1A;
+	color: var(--dark-text);
+	border-radius: 0 0 20px 20px;
+	overflow: hidden;
+	animation: sheet-in 320ms var(--ease-spring);
+
+	@include reduced-motion { animation: none; }
+}
+
+@keyframes sheet-in {
+	from { transform: translateY(-100%); opacity: 0.6; }
+	to   { transform: translateY(0); opacity: 1; }
+}
+
+.phone-nav__sheet-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: calc(env(safe-area-inset-top, 0px) + 16px) 20px 14px;
+	border-bottom: 1px solid rgba(234, 229, 219, 0.1);
+}
+
+.phone-nav__sheet-title {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--dark-muted);
+}
+
+.phone-nav__sheet-close {
+	width: 32px;
+	height: 32px;
+	border-radius: 16px;
+	border: 1px solid rgba(234, 229, 219, 0.15);
+	background: transparent;
+	color: var(--dark-text);
+	font-size: 20px;
+	line-height: 1;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&:focus-visible { outline: 2px solid var(--duck); }
+}
+
+.phone-nav__sheet-list {
+	display: flex;
+	flex-direction: column;
+	padding: 8px 0;
+}
+
+.phone-nav__sheet-row {
+	display: grid;
+	grid-template-columns: 32px 1fr auto;
+	gap: 0 10px;
+	align-items: baseline;
+	padding: 14px 20px;
+	border: none;
+	background: transparent;
+	text-align: left;
+	cursor: pointer;
+	color: var(--dark-text);
+	font: inherit;
+	transition: background var(--dur-ui) var(--ease);
+
+	&:focus-visible { outline: 2px solid var(--duck) inset; }
+
+	@media (hover: hover) {
+		&:hover { background: rgba(234, 229, 219, 0.06); }
+	}
+
+	&--active {
+		.phone-nav__sheet-ln { color: var(--breakpoint); }
+		.phone-nav__sheet-label { color: var(--duck); }
+	}
+}
+
+.phone-nav__sheet-ln {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	color: var(--dark-muted);
+}
+
+.phone-nav__sheet-label {
+	font-family: var(--font-display);
+	font-size: 20px;
+	font-weight: 500;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+}
+
+.phone-nav__sheet-fn {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	color: var(--dark-muted);
+	text-align: right;
+	align-self: center;
+}
+
+.phone-nav__sheet-here {
+	grid-column: 2 / -1;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	color: var(--dark-muted);
+	padding-top: 2px;
+}
+
+.phone-nav__sheet-footer {
+	display: flex;
+	gap: 18px;
+	padding: 14px 20px 20px;
+	border-top: 1px solid rgba(234, 229, 219, 0.1);
+	font-family: var(--font-mono);
+	font-size: 13px;
+	font-weight: 600;
+
+	a {
+		color: var(--dark-text);
+		text-decoration: none;
+
+		&:focus-visible { outline: 2px solid var(--duck); border-radius: 2px; }
+
+		@media (hover: hover) {
+			&:hover { color: var(--duck); }
+		}
+	}
+}
